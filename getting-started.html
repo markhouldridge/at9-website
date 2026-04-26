@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Getting Started — At9</title>
+<meta name="description" content="Learn how to set up At9 and manage your bookings. Step-by-step guides for entities, the schedule view, adding bookings, and more." />
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FBFAF6;
+  --bg-soft: #F5F1E9;
+  --bg-mute: #F1EDE3;
+  --ink: #1A1825;
+  --ink-2: #4a4658;
+  --ink-3: #7c7889;
+  --line: #ECE7DD;
+  --line-2: #DDD6CB;
+  --primary: #907CFF;
+  --primary-dark: #705AC2;
+  --primary-pale: #F3F0FF;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Switzer', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+a { color: var(--primary-dark); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--primary); }
+
+.container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 250, 246, .85);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-row {
+  max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+}
+.wordmark { display: inline-flex; align-items: center; line-height: 0; text-decoration: none; }
+.wordmark img { height: 30px; width: auto; display: block; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  color: var(--ink-2); text-decoration: none;
+  font-weight: 500; font-size: 15px;
+  transition: color .15s ease;
+}
+.nav-links a:hover { color: var(--ink); }
+@media (max-width: 720px) { .nav-links { display: none; } }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ink); color: #fff;
+  font-weight: 600; font-size: 15px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform .15s ease, background .2s ease;
+}
+.btn-primary:hover { transform: translateY(-1px); background: #2a2733; color: #fff; }
+
+/* ---------- Page ---------- */
+.gs-page { padding: 56px 0 100px; }
+
+.back-link { margin: 0 0 28px; font-size: 14px; }
+.back-link a { color: var(--ink-3); text-decoration: none; font-weight: 500; transition: color .15s ease; }
+.back-link a:hover { color: var(--ink); }
+
+.page-header { margin-bottom: 64px; }
+.page-header h1 {
+  font-size: clamp(36px, 4.5vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0 0 14px;
+}
+.page-header .sub {
+  font-size: 18px;
+  color: var(--ink-2);
+  margin: 0 0 28px;
+  max-width: 560px;
+}
+
+/* Table of contents */
+.toc {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: inline-block;
+}
+.toc-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 10px;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.toc a { text-decoration: none; color: var(--ink-2); }
+.toc a:hover { color: var(--primary); }
+
+/* ---------- Steps ---------- */
+.steps { display: flex; flex-direction: column; gap: 56px; }
+
+.step { display: flex; gap: 28px; align-items: flex-start; }
+@media (max-width: 600px) { .step { flex-direction: column; gap: 16px; } }
+
+.step-number {
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+
+.step-body { flex: 1; min-width: 0; }
+
+.step-body h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 10px;
+  line-height: 1.2;
+}
+.step-body p { margin: 0 0 12px; color: var(--ink-2); font-size: 16px; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-body ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  color: var(--ink-2);
+  font-size: 16px;
+}
+.step-body li { margin-bottom: 6px; }
+.step-body li::marker { color: var(--ink-3); }
+
+.tip {
+  display: flex;
+  gap: 10px;
+  background: var(--primary-pale);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 15px;
+}
+.tip-icon { flex-shrink: 0; font-size: 16px; line-height: 1.6; }
+.tip p { margin: 0; color: var(--ink-2); }
+.tip strong { color: var(--ink); }
+
+/* Divider between steps */
+.step-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 0;
+}
+
+/* ---------- Help callout ---------- */
+.help-callout {
+  margin-top: 72px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 36px 40px;
+  text-align: center;
+}
+.help-callout h2 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+.help-callout p { color: var(--ink-2); margin: 0 0 20px; font-size: 16px; }
+.help-callout .btn-primary { margin: 0 auto; }
+
+/* ---------- Footer (compact) ---------- */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding: 36px 0 28px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.footer-inner {
+  max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
+.footer-links a { color: var(--ink-3); text-decoration: none; }
+.footer-links a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ---------- NAV ---------- -->
+<header class="nav">
+  <div class="nav-row">
+    <a href="index.html" class="wordmark" aria-label="At9 home">
+      <img src="At9.png" alt="At9" />
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faqs">FAQs</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <a class="btn-primary" href="index.html#download">
+      Get the app
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ---------- CONTENT ---------- -->
+<main class="gs-page">
+  <div class="container">
+
+    <p class="back-link"><a href="index.html">← Back to home</a></p>
+
+    <div class="page-header">
+      <h1>Getting Started</h1>
+      <p class="sub">Everything you need to start managing bookings in At9 — from setting up your space to taking your first booking.</p>
+
+      <div class="toc">
+        <p class="toc-title">On this page</p>
+        <ol>
+          <li><a href="#entities">Setting up your entities</a></li>
+          <li><a href="#schedule">Navigating the schedule</a></li>
+          <li><a href="#add-booking">Adding a booking</a></li>
+          <li><a href="#update-booking">Updating a booking</a></li>
+          <li><a href="#move-booking">Moving a booking</a></li>
+          <li><a href="#cancel-booking">Cancelling a booking</a></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="steps">
+
+      <!-- Step 1 -->
+      <div class="step" id="entities">
+        <div class="step-number" aria-hidden="true">1</div>
+        <div class="step-body">
+          <h2>Setting up your entities</h2>
+          <p>Entities are the bookable resources in your business — rooms, tables, kennels, treatment rooms, or any space or asset your customers can reserve. You need at least one entity before you can take bookings.</p>
+          <p>To add or manage your entities, open the app and go to <strong>Admin → Entities</strong>. From there you can:</p>
+          <ul>
+            <li>Add a new entity — give it a name, type, and maximum occupancy.</li>
+            <li>Edit an existing entity to update its name or capacity.</li>
+            <li>Reorder entities by dragging them into the position you want — this controls the order they appear in your schedule.</li>
+          </ul>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p><strong>Tip:</strong> Use specific names for your entities — "Garden Room" rather than "Room 1" — so they're easy to identify at a glance on your schedule.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-divider"></div>
+
+      <!-- Step 2 -->
+      <div class="step" id="schedule">
+        <div class="step-number" aria-hidden="true">2</div>
+        <div class="step-body">
+          <h2>Navigating the schedule</h2>
+          <p>The schedule is your central view for everything happening in your business. Each column represents one of your entities, and each row is a time slot. Bookings appear as coloured blocks that span their start and end times.</p>
+          <ul>
+            <li><strong>Scroll left or right</strong> to move between days.</li>
+            <li><strong>Tap the date header</strong> to jump to a specific month or date.</li>
+            <li><strong>Tap a booking block</strong> to open its details in a panel.</li>
+            <li><strong>Tap an empty slot</strong> to start a new booking for that time and entity.</li>
+          </ul>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p><strong>Tip:</strong> Use the date picker at the top of the schedule to jump straight to a future date — useful when checking availability weeks ahead.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-divider"></div>
+
+      <!-- Step 3 -->
+      <div class="step" id="add-booking">
+        <div class="step-number" aria-hidden="true">3</div>
+        <div class="step-body">
+          <h2>Adding a booking</h2>
+          <p>You can start a new booking in two ways:</p>
+          <ul>
+            <li><strong>From the schedule:</strong> tap the <strong>+</strong> button, or tap directly on an empty slot for a given entity and time.</li>
+            <li><strong>From anywhere:</strong> tap the floating add button (bottom right of the main view).</li>
+          </ul>
+          <p>In the booking form, fill in:</p>
+          <ul>
+            <li><strong>Customer</strong> — search for an existing customer or add a new one.</li>
+            <li><strong>Entity</strong> — the room, table, or resource being reserved.</li>
+            <li><strong>Start and end date/time</strong> — At9 automatically checks availability for the chosen entity as you fill in the dates.</li>
+          </ul>
+          <p>If the slot is already taken, you'll see a conflict warning before you can save. Once saved, the booking appears on your schedule immediately.</p>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p><strong>Checking availability:</strong> switch to the <strong>Availability</strong> tab within the booking form to see which slots are free across all your entities for the chosen dates — handy when a customer isn't fixed on a specific room.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-divider"></div>
+
+      <!-- Step 4 -->
+      <div class="step" id="update-booking">
+        <div class="step-number" aria-hidden="true">4</div>
+        <div class="step-body">
+          <h2>Updating a booking</h2>
+          <p>To edit a booking, tap it on the schedule to open the booking panel, then tap <strong>Edit</strong>. The same booking form opens with all current details pre-filled.</p>
+          <p>You can update:</p>
+          <ul>
+            <li>Start and end date or time.</li>
+            <li>The assigned entity (room, table, etc.).</li>
+            <li>Customer details.</li>
+            <li>Any notes attached to the booking.</li>
+          </ul>
+          <p>At9 checks availability again when you save, so you'll be warned if your changes create a conflict with another booking.</p>
+        </div>
+      </div>
+
+      <div class="step-divider"></div>
+
+      <!-- Step 5 -->
+      <div class="step" id="move-booking">
+        <div class="step-number" aria-hidden="true">5</div>
+        <div class="step-body">
+          <h2>Moving a booking</h2>
+          <p>You can move a booking to a different time or entity directly on the schedule without opening the edit form.</p>
+          <ul>
+            <li><strong>Press and hold</strong> a booking block until it lifts.</li>
+            <li><strong>Drag</strong> it to the new time slot or entity column.</li>
+            <li><strong>Release</strong> to drop it in place — At9 saves the change automatically.</li>
+          </ul>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p><strong>Tip:</strong> If a customer calls to move to a different room, drag the booking across to the new entity column in seconds — no need to open the edit form at all.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-divider"></div>
+
+      <!-- Step 6 -->
+      <div class="step" id="cancel-booking">
+        <div class="step-number" aria-hidden="true">6</div>
+        <div class="step-body">
+          <h2>Cancelling a booking</h2>
+          <p>To cancel a booking, tap it on the schedule to open the booking panel, then tap <strong>Cancel</strong>. You'll be asked to confirm before anything is deleted.</p>
+          <p>Once confirmed, the booking is permanently removed and the slot becomes available for new bookings immediately.</p>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p><strong>Note:</strong> Cancellation is permanent. If you think you might need a booking again, consider updating its dates instead of cancelling it.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Help callout -->
+    <div class="help-callout">
+      <h2>Still need help?</h2>
+      <p>Our support team is happy to answer questions or walk you through anything in the app.</p>
+      <a class="btn-primary" href="mailto:contact@at9.app">
+        Contact support
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<!-- ---------- FOOTER ---------- -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 At9. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="getting-started.html">Getting Started</a>
+      <a href="release-notes.html">Release Notes</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+      <a href="data-protection.html">Data Protection</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

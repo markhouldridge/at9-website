@@ -802,11 +802,24 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
   border-top: 1px solid var(--line);
   padding-top: 22px;
   display: flex;
-  justify-content: center;
-  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
   font-size: 13px;
   color: var(--ink-3);
 }
+.footer-bottom-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-bottom-links a {
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.footer-bottom-links a:hover { color: var(--ink); }
 
 /* Parent-company attribution under the footer logo */
 .provider-line {
@@ -1254,6 +1267,8 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
           <h4>Product</h4>
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
+          <a href="getting-started.html">Getting Started</a>
+          <a href="release-notes.html">Release Notes</a>
         </div>
         <div class="link-col">
           <h4>Company</h4>
@@ -1273,6 +1288,13 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 
     <div class="footer-bottom">
       <span>&copy; 2026 At9. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="getting-started.html">Getting Started</a>
+        <a href="release-notes.html">Release Notes</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="data-protection.html">Data Protection</a>
+      </div>
     </div>
 
   </div>
