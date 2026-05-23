@@ -1,280 +1,431 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Release Notes — At9</title>
-<meta name="description" content="At9 release notes. See what's new, what's changed, and what's been fixed in each version of the At9 booking management app." />
-<link rel="preconnect" href="https://api.fontshare.com">
-<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #FBFAF6;
-  --bg-soft: #F5F1E9;
-  --bg-mute: #F1EDE3;
-  --ink: #1A1825;
-  --ink-2: #4a4658;
-  --ink-3: #7c7889;
-  --line: #ECE7DD;
-  --line-2: #DDD6CB;
-  --primary: #907CFF;
-  --primary-dark: #705AC2;
-  --added: #16a34a;
-  --added-bg: #f0fdf4;
-  --changed: #0369a1;
-  --changed-bg: #f0f9ff;
-  --fixed: #c2410c;
-  --fixed-bg: #fff7ed;
-  --removed: #7c7889;
-  --removed-bg: #f8f7f6;
-}
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Release Notes — At9</title>
+    <meta
+      name="description"
+      content="At9 release notes. See what's new, what's changed, and what's been fixed in each version of the At9 booking management app."
+    />
+    <link rel="canonical" href="https://www.at9.app/release-notes" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #fbfaf6;
+        --bg-soft: #f5f1e9;
+        --bg-mute: #f1ede3;
+        --ink: #1a1825;
+        --ink-2: #4a4658;
+        --ink-3: #7c7889;
+        --line: #ece7dd;
+        --line-2: #ddd6cb;
+        --primary: #907cff;
+        --primary-dark: #705ac2;
+        --added: #16a34a;
+        --added-bg: #f0fdf4;
+        --changed: #0369a1;
+        --changed-bg: #f0f9ff;
+        --fixed: #c2410c;
+        --fixed-bg: #fff7ed;
+        --removed: #7c7889;
+        --removed-bg: #f8f7f6;
+      }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: 'Switzer', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 17px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-a { color: var(--primary-dark); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { color: var(--primary); }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          "Switzer",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        font-size: 17px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      a {
+        color: var(--primary-dark);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+      a:hover {
+        color: var(--primary);
+      }
 
-.container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+      .container {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
 
-/* ---------- Nav ---------- */
-.nav {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(251, 250, 246, .85);
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom: 1px solid var(--line);
-}
-.nav-row {
-  max-width: 1180px; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 72px;
-}
-.wordmark { display: inline-flex; align-items: center; line-height: 0; text-decoration: none; }
-.wordmark img { height: 30px; width: auto; display: block; }
-.nav-links { display: flex; gap: 28px; }
-.nav-links a {
-  color: var(--ink-2); text-decoration: none;
-  font-weight: 500; font-size: 15px;
-  transition: color .15s ease;
-}
-.nav-links a:hover { color: var(--ink); }
-@media (max-width: 720px) { .nav-links { display: none; } }
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--ink); color: #fff;
-  font-weight: 600; font-size: 15px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  text-decoration: none;
-  transition: transform .15s ease, background .2s ease;
-}
-.btn-primary:hover { transform: translateY(-1px); background: #2a2733; color: #fff; }
+      /* ---------- Nav ---------- */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(251, 250, 246, 0.85);
+        backdrop-filter: saturate(180%) blur(14px);
+        -webkit-backdrop-filter: saturate(180%) blur(14px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-row {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+      .wordmark {
+        display: inline-flex;
+        align-items: center;
+        line-height: 0;
+        text-decoration: none;
+      }
+      .wordmark img {
+        height: 30px;
+        width: auto;
+        display: block;
+      }
+      .nav-links {
+        display: flex;
+        gap: 28px;
+      }
+      .nav-links a {
+        color: var(--ink-2);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        transition: color 0.15s ease;
+      }
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+      @media (max-width: 720px) {
+        .nav-links {
+          display: none;
+        }
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        transition:
+          transform 0.15s ease,
+          background 0.2s ease;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        background: #2a2733;
+        color: #fff;
+      }
 
-/* ---------- Page ---------- */
-.rn-page { padding: 56px 0 100px; }
+      /* ---------- Page ---------- */
+      .rn-page {
+        padding: 56px 0 100px;
+      }
 
-.back-link { margin: 0 0 28px; font-size: 14px; }
-.back-link a { color: var(--ink-3); text-decoration: none; font-weight: 500; transition: color .15s ease; }
-.back-link a:hover { color: var(--ink); }
+      .back-link {
+        margin: 0 0 28px;
+        font-size: 14px;
+      }
+      .back-link a {
+        color: var(--ink-3);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.15s ease;
+      }
+      .back-link a:hover {
+        color: var(--ink);
+      }
 
-.page-header { margin-bottom: 56px; }
-.page-header h1 {
-  font-size: clamp(36px, 4.5vw, 52px);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin: 0 0 12px;
-}
-.page-header .sub {
-  color: var(--ink-3);
-  font-size: 16px;
-  margin: 0;
-}
+      .page-header {
+        margin-bottom: 56px;
+      }
+      .page-header h1 {
+        font-size: clamp(36px, 4.5vw, 52px);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        margin: 0 0 12px;
+      }
+      .page-header .sub {
+        color: var(--ink-3);
+        font-size: 16px;
+        margin: 0;
+      }
 
-/* ---------- Release entries ---------- */
-.releases { display: flex; flex-direction: column; gap: 0; }
+      /* ---------- Release entries ---------- */
+      .releases {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
 
-.release {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 0 40px;
-  padding-bottom: 56px;
-}
-@media (max-width: 600px) {
-  .release { grid-template-columns: 1fr; gap: 12px; }
-}
+      .release {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 0 40px;
+        padding-bottom: 56px;
+      }
+      @media (max-width: 600px) {
+        .release {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+      }
 
-.release-meta { padding-top: 4px; }
+      .release-meta {
+        padding-top: 4px;
+      }
 
-.version-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--ink);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  padding: 4px 10px;
-  border-radius: 999px;
-  margin-bottom: 8px;
-  white-space: nowrap;
-}
+      .version-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        padding: 4px 10px;
+        border-radius: 999px;
+        margin-bottom: 8px;
+        white-space: nowrap;
+      }
 
-.release-date {
-  font-size: 13px;
-  color: var(--ink-3);
-  display: block;
-}
+      .release-date {
+        font-size: 13px;
+        color: var(--ink-3);
+        display: block;
+      }
 
-.release-body { border-left: 2px solid var(--line); padding-left: 28px; }
-@media (max-width: 600px) { .release-body { border-left: none; padding-left: 0; border-top: 2px solid var(--line); padding-top: 20px; } }
+      .release-body {
+        border-left: 2px solid var(--line);
+        padding-left: 28px;
+      }
+      @media (max-width: 600px) {
+        .release-body {
+          border-left: none;
+          padding-left: 0;
+          border-top: 2px solid var(--line);
+          padding-top: 20px;
+        }
+      }
 
-.change-group { margin-bottom: 24px; }
-.change-group:last-child { margin-bottom: 0; }
+      .change-group {
+        margin-bottom: 24px;
+      }
+      .change-group:last-child {
+        margin-bottom: 0;
+      }
 
-.change-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-.change-label.added   { color: var(--added);   background: var(--added-bg); }
-.change-label.changed { color: var(--changed); background: var(--changed-bg); }
-.change-label.fixed   { color: var(--fixed);   background: var(--fixed-bg); }
-.change-label.removed { color: var(--removed); background: var(--removed-bg); }
+      .change-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+      }
+      .change-label.added {
+        color: var(--added);
+        background: var(--added-bg);
+      }
+      .change-label.changed {
+        color: var(--changed);
+        background: var(--changed-bg);
+      }
+      .change-label.fixed {
+        color: var(--fixed);
+        background: var(--fixed-bg);
+      }
+      .change-label.removed {
+        color: var(--removed);
+        background: var(--removed-bg);
+      }
 
-.change-group ul {
-  margin: 0;
-  padding-left: 20px;
-  color: var(--ink-2);
-  font-size: 16px;
-}
-.change-group li { margin-bottom: 6px; line-height: 1.5; }
-.change-group li::marker { color: var(--ink-3); }
+      .change-group ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--ink-2);
+        font-size: 16px;
+      }
+      .change-group li {
+        margin-bottom: 6px;
+        line-height: 1.5;
+      }
+      .change-group li::marker {
+        color: var(--ink-3);
+      }
 
-/* Unreleased / coming-soon block */
-.unreleased .version-badge { background: var(--primary); }
-.unreleased .release-body { border-color: var(--primary); opacity: 0.7; }
-.coming-soon {
-  font-size: 15px;
-  color: var(--ink-3);
-  font-style: italic;
-}
+      /* Unreleased / coming-soon block */
+      .unreleased .version-badge {
+        background: var(--primary);
+      }
+      .unreleased .release-body {
+        border-color: var(--primary);
+        opacity: 0.7;
+      }
+      .coming-soon {
+        font-size: 15px;
+        color: var(--ink-3);
+        font-style: italic;
+      }
 
-/* ---------- Footer (compact) ---------- */
-.footer {
-  background: var(--bg);
-  border-top: 1px solid var(--line);
-  padding: 36px 0 28px;
-  color: var(--ink-3);
-  font-size: 13px;
-}
-.footer-inner {
-  max-width: 1180px; margin: 0 auto; padding: 0 24px;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 16px;
-}
-.footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
-.footer-links a { color: var(--ink-3); text-decoration: none; }
-.footer-links a:hover { color: var(--ink); }
-</style>
-</head>
-<body>
-
-<!-- ---------- NAV ---------- -->
-<header class="nav">
-  <div class="nav-row">
-    <a href="../" class="wordmark" aria-label="At9 home">
-      <img src="../At9.png" alt="At9" />
-    </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="../#pricing">Pricing</a>
-      <a href="../#faqs">FAQs</a>
-      <a href="../#about">About</a>
-      <a href="../#contact">Contact</a>
-    </nav>
-    <a class="btn-primary" href="../#download">
-      Get the app
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
-    </a>
-  </div>
-</header>
-
-<!-- ---------- CONTENT ---------- -->
-<main class="rn-page">
-  <div class="container">
-
-    <p class="back-link"><a href="../">← Back to home</a></p>
-
-    <div class="page-header">
-      <h1>Release Notes</h1>
-      <p class="sub">Everything new, improved, and fixed in At9 — most recent first.</p>
-    </div>
-
-    <div class="releases">
-
-      <!-- Unreleased -->
-      <div class="release unreleased">
-        <div class="release-meta">
-          <span class="version-badge">Upcoming</span>
-          <span class="release-date">In progress</span>
-        </div>
-        <div class="release-body">
-          <p class="coming-soon">Changes in progress. Check back soon.</p>
-        </div>
+      /* ---------- Footer (compact) ---------- */
+      .footer {
+        background: var(--bg);
+        border-top: 1px solid var(--line);
+        padding: 36px 0 28px;
+        color: var(--ink-3);
+        font-size: 13px;
+      }
+      .footer-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .footer-links {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+      }
+      .footer-links a {
+        color: var(--ink-3);
+        text-decoration: none;
+      }
+      .footer-links a:hover {
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ---------- NAV ---------- -->
+    <header class="nav">
+      <div class="nav-row">
+        <a href="../" class="wordmark" aria-label="At9 home">
+          <img src="../At9.png" alt="At9" />
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="../#pricing">Pricing</a>
+          <a href="../#faqs">FAQs</a>
+          <a href="../#about">About</a>
+          <a href="../#contact">Contact</a>
+        </nav>
+        <a class="btn-primary" href="../#download">
+          Get the app
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="m13 5 7 7-7 7" />
+          </svg>
+        </a>
       </div>
+    </header>
 
-      <!-- 1.0.46 -->
-      <div class="release">
-        <div class="release-meta">
-          <span class="version-badge">1.0.46</span>
-          <span class="release-date">11 Apr 2026</span>
+    <!-- ---------- CONTENT ---------- -->
+    <main class="rn-page">
+      <div class="container">
+        <p class="back-link"><a href="../">← Back to home</a></p>
+
+        <div class="page-header">
+          <h1>Release Notes</h1>
+          <p class="sub">
+            Everything new, improved, and fixed in At9 — most recent first.
+          </p>
         </div>
-        <div class="release-body">
-          <div class="change-group">
-            <span class="change-label changed">Changed</span>
-            <ul>
-              <li>Added support for dragging and dropping entities to simplify moving of entities.</li>
-            </ul>
+
+        <div class="releases">
+          <!-- Unreleased -->
+          <div class="release unreleased">
+            <div class="release-meta">
+              <span class="version-badge">Upcoming</span>
+              <span class="release-date">In progress</span>
+            </div>
+            <div class="release-body">
+              <p class="coming-soon">Changes in progress. Check back soon.</p>
+            </div>
+          </div>
+
+          <!-- 1.0.46 -->
+          <div class="release">
+            <div class="release-meta">
+              <span class="version-badge">1.0.46</span>
+              <span class="release-date">11 Apr 2026</span>
+            </div>
+            <div class="release-body">
+              <div class="change-group">
+                <span class="change-label changed">Changed</span>
+                <ul>
+                  <li>
+                    Added support for dragging and dropping entities to simplify
+                    moving of entities.
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </main>
 
-    </div>
-  </div>
-</main>
-
-<!-- ---------- FOOTER ---------- -->
-<footer class="footer">
-  <div class="footer-inner">
-    <span>&copy; 2026 At9. All rights reserved.</span>
-    <div class="footer-links">
-      <a href="../">Home</a>
-      <a href="../getting-started/">Getting Started</a>
-      <a href="../release-notes/">Release Notes</a>
-      <a href="../privacy/">Privacy Policy</a>
-      <a href="../terms/">Terms of Use</a>
-      <a href="../data-protection/">Data Protection</a>
-    </div>
-  </div>
-</footer>
-
-</body>
+    <!-- ---------- FOOTER ---------- -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>&copy; 2026 At9. All rights reserved.</span>
+        <div class="footer-links">
+          <a href="../">Home</a>
+          <a href="../getting-started/">Getting Started</a>
+          <a href="../release-notes/">Release Notes</a>
+          <a href="../privacy-policy/">Privacy Policy</a>
+          <a href="../terms/">Terms of Use</a>
+          <a href="../data-protection/">Data Protection</a>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

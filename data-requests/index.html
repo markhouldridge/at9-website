@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Data Requests — At9</title>
+<meta name="description" content="Request deletion of your At9 account, or ask us to remove any personal data we may hold about you." />
+<link rel="canonical" href="https://www.at9.app/data-requests" />
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #fbfaf6;
+    --bg-soft: #f5f1e9;
+    --bg-mute: #f1ede3;
+    --ink: #1a1825;
+    --ink-2: #4a4658;
+    --ink-3: #7c7889;
+    --line: #ece7dd;
+    --line-2: #ddd6cb;
+    --primary: #907cff;
+    --primary-dark: #705ac2;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  a:hover { color: var(--primary); }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(251, 250, 246, 0.85);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    text-decoration: none;
+  }
+  .wordmark img { height: 30px; width: auto; display: block; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    color: var(--ink-2);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.2s ease;
+  }
+  .btn-primary:hover { transform: translateY(-1px); background: #2a2733; color: #fff; }
+
+  /* ---------- Page content ---------- */
+  .legal-page { padding: 56px 0 80px; }
+
+  .back-link { margin: 0 0 28px; font-size: 14px; }
+  .back-link a {
+    color: var(--ink-3);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+  .back-link a:hover { color: var(--ink); }
+
+  h1 {
+    font-size: clamp(36px, 4.5vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 12px;
+  }
+  .updated {
+    color: var(--ink-3);
+    font-size: 14px;
+    margin: 0 0 48px;
+  }
+
+  /* Jump links */
+  .jump-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0 0 56px;
+  }
+  .jump-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-decoration: none;
+    background: var(--bg-mute);
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .jump-link:hover { background: var(--line-2); color: var(--ink); }
+
+  /* Section divider */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 64px 0 0;
+  }
+
+  h2 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 48px 0 8px;
+    color: var(--ink);
+  }
+  .section-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+    background: var(--bg-mute);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 36px 0 8px;
+  }
+  p, ul, ol { margin: 0 0 16px; color: var(--ink-2); }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  li::marker { color: var(--ink-3); }
+  strong { color: var(--ink); font-weight: 600; }
+
+  .intro-lead {
+    font-size: 18px;
+    color: var(--ink-2);
+    margin: 0 0 32px;
+  }
+
+  .callout {
+    background: var(--bg-soft);
+    border-left: 3px solid var(--primary);
+    padding: 18px 22px;
+    border-radius: 6px;
+    margin: 24px 0;
+    font-size: 15px;
+  }
+  .callout p { margin: 0; color: var(--ink-2); }
+
+  /* Numbered step list */
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    counter-reset: steps;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step-list li {
+    counter-increment: steps;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 14px;
+    align-items: start;
+    margin: 0;
+    color: var(--ink-2);
+  }
+  .step-list li::before {
+    content: counter(steps);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-mute);
+    color: var(--primary-dark);
+    font-size: 13px;
+    font-weight: 700;
+    flex: none;
+    margin-top: 3px;
+  }
+
+  /* ---------- Footer (compact) ---------- */
+  .footer {
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding: 36px 0 28px;
+    color: var(--ink-3);
+    font-size: 13px;
+  }
+  .footer-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { color: var(--ink-3); text-decoration: none; }
+  .footer-links a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ---------- NAV ---------- -->
+<header class="nav">
+  <div class="nav-row">
+    <a href="/" class="wordmark" aria-label="At9 home">
+      <img src="../At9.png" alt="At9" />
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#pricing">Pricing</a>
+      <a href="/#faqs">FAQs</a>
+      <a href="/#about">About</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="btn-primary" href="/#download">
+      Get the app
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ---------- CONTENT ---------- -->
+<main>
+  <div class="container">
+    <article class="legal-page">
+
+      <p class="back-link"><a href="/">← Back to At9</a></p>
+      <h1>Data Requests</h1>
+      <p class="updated">Last updated: May 2026</p>
+
+      <p class="intro-lead">We respect your right to control your personal data. This page covers two different situations — deleting your At9 account, and requesting removal of personal data we may hold about you.</p>
+
+      <nav class="jump-links" aria-label="Jump to section">
+        <a class="jump-link" href="#delete-account">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Delete My Account
+        </a>
+        <a class="jump-link" href="#data-removal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          Data Removal Request
+        </a>
+      </nav>
+
+      <!-- ===== SECTION 1: DELETE ACCOUNT ===== -->
+      <hr class="section-divider" />
+      <section id="delete-account">
+        <span class="section-label">For At9 users</span>
+        <h2>Delete My Account</h2>
+        <p>If you are an At9 user and would like to permanently close your account, you can request this in either of the following ways.</p>
+
+        <h3>What gets deleted</h3>
+        <p>Deleting your account will permanently remove:</p>
+        <ul>
+          <li>Your account credentials and personal profile.</li>
+          <li>Your organisation, settings, and all configured entities (rooms, tables, etc.).</li>
+          <li>All booking records associated with your organisation.</li>
+          <li>All customer records stored under your organisation.</li>
+        </ul>
+
+        <div class="callout">
+          <p><strong>Please note:</strong> account deletion is permanent and cannot be undone. If you are an organisation owner, deleting your account will also delete all data belonging to your organisation.</p>
+        </div>
+
+        <h3>Option 1 — Via the app</h3>
+        <ol class="step-list">
+          <li>Open the At9 app and go to <strong>Help</strong>.</li>
+          <li>Tap <strong>Contact Us</strong> and send a message with the subject <strong>"Account Deletion Request"</strong>.</li>
+          <li>We will confirm receipt and process your request within 30 days.</li>
+        </ol>
+
+        <h3>Option 2 — By email</h3>
+        <ol class="step-list">
+          <li>Email <a href="mailto:contact@at9.app">contact@at9.app</a> with the subject line <strong>"Account Deletion Request"</strong>.</li>
+          <li>Include the email address registered to your At9 account so we can locate your data.</li>
+          <li>We will confirm receipt within 2 business days and complete the deletion within 30 days.</li>
+        </ol>
+      </section>
+
+      <!-- ===== SECTION 2: DATA REMOVAL ===== -->
+      <hr class="section-divider" />
+      <section id="data-removal">
+        <span class="section-label">For anyone</span>
+        <h2>Data Removal Request</h2>
+        <p>You do not need to be an At9 user for your personal data to appear on our platform. Businesses using At9 may store customer contact details as part of managing their bookings — for example, your name, phone number, or email address.</p>
+        <p>If you believe we may hold personal data about you and would like it removed, please contact us by email.</p>
+
+        <h3>How to request removal</h3>
+        <ol class="step-list">
+          <li>Email <a href="mailto:contact@at9.app">contact@at9.app</a> with the subject line <strong>"Data Removal Request"</strong>.</li>
+          <li>Include your <strong>contact details</strong> — name, email address, and phone number — so we can locate any data that may relate to you.</li>
+          <li>Include a <strong>brief description</strong> of the data you believe we hold and, if known, the name of the business whose At9 account may have stored it.</li>
+          <li>We will acknowledge your request within 2 business days and complete any applicable removal within 30 days.</li>
+        </ol>
+
+        <div class="callout">
+          <p>We will only be able to remove data we can confirm relates to you. Providing as much detail as possible helps us respond quickly and accurately.</p>
+        </div>
+      </section>
+
+      <!-- ===== CONTACT ===== -->
+      <hr class="section-divider" />
+      <h2 style="margin-top: 48px;">Questions?</h2>
+      <p>If you are unsure which option applies to you, or have any other questions about your data, reach us at <a href="mailto:contact@at9.app">contact@at9.app</a> and we will point you in the right direction.</p>
+
+    </article>
+  </div>
+</main>
+
+<!-- ---------- FOOTER ---------- -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 At9. All rights reserved.</span>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms/">Terms of Use</a>
+      <a href="/data-protection/">Data Protection</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

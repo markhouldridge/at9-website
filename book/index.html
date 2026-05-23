@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Book | At9</title>
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --primary: #907cff;
+        --secondary: #f0a9ff;
+        --green: #a2f9b0;
+        --bg: #fbfaf6;
+        --surface: #ffffff;
+        --border: #e8e4dc;
+        --text: #1a1a1a;
+        --text-2: #6b6660;
+        --text-3: #a09c97;
+        --success: #2d9b5a;
+        --success-bg: #edfbf2;
+        --error: #d94040;
+        --error-bg: #fef0f0;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      body {
+        font-family: "Switzer", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      /* Layout */
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        background: linear-gradient(
+          135deg,
+          #ed9aff 0%,
+          #6044ff 55%,
+          #a0ff83 100%
+        );
+        padding: 20px 24px 28px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .header::before {
+        content: "";
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        top: -80px;
+        right: -60px;
+      }
+      .header-logo {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .header-org {
+        font-size: 26px;
+        font-weight: 700;
+        color: #fff;
+        position: relative;
+      }
+
+      .content {
+        flex: 1;
+        max-width: 480px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 24px 16px 40px;
+      }
+
+      /* Cards */
+      .card {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+
+      /* Booking type selector */
+      .type-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .type-card {
+        background: var(--surface);
+        border: 2px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 20px 16px;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .type-card:hover {
+        border-color: var(--primary);
+        background: #f5f2ff;
+      }
+      .type-card-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+      .type-card-label {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .type-card-sub {
+        font-size: 12px;
+        color: var(--text-2);
+        margin-top: 4px;
+      }
+
+      /* Section label */
+      .section-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-2);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 10px;
+      }
+
+      /* Calendar */
+      .cal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .cal-month {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+      .cal-nav {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--text-2);
+        transition: background 0.12s;
+      }
+      .cal-nav:hover {
+        background: #f0edff;
+        color: var(--primary);
+      }
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+      }
+      .cal-weekday {
+        text-align: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-3);
+        padding: 4px 0 8px;
+      }
+      .cal-cell {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cal-day {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.12s,
+          color 0.12s;
+        color: var(--text);
+        border: none;
+        background: none;
+      }
+      .cal-day:hover:not(:disabled) {
+        background: #f0edff;
+        color: var(--primary);
+      }
+      .cal-day:disabled {
+        color: var(--text-3);
+        cursor: default;
+      }
+      .cal-day.selected {
+        background: var(--primary);
+        color: #fff;
+      }
+      .cal-day.in-range {
+        background: #ede9ff;
+        color: var(--primary);
+        border-radius: 0;
+      }
+      .cal-day.range-start {
+        background: var(--primary);
+        color: #fff;
+        border-radius: 50% 0 0 50%;
+      }
+      .cal-day.range-end {
+        background: var(--primary);
+        color: #fff;
+        border-radius: 0 50% 50% 0;
+      }
+      .cal-day.range-start.range-end {
+        border-radius: 50%;
+      }
+      .cal-day.today {
+        font-weight: 700;
+      }
+
+      /* Date summary bar */
+      .date-bar {
+        display: flex;
+        gap: 12px;
+        background: #f5f2ff;
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        margin-top: 12px;
+      }
+      .date-bar-item {
+        flex: 1;
+      }
+      .date-bar-label {
+        font-size: 11px;
+        color: var(--text-2);
+        margin-bottom: 2px;
+      }
+      .date-bar-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+      .date-bar-value.empty {
+        color: var(--text-3);
+        font-weight: 400;
+      }
+      .date-bar-nights {
+        font-size: 11px;
+        color: var(--text-2);
+        align-self: center;
+        text-align: center;
+        min-width: 48px;
+      }
+
+      /* Date strip (table) */
+      .date-strip {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+      .date-strip::-webkit-scrollbar {
+        display: none;
+      }
+      .date-chip {
+        min-width: 52px;
+        padding: 8px 6px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.12s,
+          background 0.12s;
+        flex-shrink: 0;
+      }
+      .date-chip:hover {
+        border-color: var(--primary);
+      }
+      .date-chip.selected {
+        border-color: var(--primary);
+        background: var(--primary);
+      }
+      .date-chip-day {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-2);
+        text-transform: uppercase;
+      }
+      .date-chip-num {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin-top: 2px;
+      }
+      .date-chip.selected .date-chip-day,
+      .date-chip.selected .date-chip-num {
+        color: #fff;
+      }
+
+      /* Time slots */
+      .slot-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .slot {
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text);
+        transition:
+          border-color 0.12s,
+          background 0.12s;
+      }
+      .slot:hover {
+        border-color: var(--primary);
+      }
+      .slot.selected {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: #fff;
+      }
+
+      /* Entity chips */
+      .entity-chip {
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text);
+        transition:
+          border-color 0.12s,
+          background 0.12s;
+      }
+      .entity-chip:hover {
+        border-color: var(--primary);
+      }
+      .entity-chip.selected {
+        border-color: var(--primary);
+        background: #ede9ff;
+        color: var(--primary);
+      }
+
+      /* Guests counter */
+      .guests-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .guests-label {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .guests-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.12s;
+      }
+      .guests-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .guests-count {
+        font-size: 16px;
+        font-weight: 700;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      /* Form inputs */
+      .form-field {
+        margin-bottom: 14px;
+      }
+      .form-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-2);
+        margin-bottom: 6px;
+        display: block;
+      }
+      .form-input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 15px;
+        background: var(--surface);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.12s;
+      }
+      .form-input:focus {
+        border-color: var(--primary);
+      }
+      .form-input::placeholder {
+        color: var(--text-3);
+      }
+
+      /* Buttons */
+      .btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: var(--radius-md);
+        border: none;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          opacity 0.15s,
+          transform 0.1s;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        opacity: 0.92;
+      }
+      .btn-primary:disabled {
+        background: var(--border);
+        color: var(--text-3);
+        cursor: default;
+        transform: none;
+      }
+      .btn-outline {
+        background: none;
+        border: 1.5px solid var(--border);
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+      .btn-outline:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      /* Summary block */
+      .summary {
+        background: #f5f2ff;
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 13px;
+        color: var(--text-2);
+        line-height: 1.6;
+      }
+
+      /* Confirmation */
+      .confirm-icon {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .confirm-title {
+        font-size: 22px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      .confirm-sub {
+        font-size: 14px;
+        color: var(--text-2);
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      /* Loading / Error */
+      .state-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Back link */
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-2);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin-bottom: 16px;
+      }
+      .back-link:hover {
+        color: var(--primary);
+      }
+
+      @media (max-width: 360px) {
+        .type-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect, useCallback } = React;
+
+      const WS_URI = "https://ws.at9.app";
+      //const WS_URI = "http://localhost:3000";
+      const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+
+      // ── UTC helpers (mirrors app Calendar) ────────────────────────────────────
+      const utcMidnight = (d) =>
+        new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+      const utcStartOfMonth = (d) =>
+        new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+      const utcDaysInMonth = (d) =>
+        new Date(
+          Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0),
+        ).getUTCDate();
+      const utcAddMonths = (d, n) =>
+        new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + n, 1));
+      const utcIsSameDay = (a, b) =>
+        a.getUTCFullYear() === b.getUTCFullYear() &&
+        a.getUTCMonth() === b.getUTCMonth() &&
+        a.getUTCDate() === b.getUTCDate();
+      const utcAfter = (a, b) => utcMidnight(a) > utcMidnight(b);
+      const utcBefore = (a, b) => utcMidnight(a) < utcMidnight(b);
+
+      const MONTH_NAMES = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const pad = (n) => String(n).padStart(2, "0");
+      const fmtDate = (d) =>
+        `${d.getUTCDate()} ${MONTH_NAMES[d.getUTCMonth()].slice(0, 3)} ${d.getUTCFullYear()}`;
+      const fmtDay = (d) =>
+        `${MONTH_NAMES[d.getUTCMonth()].slice(0, 3)} ${d.getUTCDate()}`;
+      const fmtDayOfWeek = (d) =>
+        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
+
+      // ── Slug from URL path ────────────────────────────────────────────────────
+      const getSlug = () => {
+        const parts = window.location.pathname.split("/").filter(Boolean); // removes empty spaces
+        const bookIndex = parts.indexOf("book");
+
+        // Grab whatever sits directly after the 'book' segment
+        if (bookIndex !== -1 && parts[bookIndex + 1]) {
+          return parts[bookIndex + 1];
+        }
+        return null;
+      };
+
+      // ── Time slot generation ──────────────────────────────────────────────────
+      const parseUtcMinutes = (isoStr) => {
+        if (!isoStr) return null;
+        const d = new Date(isoStr);
+        return d.getUTCHours() * 60 + d.getUTCMinutes();
+      };
+
+      const generateSlots = (openingTime, closingTime, intervalMinutes) => {
+        const open = parseUtcMinutes(openingTime) ?? 9 * 60;
+        const close = parseUtcMinutes(closingTime) ?? 22 * 60;
+        const interval = Math.max(15, Number(intervalMinutes) || 90);
+        const slots = [];
+        for (let t = open; t + interval <= close; t += interval) {
+          slots.push(`${pad(Math.floor(t / 60))}:${pad(t % 60)}`);
+        }
+        return slots;
+      };
+
+      const categoriseSlots = (slots) => ({
+        Morning: slots.filter((s) => parseInt(s) < 12),
+        Afternoon: slots.filter((s) => parseInt(s) >= 12 && parseInt(s) < 17),
+        Evening: slots.filter((s) => parseInt(s) >= 17),
+      });
+
+      // ── Calendar component ────────────────────────────────────────────────────
+      const Calendar = ({ startDate, endDate, onChange, disablePast }) => {
+        const today = utcMidnight(new Date());
+        const seed = startDate ?? today;
+        const [month, setMonth] = useState(() => utcStartOfMonth(seed));
+
+        const first = utcStartOfMonth(month);
+        const offset = (first.getUTCDay() + 6) % 7;
+        const total = utcDaysInMonth(month);
+        const cells = [
+          ...Array(offset).fill(null),
+          ...Array.from(
+            { length: total },
+            (_, i) =>
+              new Date(
+                Date.UTC(first.getUTCFullYear(), first.getUTCMonth(), i + 1),
+              ),
+          ),
+        ];
+        while (cells.length % 7 !== 0) cells.push(null);
+
+        const handleDay = (day) => {
+          if (!startDate || (startDate && endDate)) {
+            onChange(day, null);
+          } else if (
+            utcBefore(day, startDate) ||
+            utcIsSameDay(day, startDate)
+          ) {
+            onChange(day, null);
+          } else {
+            onChange(startDate, day);
+          }
+        };
+
+        return (
+          <div>
+            <div className="cal-header">
+              <button
+                className="cal-nav"
+                onClick={() => setMonth((m) => utcAddMonths(m, -1))}
+              >
+                ‹
+              </button>
+              <span className="cal-month">
+                {MONTH_NAMES[month.getUTCMonth()]} {month.getUTCFullYear()}
+              </span>
+              <button
+                className="cal-nav"
+                onClick={() => setMonth((m) => utcAddMonths(m, 1))}
+              >
+                ›
+              </button>
+            </div>
+            <div className="cal-grid">
+              {WEEKDAYS.map((d) => (
+                <div key={d} className="cal-weekday">
+                  {d}
+                </div>
+              ))}
+              {cells.map((day, i) => {
+                if (!day) return <div key={i} className="cal-cell" />;
+                const isPast = disablePast && utcMidnight(day) < today;
+                const isStart = startDate && utcIsSameDay(day, startDate);
+                const isEnd = endDate && utcIsSameDay(day, endDate);
+                const inRange =
+                  startDate &&
+                  endDate &&
+                  utcAfter(day, startDate) &&
+                  utcBefore(day, endDate);
+                const isToday = utcIsSameDay(day, today);
+
+                let cls = "cal-day";
+                if (isStart && isEnd) cls += " selected";
+                else if (isStart) cls += " range-start";
+                else if (isEnd) cls += " range-end";
+                else if (inRange) cls += " in-range";
+                if (isToday) cls += " today";
+
+                return (
+                  <div key={i} className="cal-cell">
+                    <button
+                      className={cls}
+                      disabled={isPast}
+                      onClick={() => handleDay(day)}
+                    >
+                      {day.getUTCDate()}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      };
+
+      // ── Room booking form ─────────────────────────────────────────────────────
+      const RoomBooking = ({ org, entities, onBack, onDone }) => {
+        const [checkIn, setCheckIn] = useState(null);
+        const [checkOut, setCheckOut] = useState(null);
+        const [guests, setGuests] = useState(1);
+        const [step, setStep] = useState("dates"); // 'dates' | 'contact'
+        const [name, setName] = useState("");
+        const [email, setEmail] = useState("");
+        const [phone, setPhone] = useState("");
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState("");
+
+        const rooms = entities.filter((e) => e.type === "room");
+        const nights =
+          checkIn && checkOut
+            ? Math.round(
+                (utcMidnight(checkOut) - utcMidnight(checkIn)) / 86400000,
+              )
+            : 0;
+        const canContinue = checkIn && checkOut && nights > 0;
+
+        const handleSubmit = async () => {
+          if (!name || !email) {
+            setError("Please fill in your name and email.");
+            return;
+          }
+          setLoading(true);
+          setError("");
+          try {
+            const res = await fetch(`${WS_URI}/bookings/public`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                organisationId: org.id,
+                entityId: rooms[0]?.id,
+                startDate: checkIn?.toISOString(),
+                endDate: checkOut?.toISOString(),
+                guests,
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+                type: "reservation",
+              }),
+            });
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              setError(data.message || "Something went wrong. Please try again.");
+              return;
+            }
+            onDone({ checkIn, checkOut, nights, guests, name, type: "room" });
+          } catch {
+            setError("Something went wrong. Please try again.");
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        if (step === "contact") {
+          return (
+            <div>
+              <button className="back-link" onClick={() => setStep("dates")}>
+                ← Back
+              </button>
+              <div className="card">
+                <p className="section-label">Your details</p>
+                <div className="summary">
+                  📅 {fmtDate(checkIn)} → {fmtDate(checkOut)} &nbsp;·&nbsp;{" "}
+                  {nights} {nights === 1 ? "night" : "nights"} &nbsp;·&nbsp;{" "}
+                  {guests} {guests === 1 ? "guest" : "guests"}
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Full name *</label>
+                  <input
+                    className="form-input"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Smith"
+                    maxLength={100}
+                    autoComplete="name"
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Email *</label>
+                  <input
+                    className="form-input"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="jane@example.com"
+                    maxLength={254}
+                    autoComplete="email"
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Phone</label>
+                  <input
+                    className="form-input"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+44 7700 900000"
+                  />
+                </div>
+                {error && (
+                  <p
+                    style={{
+                      color: "var(--error)",
+                      fontSize: 13,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {error}
+                  </p>
+                )}
+                <button
+                  className="btn btn-primary"
+                  disabled={loading}
+                  onClick={handleSubmit}
+                >
+                  {loading ? "Sending…" : "Request Booking"}
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <button className="back-link" onClick={onBack}>
+              ← Back
+            </button>
+            <div className="card">
+              <p className="section-label" style={{ marginBottom: 14 }}>
+                Select dates
+              </p>
+              <Calendar
+                startDate={checkIn}
+                endDate={checkOut}
+                disablePast
+                onChange={(s, e) => {
+                  setCheckIn(s);
+                  setCheckOut(e);
+                }}
+              />
+              <div className="date-bar">
+                <div className="date-bar-item">
+                  <div className="date-bar-label">Check-in</div>
+                  <div className={`date-bar-value${checkIn ? "" : " empty"}`}>
+                    {checkIn ? fmtDay(checkIn) : "—"}
+                  </div>
+                </div>
+                <div className="date-bar-nights">
+                  {nights > 0 ? `${nights}n` : "·"}
+                </div>
+                <div className="date-bar-item" style={{ textAlign: "right" }}>
+                  <div className="date-bar-label">Check-out</div>
+                  <div className={`date-bar-value${checkOut ? "" : " empty"}`}>
+                    {checkOut ? fmtDay(checkOut) : "—"}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card">
+              <p className="section-label">Guests</p>
+              <div className="guests-row">
+                <span className="guests-label">Number of guests</span>
+                <button
+                  className="guests-btn"
+                  disabled={guests <= 1}
+                  onClick={() => setGuests((g) => g - 1)}
+                >
+                  −
+                </button>
+                <span className="guests-count">{guests}</span>
+                <button
+                  className="guests-btn"
+                  onClick={() => setGuests((g) => g + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <button
+              className="btn btn-primary"
+              disabled={!canContinue}
+              onClick={() => setStep("contact")}
+            >
+              Continue
+            </button>
+          </div>
+        );
+      };
+
+      // ── Table booking form ────────────────────────────────────────────────────
+      const TableBooking = ({ org, entities, preferences, onBack, onDone }) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dates = Array.from({ length: 14 }, (_, i) => {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          return d;
+        });
+
+        const [selectedDate, setSelectedDate] = useState(dates[0]);
+        const [selectedTime, setSelectedTime] = useState(null);
+        const [selectedTable, setSelectedTable] = useState(null);
+        const [step, setStep] = useState("times");
+        const [name, setName] = useState("");
+        const [email, setEmail] = useState("");
+        const [phone, setPhone] = useState("");
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState("");
+
+        const tables = entities.filter((e) => e.type === "table");
+        const slots = generateSlots(
+          preferences.openingTime,
+          preferences.closingTime,
+          preferences.tableBookingMinutes,
+        );
+        const grouped = categoriseSlots(slots);
+        const canContinue =
+          selectedTime && (tables.length === 0 || selectedTable);
+
+        const buildDatetime = (date, timeStr) => {
+          const [h, m] = timeStr.split(":").map(Number);
+          return new Date(
+            Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), h, m),
+          );
+        };
+
+        const handleSubmit = async () => {
+          if (!name || !email) {
+            setError("Please fill in your name and email.");
+            return;
+          }
+          setLoading(true);
+          setError("");
+          const intervalMin = Math.max(
+            15,
+            Number(preferences.tableBookingMinutes) || 90,
+          );
+          const start = buildDatetime(selectedDate, selectedTime);
+          const end = new Date(start.getTime() + intervalMin * 60000);
+          try {
+            const res = await fetch(`${WS_URI}/bookings/public`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                organisationId: org.id,
+                entityId: selectedTable?.id ?? tables[0]?.id,
+                startDate: start.toISOString(),
+                endDate: end.toISOString(),
+                guests: 1,
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+                type: "reservation",
+              }),
+            });
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              setError(data.message || "Something went wrong. Please try again.");
+              return;
+            }
+            onDone({
+              date: selectedDate,
+              time: selectedTime,
+              table: selectedTable,
+              name,
+              type: "table",
+            });
+          } catch {
+            setError("Something went wrong. Please try again.");
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        if (step === "contact") {
+          return (
+            <div>
+              <button className="back-link" onClick={() => setStep("times")}>
+                ← Back
+              </button>
+              <div className="card">
+                <p className="section-label">Your details</p>
+                <div className="summary">
+                  📅 {fmtDayOfWeek(selectedDate)} {selectedDate.getDate()}{" "}
+                  {MONTH_NAMES[selectedDate.getMonth()].slice(0, 3)} ·{" "}
+                  {selectedTime}
+                  {selectedTable ? ` · ${selectedTable.name}` : ""}
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Full name *</label>
+                  <input
+                    className="form-input"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Smith"
+                    maxLength={100}
+                    autoComplete="name"
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Email *</label>
+                  <input
+                    className="form-input"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="jane@example.com"
+                    maxLength={254}
+                    autoComplete="email"
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Phone</label>
+                  <input
+                    className="form-input"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+44 7700 900000"
+                  />
+                </div>
+                {error && (
+                  <p
+                    style={{
+                      color: "var(--error)",
+                      fontSize: 13,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {error}
+                  </p>
+                )}
+                <button
+                  className="btn btn-primary"
+                  disabled={loading}
+                  onClick={handleSubmit}
+                >
+                  {loading ? "Sending…" : "Request Booking"}
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <button className="back-link" onClick={onBack}>
+              ← Back
+            </button>
+            <div className="card">
+              <p className="section-label" style={{ marginBottom: 10 }}>
+                Pick a date
+              </p>
+              <div className="date-strip">
+                {dates.map((d, i) => {
+                  const sel = d.toDateString() === selectedDate.toDateString();
+                  return (
+                    <div
+                      key={i}
+                      className={`date-chip${sel ? " selected" : ""}`}
+                      onClick={() => {
+                        setSelectedDate(d);
+                        setSelectedTime(null);
+                      }}
+                    >
+                      <div className="date-chip-day">{fmtDayOfWeek(d)}</div>
+                      <div className="date-chip-num">{d.getDate()}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="card">
+              <p className="section-label" style={{ marginBottom: 14 }}>
+                Pick a time
+              </p>
+              {Object.entries(grouped).map(([period, periodSlots]) =>
+                periodSlots.length > 0 ? (
+                  <div key={period} style={{ marginBottom: 16 }}>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: "var(--text-2)",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {period}
+                    </p>
+                    <div className="slot-grid">
+                      {periodSlots.map((slot) => (
+                        <button
+                          key={slot}
+                          className={`slot${selectedTime === slot ? " selected" : ""}`}
+                          onClick={() => setSelectedTime(slot)}
+                        >
+                          {slot}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null,
+              )}
+              {slots.length === 0 && (
+                <p style={{ color: "var(--text-3)", fontSize: 14 }}>
+                  No time slots available.
+                </p>
+              )}
+            </div>
+
+            {tables.length > 0 && (
+              <div className="card">
+                <p className="section-label" style={{ marginBottom: 10 }}>
+                  Select table
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {tables.map((t) => (
+                    <button
+                      key={t.id}
+                      className={`entity-chip${selectedTable?.id === t.id ? " selected" : ""}`}
+                      onClick={() => setSelectedTable(t)}
+                    >
+                      {t.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button
+              className="btn btn-primary"
+              disabled={!canContinue}
+              onClick={() => setStep("contact")}
+            >
+              Continue
+            </button>
+          </div>
+        );
+      };
+
+      // ── Confirmation screen ───────────────────────────────────────────────────
+      const Confirmation = ({ booking, orgName, onReset }) => (
+        <div className="card" style={{ textAlign: "center", padding: 32 }}>
+          <div className="confirm-icon">🎉</div>
+          <div className="confirm-title">Booking requested!</div>
+          <div className="confirm-sub" style={{ marginBottom: 24 }}>
+            Thanks {booking.name}! {orgName} has received your request and will
+            be in touch to confirm.
+          </div>
+          <div className="summary" style={{ textAlign: "left" }}>
+            {booking.type === "room" && (
+              <>
+                <div>
+                  📅 {fmtDate(booking.checkIn)} — {fmtDate(booking.checkOut)}
+                </div>
+                <div>
+                  🌙 {booking.nights}{" "}
+                  {booking.nights === 1 ? "night" : "nights"} · {booking.guests}{" "}
+                  {booking.guests === 1 ? "guest" : "guests"}
+                </div>
+              </>
+            )}
+            {booking.type === "table" && (
+              <div>
+                📅 {fmtDayOfWeek(booking.date)} {booking.date.getDate()}{" "}
+                {MONTH_NAMES[booking.date.getMonth()].slice(0, 3)} ·{" "}
+                {booking.time}
+                {booking.table ? ` · ${booking.table.name}` : ""}
+              </div>
+            )}
+          </div>
+          <button className="btn btn-outline" onClick={onReset}>
+            Make another booking
+          </button>
+        </div>
+      );
+
+      // ── App ───────────────────────────────────────────────────────────────────
+      const App = () => {
+        const slug = getSlug();
+        const [loadState, setLoadState] = useState("loading"); // 'loading' | 'error' | 'ready'
+        const [org, setOrg] = useState(null);
+        const [bookingType, setBookingType] = useState(null); // null | 'room' | 'table'
+        const [confirmed, setConfirmed] = useState(null);
+
+        useEffect(() => {
+          if (!slug) {
+            setLoadState("error");
+            return;
+          }
+          fetch(`${WS_URI}/organisations/public/${slug}`)
+            .then((r) => {
+              if (!r.ok) throw new Error();
+              return r.json();
+            })
+            .then((data) => {
+              setOrg(data);
+              setLoadState("ready");
+            })
+            .catch(() => setLoadState("error"));
+        }, [slug]);
+
+        const hasRooms = org?.entities?.some((e) => e.type === "room");
+        const hasTables = org?.entities?.some((e) => e.type === "table");
+
+        const handleReset = () => {
+          setBookingType(null);
+          setConfirmed(null);
+        };
+
+        return (
+          <div className="page">
+            <div className="header">
+              <div className="header-logo">at9.app</div>
+              {org && <div className="header-org">{org.name}</div>}
+              {!org && loadState === "loading" && (
+                <div className="header-org" style={{ opacity: 0.5 }}>
+                  Loading…
+                </div>
+              )}
+            </div>
+
+            <div className="content">
+              {loadState === "loading" && (
+                <div className="state-center">
+                  <div className="spinner" />
+                  <span style={{ color: "var(--text-2)", fontSize: 14 }}>
+                    Loading…
+                  </span>
+                </div>
+              )}
+
+              {loadState === "error" && (
+                <div className="state-center">
+                  <div style={{ fontSize: 36 }}>🔍</div>
+                  <div style={{ fontWeight: 600, fontSize: 18 }}>
+                    Organisation not found
+                  </div>
+                  <div
+                    style={{
+                      color: "var(--text-2)",
+                      fontSize: 14,
+                      textAlign: "center",
+                    }}
+                  >
+                    Check the link and try again, or contact the business
+                    directly.
+                  </div>
+                </div>
+              )}
+
+              {loadState === "ready" && confirmed && (
+                <Confirmation
+                  booking={confirmed}
+                  orgName={org.name}
+                  onReset={handleReset}
+                />
+              )}
+
+              {loadState === "ready" && !confirmed && !bookingType && (
+                <>
+                  <p
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 500,
+                      marginBottom: 20,
+                      color: "var(--text-2)",
+                    }}
+                  >
+                    What would you like to book?
+                  </p>
+                  <div
+                    className={`type-grid${!hasRooms || !hasTables ? "" : ""}`}
+                  >
+                    {hasRooms && (
+                      <div
+                        className="type-card"
+                        onClick={() => setBookingType("room")}
+                      >
+                        <div className="type-card-icon">🛏</div>
+                        <div className="type-card-label">Book Room</div>
+                        <div className="type-card-sub">Overnight stays</div>
+                      </div>
+                    )}
+                    {hasTables && (
+                      <div
+                        className="type-card"
+                        onClick={() => setBookingType("table")}
+                      >
+                        <div className="type-card-icon">🍽</div>
+                        <div className="type-card-label">Book Table</div>
+                        <div className="type-card-sub">Reserve a spot</div>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {loadState === "ready" &&
+                !confirmed &&
+                bookingType === "room" && (
+                  <RoomBooking
+                    org={org}
+                    entities={org.entities}
+                    onBack={() => setBookingType(null)}
+                    onDone={(b) => setConfirmed(b)}
+                  />
+                )}
+
+              {loadState === "ready" &&
+                !confirmed &&
+                bookingType === "table" && (
+                  <TableBooking
+                    org={org}
+                    entities={org.entities}
+                    preferences={org.preferences ?? {}}
+                    onBack={() => setBookingType(null)}
+                    onDone={(b) => setConfirmed(b)}
+                  />
+                )}
+            </div>
+          </div>
+        );
+      };
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>

@@ -15,38 +15,38 @@
 <style>
 /* -----------------------------------------------------------
    At9 — landing page
-   Brand palette (from app):
-     primary       #907CFF
-     primaryLight  #B5A6FF
-     primaryDark   #705AC2
-     secondary     #F0A9FF   (pink)
-     accentGreen   #A2F9B0
+   Brand palette (brand_system.html light theme):
+     primary       #5B3FE8
+     primaryLight  #C5B8FF
+     primaryDark   #4830C4
+     secondary     #C81B7A   (pink/magenta)
+     accentGreen   #A8FF8C
      accentYellow  #FADAA4
    ----------------------------------------------------------- */
 
 :root {
-  /* Warm, flatter palette — service-industry friendly, less gradient-heavy */
-  --bg: #FBFAF6;          /* warm off-white page background */
+  /* Brand system light theme palette */
+  --bg: #FBF7F4;          /* brand --bg */
   --bg-soft: #F5F1E9;     /* cream — full-bleed section bg */
-  --bg-lavender: #EFEAFB; /* soft purple — full-bleed section bg */
+  --bg-lavender: #E8E2FF; /* brand --primary-container */
   --bg-mint: #E9F3EC;     /* soft green — full-bleed section bg */
-  --bg-mute: #F1EDE3;     /* tag/chip background */
+  --bg-mute: #EDE8FB;     /* soft lavender chip background */
 
-  --ink: #1A1825;
-  --ink-2: #4a4658;
+  --ink: #1A1625;          /* brand --text */
+  --ink-2: #4A4458;        /* brand --text-secondary */
   --ink-3: #7c7889;
-  --line: #ECE7DD;
-  --line-2: #DDD6CB;
+  --line: #E5E0EC;         /* brand --border */
+  --line-2: #C5BFD0;       /* brand --outline */
 
-  --primary: #907CFF;
-  --primary-light: #B5A6FF;
-  --primary-dark: #705AC2;
-  --secondary: #F0A9FF;
-  --green: #A2F9B0;
+  --primary: #5B3FE8;      /* brand --primary */
+  --primary-light: #C5B8FF;
+  --primary-dark: #4830C4; /* brand --primary-pressed */
+  --secondary: #C81B7A;    /* brand --secondary */
+  --green: #A8FF8C;        /* brand --tertiary */
   --yellow: #FADAA4;
 
-  /* Kept for footer/founder sign-off avatar only */
-  --grad: linear-gradient(120deg, #907CFF 0%, #B07CFF 35%, #F0A9FF 65%, #A2F9B0 100%);
+  /* Gradient using brand primary → secondary → tertiary */
+  --grad: linear-gradient(120deg, #5B3FE8 0%, #8B5FE8 35%, #C81B7A 65%, #A8FF8C 100%);
 
   --radius: 18px;
   --radius-lg: 28px;
@@ -377,7 +377,7 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
   isolation: isolate;
 }
 .feature-card--lavender {
-  background: #ECE4FA;
+  background: #E8E2FF;
   --accent: var(--primary-dark);
 }
 .feature-card--mint {
@@ -471,7 +471,7 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 
 /* Polaroid frame */
 .polaroid {
-  background: #FBFAF6;
+  background: #FBF7F4;
   padding: 18px 18px 22px;
   border-radius: 4px;
   box-shadow:
@@ -502,7 +502,7 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 .polaroid .caption {
   text-align: center;
   font-family: 'Caveat', 'Switzer', cursive;
-  color: #1A1825;
+  color: #1A1625;
   font-size: 26px;
   line-height: 1.05;
   letter-spacing: 0;
@@ -511,7 +511,7 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 .polaroid .caption small {
   display: block;
   font-size: 16px;
-  color: #4a4658;
+  color: #4A4458;
   margin-top: 4px;
 }
 
@@ -731,7 +731,7 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 }
 .contact-card .icon svg { width: 16px; height: 16px; }
 .contact-card--instagram .icon {
-  background: linear-gradient(135deg, #907CFF 0%, #B07CFF 30%, #F0A9FF 65%, #FFB69E 100%);
+  background: linear-gradient(135deg, #5B3FE8 0%, #8B5FE8 30%, #C81B7A 65%, #FFB69E 100%);
 }
 .contact-card--email .icon {
   background: var(--ink);
