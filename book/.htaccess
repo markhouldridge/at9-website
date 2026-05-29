@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Serve index.html for any sub-path (e.g. /book/ACME → /book/index.html)
+# Real files and directories (assets etc.) are passed through unchanged
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

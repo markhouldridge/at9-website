@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Book | At9</title>
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script
@@ -20,544 +20,459 @@
     ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :root {
-        --primary: #907cff;
-        --secondary: #f0a9ff;
-        --green: #a2f9b0;
-        --bg: #fbfaf6;
-        --surface: #ffffff;
-        --border: #e8e4dc;
-        --text: #1a1a1a;
-        --text-2: #6b6660;
-        --text-3: #a09c97;
-        --success: #2d9b5a;
-        --success-bg: #edfbf2;
-        --error: #d94040;
-        --error-bg: #fef0f0;
-        --radius-sm: 8px;
-        --radius-md: 12px;
-        --radius-lg: 16px;
-        --shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        --primary:      #18181b;
+        --primary-h:    #3f3f46;
+        --accent:       #2563eb;
+        --accent-h:     #1d4ed8;
+        --accent-bg:    #eff6ff;
+        --accent-mid:   #bfdbfe;
+        --bg:           #f4f4f5;
+        --surface:      #ffffff;
+        --border:       #e4e4e7;
+        --text:         #18181b;
+        --text-2:       #71717a;
+        --text-3:       #a1a1aa;
+        --success:      #16a34a;
+        --success-mid:  #bbf7d0;
+        --success-bg:   #f0fdf4;
+        --error:        #dc2626;
+        --error-bg:     #fef2f2;
+        --r-sm:  6px;
+        --r-md:  10px;
+        --r-lg:  14px;
+        --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
       }
 
       body {
-        font-family: "Switzer", system-ui, sans-serif;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* Layout */
-      .page {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
+      /* ── Page shell ─────────────────────────────────────────────────────────── */
+      .page { min-height: 100vh; display: flex; flex-direction: column; }
 
+      /* ── Header ─────────────────────────────────────────────────────────────── */
       .header {
-        background: linear-gradient(
-          135deg,
-          #ed9aff 0%,
-          #6044ff 55%,
-          #a0ff83 100%
-        );
-        padding: 20px 24px 28px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 18px 24px 20px;
         text-align: center;
-        position: relative;
-        overflow: hidden;
       }
-      .header::before {
-        content: "";
-        position: absolute;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        top: -80px;
-        right: -60px;
-      }
-      .header-logo {
-        font-size: 13px;
+      .header-eyebrow {
+        font-size: 10px;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.8);
-        letter-spacing: 0.04em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        margin-bottom: 6px;
+        color: var(--text-3);
+        margin-bottom: 5px;
       }
       .header-org {
-        font-size: 26px;
+        font-size: 22px;
         font-weight: 700;
-        color: #fff;
-        position: relative;
+        color: var(--text);
+        line-height: 1.2;
       }
 
+      /* ── Content area ───────────────────────────────────────────────────────── */
       .content {
         flex: 1;
         max-width: 480px;
         width: 100%;
         margin: 0 auto;
-        padding: 24px 16px 40px;
+        padding: 24px 16px 48px;
       }
 
-      /* Cards */
+      /* ── Card ───────────────────────────────────────────────────────────────── */
       .card {
         background: var(--surface);
-        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
         box-shadow: var(--shadow);
         padding: 20px;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
       }
 
-      /* Booking type selector */
-      .type-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+      /* ── Section label ──────────────────────────────────────────────────────── */
+      .section-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-2);
+        margin-bottom: 12px;
       }
+
+      /* ── Booking type grid ──────────────────────────────────────────────────── */
+      .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
       .type-card {
         background: var(--surface);
-        border: 2px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: 20px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 22px 14px 18px;
         text-align: center;
         cursor: pointer;
-        transition:
-          border-color 0.15s,
-          background 0.15s;
+        transition: border-color 0.15s, box-shadow 0.15s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
       }
       .type-card:hover {
-        border-color: var(--primary);
-        background: #f5f2ff;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-bg);
       }
       .type-card-icon {
-        font-size: 28px;
-        margin-bottom: 8px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--accent-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
       }
-      .type-card-label {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--text);
-      }
-      .type-card-sub {
-        font-size: 12px;
-        color: var(--text-2);
-        margin-top: 4px;
-      }
+      .type-card-label { font-size: 14px; font-weight: 600; color: var(--text); }
+      .type-card-sub   { font-size: 12px; color: var(--text-2); margin-top: -4px; }
 
-      /* Section label */
-      .section-label {
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--text-2);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 10px;
-      }
-
-      /* Calendar */
+      /* ── Calendar ───────────────────────────────────────────────────────────── */
       .cal-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
       }
-      .cal-month {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--primary);
-      }
+      .cal-month { font-size: 14px; font-weight: 600; color: var(--text); }
       .cal-nav {
         background: none;
-        border: none;
+        border: 1px solid var(--border);
         cursor: pointer;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        border-radius: var(--r-sm);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
+        font-size: 16px;
         color: var(--text-2);
-        transition: background 0.12s;
+        transition: border-color 0.12s, color 0.12s;
       }
-      .cal-nav:hover {
-        background: #f0edff;
-        color: var(--primary);
-      }
-      .cal-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 2px;
-      }
+      .cal-nav:hover { border-color: var(--accent); color: var(--accent); }
+      .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
       .cal-weekday {
         text-align: center;
         font-size: 11px;
-        font-weight: 600;
+        font-weight: 500;
         color: var(--text-3);
         padding: 4px 0 8px;
       }
-      .cal-cell {
-        aspect-ratio: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      .cal-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
       .cal-day {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 13px;
-        font-weight: 500;
         cursor: pointer;
-        transition:
-          background 0.12s,
-          color 0.12s;
+        transition: background 0.1s, color 0.1s;
         color: var(--text);
         border: none;
         background: none;
+        font-family: inherit;
       }
-      .cal-day:hover:not(:disabled) {
-        background: #f0edff;
-        color: var(--primary);
-      }
-      .cal-day:disabled {
-        color: var(--text-3);
-        cursor: default;
-      }
-      .cal-day.selected {
-        background: var(--primary);
-        color: #fff;
-      }
-      .cal-day.in-range {
-        background: #ede9ff;
-        color: var(--primary);
-        border-radius: 0;
-      }
-      .cal-day.range-start {
-        background: var(--primary);
-        color: #fff;
-        border-radius: 50% 0 0 50%;
-      }
-      .cal-day.range-end {
-        background: var(--primary);
-        color: #fff;
-        border-radius: 0 50% 50% 0;
-      }
-      .cal-day.range-start.range-end {
-        border-radius: 50%;
-      }
-      .cal-day.today {
-        font-weight: 700;
-      }
+      .cal-day { -webkit-tap-highlight-color: transparent; }
+      .cal-day:hover:not(:disabled) { background: var(--accent-bg); color: var(--accent); }
+      .cal-day:disabled { color: var(--text-3); cursor: default; }
+      .cal-day.today { font-weight: 700; }
 
-      /* Date summary bar */
+      /* ── Date summary bar ───────────────────────────────────────────────────── */
       .date-bar {
         display: flex;
-        gap: 12px;
-        background: #f5f2ff;
-        border-radius: var(--radius-sm);
-        padding: 12px 16px;
-        margin-top: 12px;
+        margin-top: 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        overflow: hidden;
+        background: var(--bg);
       }
-      .date-bar-item {
-        flex: 1;
-      }
+      .date-bar-item { flex: 1; padding: 10px 14px; }
+      .date-bar-item + .date-bar-item { border-left: 1px solid var(--border); }
       .date-bar-label {
-        font-size: 11px;
-        color: var(--text-2);
-        margin-bottom: 2px;
-      }
-      .date-bar-value {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--primary);
-      }
-      .date-bar-value.empty {
-        color: var(--text-3);
-        font-weight: 400;
-      }
-      .date-bar-nights {
-        font-size: 11px;
-        color: var(--text-2);
-        align-self: center;
-        text-align: center;
-        min-width: 48px;
-      }
-
-      /* Date strip (table) */
-      .date-strip {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        scrollbar-width: none;
-      }
-      .date-strip::-webkit-scrollbar {
-        display: none;
-      }
-      .date-chip {
-        min-width: 52px;
-        padding: 8px 6px;
-        border-radius: var(--radius-sm);
-        border: 1.5px solid var(--border);
-        background: var(--surface);
-        text-align: center;
-        cursor: pointer;
-        transition:
-          border-color 0.12s,
-          background 0.12s;
-        flex-shrink: 0;
-      }
-      .date-chip:hover {
-        border-color: var(--primary);
-      }
-      .date-chip.selected {
-        border-color: var(--primary);
-        background: var(--primary);
-      }
-      .date-chip-day {
         font-size: 10px;
         font-weight: 600;
-        color: var(--text-2);
         text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-3);
+        margin-bottom: 3px;
       }
-      .date-chip-num {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--text);
-        margin-top: 2px;
-      }
-      .date-chip.selected .date-chip-day,
-      .date-chip.selected .date-chip-num {
-        color: #fff;
-      }
-
-      /* Time slots */
-      .slot-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .slot {
-        padding: 8px 14px;
-        border-radius: var(--radius-sm);
-        border: 1.5px solid var(--border);
-        background: var(--surface);
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        color: var(--text);
-        transition:
-          border-color 0.12s,
-          background 0.12s;
-      }
-      .slot:hover {
-        border-color: var(--primary);
-      }
-      .slot.selected {
-        border-color: var(--primary);
-        background: var(--primary);
-        color: #fff;
-      }
-
-      /* Entity chips */
-      .entity-chip {
-        padding: 8px 16px;
-        border-radius: var(--radius-sm);
-        border: 1.5px solid var(--border);
-        background: var(--surface);
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        color: var(--text);
-        transition:
-          border-color 0.12s,
-          background 0.12s;
-      }
-      .entity-chip:hover {
-        border-color: var(--primary);
-      }
-      .entity-chip.selected {
-        border-color: var(--primary);
-        background: #ede9ff;
-        color: var(--primary);
-      }
-
-      /* Guests counter */
-      .guests-row {
+      .date-bar-value         { font-size: 13px; font-weight: 600; color: var(--text); }
+      .date-bar-value.empty   { color: var(--text-3); font-weight: 400; }
+      .date-bar-mid {
         display: flex;
         align-items: center;
-        gap: 16px;
+        padding: 0 10px;
+        font-size: 11px;
+        color: var(--text-3);
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
       }
-      .guests-label {
+
+      /* ── Date strip (table booking) ─────────────────────────────────────────── */
+      .date-strip-hdr {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .date-strip-hdr-label {
         flex: 1;
-        font-size: 14px;
-        font-weight: 500;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
       }
+      .strip-nav-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px 10px;
+        font-size: 22px;
+        color: var(--text-2);
+        transition: color 0.12s;
+        line-height: 1;
+      }
+      .strip-nav-btn:hover:not(:disabled) { color: var(--accent); }
+      .strip-nav-btn:active:not(:disabled) { opacity: 0.5; }
+      .strip-nav-btn:disabled { opacity: 0.25; cursor: default; }
+      .date-strip-wrap {
+        display: flex;
+        align-items: stretch;
+        gap: 4px;
+      }
+      .strip-side-btn {
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-sm);
+        cursor: pointer;
+        padding: 0 10px;
+        color: var(--text-2);
+        font-size: 20px;
+        line-height: 1;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        transition: border-color 0.12s, color 0.12s;
+      }
+      .strip-side-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+      .strip-side-btn:active:not(:disabled) { opacity: 0.5; }
+      .strip-side-btn:disabled { opacity: 0.25; cursor: default; }
+      .date-strip {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .date-strip::-webkit-scrollbar { display: none; }
+      .date-chip {
+        min-width: 60px;
+        padding: 8px 4px;
+        border-radius: var(--r-sm);
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        text-align: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: border-color 0.12s, background 0.12s;
+      }
+      .date-chip:hover { border-color: var(--accent); }
+      .date-chip.selected { border-color: var(--accent); background: var(--accent); }
+      .date-chip-day { font-size: 10px; font-weight: 600; color: var(--text-2); text-transform: uppercase; }
+      .date-chip-num { font-size: 17px; font-weight: 700; color: var(--text); margin-top: 1px; }
+      .date-chip.selected .date-chip-day,
+      .date-chip.selected .date-chip-num { color: #fff; }
+
+      /* ── Time slots ─────────────────────────────────────────────────────────── */
+      .slot-period {
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-3);
+        margin-bottom: 8px;
+      }
+      .slot-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+      .slot {
+        padding: 7px 13px;
+        border-radius: var(--r-sm);
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text);
+        transition: border-color 0.12s, background 0.12s, color 0.12s;
+      }
+      .slot:hover    { border-color: var(--accent); color: var(--accent); }
+      .slot.selected { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+      /* ── Guests counter ─────────────────────────────────────────────────────── */
+      .guests-row { display: flex; align-items: center; gap: 14px; }
+      .guests-label { flex: 1; font-size: 14px; color: var(--text); }
       .guests-btn {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         border: 1.5px solid var(--border);
         background: var(--surface);
-        font-size: 20px;
+        font-family: inherit;
+        font-size: 18px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: border-color 0.12s;
+        color: var(--text);
+        transition: border-color 0.12s, color 0.12s;
       }
-      .guests-btn:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-      }
-      .guests-count {
-        font-size: 16px;
-        font-weight: 700;
-        min-width: 24px;
-        text-align: center;
-      }
+      .guests-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+      .guests-btn:disabled { color: var(--text-3); cursor: default; }
+      .guests-count { font-size: 16px; font-weight: 700; min-width: 24px; text-align: center; }
 
-      /* Form inputs */
-      .form-field {
-        margin-bottom: 14px;
-      }
+      /* ── Form ───────────────────────────────────────────────────────────────── */
+      .form-field { margin-bottom: 12px; }
       .form-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--text-2);
-        margin-bottom: 6px;
         display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-2);
+        margin-bottom: 5px;
       }
       .form-input {
         width: 100%;
-        padding: 12px 14px;
+        padding: 10px 12px;
         border: 1.5px solid var(--border);
-        border-radius: var(--radius-sm);
+        border-radius: var(--r-sm);
         font-family: inherit;
-        font-size: 15px;
+        font-size: 14px;
         background: var(--surface);
         color: var(--text);
         outline: none;
         transition: border-color 0.12s;
       }
-      .form-input:focus {
-        border-color: var(--primary);
-      }
-      .form-input::placeholder {
-        color: var(--text-3);
-      }
+      .form-input:focus { border-color: var(--accent); }
+      .form-input::placeholder { color: var(--text-3); }
 
-      /* Buttons */
+      /* ── Buttons ────────────────────────────────────────────────────────────── */
       .btn {
         width: 100%;
-        padding: 14px;
-        border-radius: var(--radius-md);
+        padding: 12px 16px;
+        border-radius: var(--r-md);
         border: none;
         font-family: inherit;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 600;
         cursor: pointer;
-        transition:
-          opacity 0.15s,
-          transform 0.1s;
+        transition: opacity 0.15s, transform 0.1s;
       }
-      .btn:active {
-        transform: scale(0.98);
-      }
-      .btn-primary {
-        background: var(--primary);
-        color: #fff;
-      }
-      .btn-primary:hover {
-        opacity: 0.92;
-      }
+      .btn:active { transform: scale(0.98); }
+      .btn-primary { background: var(--primary); color: #fff; }
+      .btn-primary:hover { opacity: 0.85; }
       .btn-primary:disabled {
         background: var(--border);
         color: var(--text-3);
         cursor: default;
         transform: none;
+        opacity: 1;
       }
-      .btn-outline {
+      .btn-ghost {
         background: none;
         border: 1.5px solid var(--border);
-        color: var(--text);
-        margin-bottom: 10px;
+        color: var(--text-2);
       }
-      .btn-outline:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-      }
+      .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-      /* Summary block */
+      /* ── Summary strip ──────────────────────────────────────────────────────── */
       .summary {
-        background: #f5f2ff;
-        border-radius: var(--radius-sm);
-        padding: 12px 16px;
-        margin-bottom: 16px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        padding: 10px 14px;
+        margin-bottom: 14px;
         font-size: 13px;
         color: var(--text-2);
-        line-height: 1.6;
+        line-height: 1.7;
       }
 
-      /* Confirmation */
+      /* ── Availability status ───────────────────────────────────────────────── */
+      .avail-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: var(--r-sm);
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      .avail-checking  { background: var(--bg); border: 1px solid var(--border); }
+      .avail-ok        { background: var(--success-bg); border: 1px solid var(--success-mid); }
+      .avail-none      { background: var(--error-bg); border: 1px solid #fecaca; }
+      .avail-main      { font-weight: 600; }
+      .avail-sub       { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+      .avail-spinner   {
+        width: 18px; height: 18px; flex-shrink: 0;
+        border: 2px solid var(--border); border-top-color: var(--accent);
+        border-radius: 50%; animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* ── Confirmation ───────────────────────────────────────────────────────── */
       .confirm-icon {
-        font-size: 48px;
-        text-align: center;
-        margin-bottom: 12px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--success-bg);
+        color: var(--success);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
       }
-      .confirm-title {
-        font-size: 22px;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 8px;
-      }
-      .confirm-sub {
-        font-size: 14px;
-        color: var(--text-2);
-        text-align: center;
-        line-height: 1.5;
-      }
+      .confirm-title { font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+      .confirm-sub   { font-size: 14px; color: var(--text-2); text-align: center; line-height: 1.5; margin-bottom: 20px; }
 
-      /* Loading / Error */
+      /* ── Loading / error states ─────────────────────────────────────────────── */
       .state-center {
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 200px;
+        min-height: 220px;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
+        text-align: center;
       }
       .spinner {
-        width: 32px;
-        height: 32px;
-        border: 3px solid var(--border);
-        border-top-color: var(--primary);
+        width: 28px;
+        height: 28px;
+        border: 2.5px solid var(--border);
+        border-top-color: var(--accent);
         border-radius: 50%;
-        animation: spin 0.7s linear infinite;
+        animation: spin 0.65s linear infinite;
       }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
-      /* Back link */
-      .back-link {
+      /* ── Back button ────────────────────────────────────────────────────────── */
+      .back-btn {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
+        font-family: inherit;
         font-size: 13px;
         font-weight: 500;
         color: var(--text-2);
@@ -566,122 +481,146 @@
         cursor: pointer;
         padding: 0;
         margin-bottom: 16px;
+        transition: color 0.12s;
       }
-      .back-link:hover {
-        color: var(--primary);
-      }
+      .back-btn:hover { color: var(--accent); }
 
-      @media (max-width: 360px) {
-        .type-grid {
-          grid-template-columns: 1fr;
-        }
-      }
+      @media (max-width: 340px) { .type-grid { grid-template-columns: 1fr; } }
     </style>
   </head>
   <body>
     <div id="root"></div>
 
     <script type="text/babel">
-      const { useState, useEffect, useCallback } = React;
+      const { useState, useEffect } = React;
 
       const WS_URI = "https://ws.at9.app";
       //const WS_URI = "http://localhost:3000";
       const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
-      // ── UTC helpers (mirrors app Calendar) ────────────────────────────────────
+      // ── UTC helpers ───────────────────────────────────────────────────────────
       const utcMidnight = (d) =>
         new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
       const utcStartOfMonth = (d) =>
         new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
       const utcDaysInMonth = (d) =>
-        new Date(
-          Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0),
-        ).getUTCDate();
+        new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
       const utcAddMonths = (d, n) =>
         new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + n, 1));
       const utcIsSameDay = (a, b) =>
         a.getUTCFullYear() === b.getUTCFullYear() &&
         a.getUTCMonth() === b.getUTCMonth() &&
         a.getUTCDate() === b.getUTCDate();
-      const utcAfter = (a, b) => utcMidnight(a) > utcMidnight(b);
+      const utcAfter  = (a, b) => utcMidnight(a) > utcMidnight(b);
       const utcBefore = (a, b) => utcMidnight(a) < utcMidnight(b);
 
       const MONTH_NAMES = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "January","February","March","April","May","June",
+        "July","August","September","October","November","December",
       ];
 
-      const pad = (n) => String(n).padStart(2, "0");
-      const fmtDate = (d) =>
-        `${d.getUTCDate()} ${MONTH_NAMES[d.getUTCMonth()].slice(0, 3)} ${d.getUTCFullYear()}`;
-      const fmtDay = (d) =>
-        `${MONTH_NAMES[d.getUTCMonth()].slice(0, 3)} ${d.getUTCDate()}`;
-      const fmtDayOfWeek = (d) =>
-        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
+      const pad      = (n) => String(n).padStart(2, "0");
+      const fmtDate  = (d) => `${d.getUTCDate()} ${MONTH_NAMES[d.getUTCMonth()].slice(0,3)} ${d.getUTCFullYear()}`;
+      const fmtDay   = (d) => `${MONTH_NAMES[d.getUTCMonth()].slice(0,3)} ${d.getUTCDate()}`;
+      const fmtDow   = (d) => ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()];
+      const ordinal  = (n) => {
+        const v = n % 100;
+        if (v >= 11 && v <= 13) return n + "th";
+        switch (n % 10) {
+          case 1: return n + "st";
+          case 2: return n + "nd";
+          case 3: return n + "rd";
+          default: return n + "th";
+        }
+      };
 
       // ── Slug from URL path ────────────────────────────────────────────────────
       const getSlug = () => {
-        const parts = window.location.pathname.split("/").filter(Boolean); // removes empty spaces
-        const bookIndex = parts.indexOf("book");
-
-        // Grab whatever sits directly after the 'book' segment
-        if (bookIndex !== -1 && parts[bookIndex + 1]) {
-          return parts[bookIndex + 1];
-        }
-        return null;
+        const parts = window.location.pathname.split("/").filter(Boolean);
+        const idx = parts.indexOf("book");
+        return idx !== -1 && parts[idx + 1] ? parts[idx + 1] : null;
       };
 
-      // ── Time slot generation ──────────────────────────────────────────────────
-      const parseUtcMinutes = (isoStr) => {
-        if (!isoStr) return null;
-        const d = new Date(isoStr);
-        return d.getUTCHours() * 60 + d.getUTCMinutes();
-      };
-
-      const generateSlots = (openingTime, closingTime, intervalMinutes) => {
-        const open = parseUtcMinutes(openingTime) ?? 9 * 60;
-        const close = parseUtcMinutes(closingTime) ?? 22 * 60;
-        const interval = Math.max(15, Number(intervalMinutes) || 90);
-        const slots = [];
-        for (let t = open; t + interval <= close; t += interval) {
-          slots.push(`${pad(Math.floor(t / 60))}:${pad(t % 60)}`);
-        }
-        return slots;
-      };
-
+      // ── Time slot helpers ─────────────────────────────────────────────────────
       const categoriseSlots = (slots) => ({
-        Morning: slots.filter((s) => parseInt(s) < 12),
+        Morning:   slots.filter((s) => parseInt(s) < 12),
         Afternoon: slots.filter((s) => parseInt(s) >= 12 && parseInt(s) < 17),
-        Evening: slots.filter((s) => parseInt(s) >= 17),
+        Evening:   slots.filter((s) => parseInt(s) >= 17),
       });
+
+      // ── Icons ─────────────────────────────────────────────────────────────────
+      const IconCalendar = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8"  y1="2" x2="8"  y2="6"/>
+          <line x1="3"  y1="10" x2="21" y2="10"/>
+        </svg>
+      );
+
+      const IconClock = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      );
+
+      const IconCheck = () => (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      );
+      const IconCheckCircle = ({ color = "currentColor" }) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ flexShrink: 0 }}>
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+      );
+      const IconXCircle = ({ color = "currentColor" }) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ flexShrink: 0 }}>
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+      );
+
+      const IconSearch = () => (
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ color: "var(--text-3)" }}>
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      );
+
+      const IconArrowLeft = () => (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+      );
 
       // ── Calendar component ────────────────────────────────────────────────────
       const Calendar = ({ startDate, endDate, onChange, disablePast }) => {
         const today = utcMidnight(new Date());
-        const seed = startDate ?? today;
+        const seed  = startDate ?? today;
         const [month, setMonth] = useState(() => utcStartOfMonth(seed));
 
-        const first = utcStartOfMonth(month);
+        const first  = utcStartOfMonth(month);
         const offset = (first.getUTCDay() + 6) % 7;
-        const total = utcDaysInMonth(month);
-        const cells = [
+        const total  = utcDaysInMonth(month);
+        const cells  = [
           ...Array(offset).fill(null),
-          ...Array.from(
-            { length: total },
-            (_, i) =>
-              new Date(
-                Date.UTC(first.getUTCFullYear(), first.getUTCMonth(), i + 1),
-              ),
+          ...Array.from({ length: total }, (_, i) =>
+            new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth(), i + 1))
           ),
         ];
         while (cells.length % 7 !== 0) cells.push(null);
@@ -689,10 +628,7 @@
         const handleDay = (day) => {
           if (!startDate || (startDate && endDate)) {
             onChange(day, null);
-          } else if (
-            utcBefore(day, startDate) ||
-            utcIsSameDay(day, startDate)
-          ) {
+          } else if (utcBefore(day, startDate) || utcIsSameDay(day, startDate)) {
             onChange(day, null);
           } else {
             onChange(startDate, day);
@@ -702,54 +638,32 @@
         return (
           <div>
             <div className="cal-header">
-              <button
-                className="cal-nav"
-                onClick={() => setMonth((m) => utcAddMonths(m, -1))}
-              >
-                ‹
-              </button>
+              <button className="cal-nav" onClick={() => setMonth((m) => utcAddMonths(m, -1))}>‹</button>
               <span className="cal-month">
                 {MONTH_NAMES[month.getUTCMonth()]} {month.getUTCFullYear()}
               </span>
-              <button
-                className="cal-nav"
-                onClick={() => setMonth((m) => utcAddMonths(m, 1))}
-              >
-                ›
-              </button>
+              <button className="cal-nav" onClick={() => setMonth((m) => utcAddMonths(m, 1))}>›</button>
             </div>
             <div className="cal-grid">
-              {WEEKDAYS.map((d) => (
-                <div key={d} className="cal-weekday">
-                  {d}
-                </div>
-              ))}
+              {WEEKDAYS.map((d) => <div key={d} className="cal-weekday">{d}</div>)}
               {cells.map((day, i) => {
                 if (!day) return <div key={i} className="cal-cell" />;
-                const isPast = disablePast && utcMidnight(day) < today;
-                const isStart = startDate && utcIsSameDay(day, startDate);
-                const isEnd = endDate && utcIsSameDay(day, endDate);
-                const inRange =
-                  startDate &&
-                  endDate &&
-                  utcAfter(day, startDate) &&
-                  utcBefore(day, endDate);
-                const isToday = utcIsSameDay(day, today);
-
+                const isPast    = disablePast && utcMidnight(day) < today;
+                const isStart   = startDate && utcIsSameDay(day, startDate);
+                const isEnd     = endDate   && utcIsSameDay(day, endDate);
+                const inRange   = startDate && endDate && utcAfter(day, startDate) && utcBefore(day, endDate);
+                const isToday   = utcIsSameDay(day, today);
                 let cls = "cal-day";
-                if (isStart && isEnd) cls += " selected";
-                else if (isStart) cls += " range-start";
-                else if (isEnd) cls += " range-end";
-                else if (inRange) cls += " in-range";
                 if (isToday) cls += " today";
-
+                let selStyle = {};
+                if (isStart || isEnd || (isStart && isEnd)) {
+                  selStyle = { background: "#16a34a", color: "#fff", fontWeight: 600 };
+                } else if (inRange) {
+                  selStyle = { background: "#bbf7d0", color: "#16a34a", fontWeight: 500 };
+                }
                 return (
                   <div key={i} className="cal-cell">
-                    <button
-                      className={cls}
-                      disabled={isPast}
-                      onClick={() => handleDay(day)}
-                    >
+                    <button className={cls} style={selStyle} disabled={isPast} onClick={() => handleDay(day)}>
                       {day.getUTCDate()}
                     </button>
                   </div>
@@ -760,32 +674,89 @@
         );
       };
 
-      // ── Room booking form ─────────────────────────────────────────────────────
-      const RoomBooking = ({ org, entities, onBack, onDone }) => {
-        const [checkIn, setCheckIn] = useState(null);
-        const [checkOut, setCheckOut] = useState(null);
-        const [guests, setGuests] = useState(1);
-        const [step, setStep] = useState("dates"); // 'dates' | 'contact'
-        const [name, setName] = useState("");
+      // ── Contact form (shared) ─────────────────────────────────────────────────
+      const ContactForm = ({ summary, onBack, onSubmit, loading, error }) => {
+        const [name,  setName]  = useState("");
         const [email, setEmail] = useState("");
         const [phone, setPhone] = useState("");
-        const [loading, setLoading] = useState(false);
-        const [error, setError] = useState("");
 
-        const rooms = entities.filter((e) => e.type === "room");
-        const nights =
-          checkIn && checkOut
-            ? Math.round(
-                (utcMidnight(checkOut) - utcMidnight(checkIn)) / 86400000,
-              )
-            : 0;
-        const canContinue = checkIn && checkOut && nights > 0;
+        return (
+          <div>
+            <button className="back-btn" onClick={onBack}>
+              <IconArrowLeft /> Back
+            </button>
+            <div className="card">
+              <p className="section-label">Your details</p>
+              <div className="summary">{summary}</div>
+              <div className="form-field">
+                <label className="form-label">Full name *</label>
+                <input className="form-input" value={name} onChange={(e) => setName(e.target.value)}
+                  placeholder="Jane Smith" maxLength={100} autoComplete="name" />
+              </div>
+              <div className="form-field">
+                <label className="form-label">Email *</label>
+                <input className="form-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                  placeholder="jane@example.com" maxLength={254} autoComplete="email" />
+              </div>
+              <div className="form-field">
+                <label className="form-label">Phone</label>
+                <input className="form-input" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+44 7700 900000" maxLength={30} autoComplete="tel" />
+              </div>
+              {error && (
+                <p style={{ color: "var(--error)", fontSize: 13, marginBottom: 12 }}>{error}</p>
+              )}
+              <button className="btn btn-primary"
+                disabled={loading || !name.trim() || !email.trim()}
+                onClick={() => onSubmit({ name, email, phone })}>
+                {loading ? "Sending…" : "Request Booking"}
+              </button>
+            </div>
+          </div>
+        );
+      };
 
-        const handleSubmit = async () => {
-          if (!name || !email) {
-            setError("Please fill in your name and email.");
-            return;
-          }
+      // ── Room booking ──────────────────────────────────────────────────────────
+      const RoomBooking = ({ org, entities, onBack, onDone }) => {
+        const [checkIn,  setCheckIn]  = useState(null);
+        const [checkOut, setCheckOut] = useState(null);
+        const [guests,   setGuests]   = useState(1);
+        const [step,     setStep]     = useState("dates");
+        const [loading,  setLoading]  = useState(false);
+        const [error,    setError]    = useState("");
+        const [availability,  setAvailability]  = useState(null);
+        const [availChecking, setAvailChecking] = useState(false);
+
+        const rooms  = entities.filter((e) => e.type === "room");
+        const nights = checkIn && checkOut
+          ? Math.round((utcMidnight(checkOut) - utcMidnight(checkIn)) / 86400000)
+          : 0;
+        const hasRange    = !!(checkIn && checkOut && nights > 0);
+        const canContinue = hasRange && Array.isArray(availability) && availability.length > 0;
+
+        const summary = canContinue
+          ? `${fmtDate(checkIn)} — ${fmtDate(checkOut)} · ${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}`
+          : "";
+
+        useEffect(() => {
+          if (!hasRange) { setAvailability(null); return; }
+          let cancelled = false;
+          setAvailChecking(true);
+          setAvailability(null);
+          const params = new URLSearchParams({
+            startDate:    fmtIso(checkIn),
+            endDate:      fmtIso(checkOut),
+            minOccupancy: guests,
+          });
+          fetch(`${WS_URI}/entities/public/room-availability/${org.id}?${params}`)
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => { if (!cancelled) setAvailability(Array.isArray(data) ? data.filter(e => !e.booked) : []); })
+            .catch(() => { if (!cancelled) setAvailability([]); })
+            .finally(() => { if (!cancelled) setAvailChecking(false); });
+          return () => { cancelled = true; };
+        }, [checkIn, checkOut, guests]);
+
+        const handleSubmit = async ({ name, email, phone }) => {
           setLoading(true);
           setError("");
           try {
@@ -795,13 +766,12 @@
               body: JSON.stringify({
                 organisationId: org.id,
                 entityId: rooms[0]?.id,
-                startDate: checkIn?.toISOString(),
-                endDate: checkOut?.toISOString(),
+                startDate: fmtIso(checkIn),
+                endDate:   fmtIso(checkOut),
                 guests,
-                customerName: name,
+                customerName:  name,
                 customerEmail: email,
                 customerPhone: phone,
-                type: "reservation",
               }),
             });
             if (!res.ok) {
@@ -819,90 +789,28 @@
 
         if (step === "contact") {
           return (
-            <div>
-              <button className="back-link" onClick={() => setStep("dates")}>
-                ← Back
-              </button>
-              <div className="card">
-                <p className="section-label">Your details</p>
-                <div className="summary">
-                  📅 {fmtDate(checkIn)} → {fmtDate(checkOut)} &nbsp;·&nbsp;{" "}
-                  {nights} {nights === 1 ? "night" : "nights"} &nbsp;·&nbsp;{" "}
-                  {guests} {guests === 1 ? "guest" : "guests"}
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Full name *</label>
-                  <input
-                    className="form-input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Jane Smith"
-                    maxLength={100}
-                    autoComplete="name"
-                  />
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Email *</label>
-                  <input
-                    className="form-input"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="jane@example.com"
-                    maxLength={254}
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Phone</label>
-                  <input
-                    className="form-input"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+44 7700 900000"
-                  />
-                </div>
-                {error && (
-                  <p
-                    style={{
-                      color: "var(--error)",
-                      fontSize: 13,
-                      marginBottom: 12,
-                    }}
-                  >
-                    {error}
-                  </p>
-                )}
-                <button
-                  className="btn btn-primary"
-                  disabled={loading}
-                  onClick={handleSubmit}
-                >
-                  {loading ? "Sending…" : "Request Booking"}
-                </button>
-              </div>
-            </div>
+            <ContactForm
+              summary={summary}
+              onBack={() => setStep("dates")}
+              onSubmit={handleSubmit}
+              loading={loading}
+              error={error}
+            />
           );
         }
 
         return (
           <div>
-            <button className="back-link" onClick={onBack}>
-              ← Back
+            <button className="back-btn" onClick={onBack}>
+              <IconArrowLeft /> Back
             </button>
             <div className="card">
-              <p className="section-label" style={{ marginBottom: 14 }}>
-                Select dates
-              </p>
+              <p className="section-label">Select dates</p>
               <Calendar
                 startDate={checkIn}
                 endDate={checkOut}
                 disablePast
-                onChange={(s, e) => {
-                  setCheckIn(s);
-                  setCheckOut(e);
-                }}
+                onChange={(s, e) => { setCheckIn(s); setCheckOut(e); }}
               />
               <div className="date-bar">
                 <div className="date-bar-item">
@@ -911,7 +819,7 @@
                     {checkIn ? fmtDay(checkIn) : "—"}
                   </div>
                 </div>
-                <div className="date-bar-nights">
+                <div className="date-bar-mid">
                   {nights > 0 ? `${nights}n` : "·"}
                 </div>
                 <div className="date-bar-item" style={{ textAlign: "right" }}>
@@ -926,97 +834,174 @@
               <p className="section-label">Guests</p>
               <div className="guests-row">
                 <span className="guests-label">Number of guests</span>
-                <button
-                  className="guests-btn"
-                  disabled={guests <= 1}
-                  onClick={() => setGuests((g) => g - 1)}
-                >
-                  −
-                </button>
+                <button className="guests-btn" disabled={guests <= 1} onClick={() => setGuests((g) => g - 1)}>−</button>
                 <span className="guests-count">{guests}</span>
-                <button
-                  className="guests-btn"
-                  onClick={() => setGuests((g) => g + 1)}
-                >
-                  +
-                </button>
+                <button className="guests-btn" onClick={() => setGuests((g) => g + 1)}>+</button>
               </div>
+              {hasRange && (
+                <div className={`avail-box ${availChecking ? "avail-checking" : availability && availability.length > 0 ? "avail-ok" : "avail-none"}`}>
+                  {availChecking
+                    ? <div className="avail-spinner" />
+                    : availability && availability.length > 0
+                      ? <IconCheckCircle color="var(--success)" />
+                      : <IconXCircle color="var(--error)" />
+                  }
+                  <div>
+                    <div className="avail-main">
+                      {availChecking
+                        ? "Checking availability…"
+                        : availability && availability.length > 0
+                          ? "Available"
+                          : "No rooms available for these dates"
+                      }
+                    </div>
+                    {!availChecking && availability && availability.length > 0 && (
+                      <div className="avail-sub">
+                        {nights} {nights === 1 ? "night" : "nights"} · {guests} {guests === 1 ? "guest" : "guests"}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-            <button
-              className="btn btn-primary"
-              disabled={!canContinue}
-              onClick={() => setStep("contact")}
-            >
+            <button className="btn btn-primary" disabled={!canContinue} onClick={() => setStep("contact")}>
               Continue
             </button>
           </div>
         );
       };
 
-      // ── Table booking form ────────────────────────────────────────────────────
+      // ── Closed-day helpers ────────────────────────────────────────────────────
+      const fmtIso = (d) =>
+        `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+
+      const isDayClosed = (d, openHours, overrides) => {
+        const jsDay  = d.getUTCDay();
+        const weekday = jsDay === 0 ? 7 : jsDay;
+        const iso = fmtIso(d);
+        if ((overrides ?? []).some(o => iso >= o.from.slice(0, 10) && iso <= o.to.slice(0, 10))) return true;
+        return !(openHours ?? []).some(h => h.weekday === weekday);
+      };
+
+      // ── Table booking ─────────────────────────────────────────────────────────
       const TableBooking = ({ org, entities, preferences, onBack, onDone }) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const dates = Array.from({ length: 14 }, (_, i) => {
-          const d = new Date(today);
-          d.setDate(today.getDate() + i);
-          return d;
-        });
+        const today = utcMidnight(new Date());
+        const todayMonthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
 
-        const [selectedDate, setSelectedDate] = useState(dates[0]);
-        const [selectedTime, setSelectedTime] = useState(null);
-        const [selectedTable, setSelectedTable] = useState(null);
-        const [step, setStep] = useState("times");
-        const [name, setName] = useState("");
-        const [email, setEmail] = useState("");
-        const [phone, setPhone] = useState("");
-        const [loading, setLoading] = useState(false);
-        const [error, setError] = useState("");
+        const [selectedMonth, setSelectedMonth] = useState(todayMonthStart);
 
-        const tables = entities.filter((e) => e.type === "table");
-        const slots = generateSlots(
-          preferences.openingTime,
-          preferences.closingTime,
-          preferences.tableBookingMinutes,
-        );
-        const grouped = categoriseSlots(slots);
-        const canContinue =
-          selectedTime && (tables.length === 0 || selectedTable);
+        const dates = (() => {
+          const isCurrentMonth = selectedMonth.getUTCFullYear() === today.getUTCFullYear() &&
+                                 selectedMonth.getUTCMonth() === today.getUTCMonth();
+          const startDay = isCurrentMonth ? today : selectedMonth;
+          const monthEnd = new Date(Date.UTC(selectedMonth.getUTCFullYear(), selectedMonth.getUTCMonth() + 1, 0));
+          const count = Math.round((monthEnd.getTime() - startDay.getTime()) / 86400000) + 1;
+          return Array.from({ length: Math.max(count, 0) }, (_, i) =>
+            new Date(startDay.getTime() + i * 86400000)
+          );
+        })();
+
+        const openHours    = org.openHours ?? [];
+        const overrides    = org.openHoursOverrides ?? [];
+
+        // Find first open day to use as default selection
+        const firstOpenDate = dates.find(d => !isDayClosed(d, openHours, overrides)) ?? dates[0];
+
+        const [selectedDate,    setSelectedDate]    = useState(firstOpenDate);
+        const [selectedTime,    setSelectedTime]    = useState(null);
+        const [guests,          setGuests]          = useState(1);
+        const [step,            setStep]            = useState("times");
+        const [loading,         setLoading]         = useState(false);
+        const [error,           setError]           = useState("");
+        const [serverSlots,     setServerSlots]     = useState(null);
+        const [slotDuration,    setSlotDuration]    = useState(90);
+        const [loadingSlots,    setLoadingSlots]    = useState(false);
+
+        const goToPrevMonth = () => {
+          setSelectedMonth(prev => {
+            const m = new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() - 1, 1));
+            return m >= todayMonthStart ? m : todayMonthStart;
+          });
+          setSelectedTime(null);
+        };
+
+        const goToNextMonth = () => {
+          setSelectedMonth(prev =>
+            new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() + 1, 1))
+          );
+          setSelectedTime(null);
+        };
+
+        // When month changes, select first open day of the new window
+        const prevMonthRef = React.useRef(selectedMonth);
+        if (prevMonthRef.current !== selectedMonth) {
+          prevMonthRef.current = selectedMonth;
+          const newFirst = dates.find(d => !isDayClosed(d, openHours, overrides)) ?? dates[0];
+          if (newFirst) setSelectedDate(newFirst);
+        }
+
+        const isPrevDisabled = selectedMonth.getUTCFullYear() === todayMonthStart.getUTCFullYear() &&
+                               selectedMonth.getUTCMonth() === todayMonthStart.getUTCMonth();
+
+        const dateStripRef = React.useRef(null);
+        const scrollStrip = (dir) => {
+          if (dateStripRef.current) {
+            dateStripRef.current.scrollBy({ left: dir * dateStripRef.current.clientWidth, behavior: 'smooth' });
+          }
+        };
+
+        const tables  = entities.filter((e) => e.type === "table");
+        const slots   = serverSlots ?? [];
+        const grouped = categoriseSlots(slots.map(s => s.time));
+
+        useEffect(() => {
+          if (isDayClosed(selectedDate, openHours, overrides)) {
+            setServerSlots([]);
+            setSelectedTime(null);
+            return;
+          }
+          let cancelled = false;
+          setLoadingSlots(true);
+          setSelectedTime(null);
+          const dateStr = `${selectedDate.getUTCFullYear()}-${pad(selectedDate.getUTCMonth()+1)}-${pad(selectedDate.getUTCDate())}`;
+          fetch(`${WS_URI}/entities/public/table-availability/${org.id}?date=${dateStr}&guests=${guests}`)
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+              if (!cancelled) {
+                setServerSlots(data.slots ?? []);
+                setSlotDuration(data.duration ?? 90);
+              }
+            })
+            .catch(() => { if (!cancelled) setServerSlots([]); })
+            .finally(() => { if (!cancelled) setLoadingSlots(false); });
+          return () => { cancelled = true; };
+        }, [selectedDate, guests]);
+
+        const summary = `${fmtDow(selectedDate)} ${selectedDate.getUTCDate()} ${MONTH_NAMES[selectedDate.getUTCMonth()].slice(0,3)} · ${selectedTime}`;
 
         const buildDatetime = (date, timeStr) => {
           const [h, m] = timeStr.split(":").map(Number);
-          return new Date(
-            Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), h, m),
-          );
+          return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), h, m));
         };
 
-        const handleSubmit = async () => {
-          if (!name || !email) {
-            setError("Please fill in your name and email.");
-            return;
-          }
+        const handleSubmit = async ({ name, email, phone }) => {
           setLoading(true);
           setError("");
-          const intervalMin = Math.max(
-            15,
-            Number(preferences.tableBookingMinutes) || 90,
-          );
+          const intervalMin = Math.max(15, slotDuration);
           const start = buildDatetime(selectedDate, selectedTime);
-          const end = new Date(start.getTime() + intervalMin * 60000);
+          const end   = new Date(start.getTime() + intervalMin * 60000);
           try {
             const res = await fetch(`${WS_URI}/bookings/public`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 organisationId: org.id,
-                entityId: selectedTable?.id ?? tables[0]?.id,
-                startDate: start.toISOString(),
-                endDate: end.toISOString(),
-                guests: 1,
-                customerName: name,
-                customerEmail: email,
-                customerPhone: phone,
-                type: "reservation",
+                startDate:      start.toISOString(),
+                endDate:        end.toISOString(),
+                guests,
+                customerName:   name,
+                customerEmail:  email,
+                customerPhone:  phone,
               }),
             });
             if (!res.ok) {
@@ -1024,13 +1009,7 @@
               setError(data.message || "Something went wrong. Please try again.");
               return;
             }
-            onDone({
-              date: selectedDate,
-              time: selectedTime,
-              table: selectedTable,
-              name,
-              type: "table",
-            });
+            onDone({ date: selectedDate, time: selectedTime, name, type: "table" });
           } catch {
             setError("Something went wrong. Please try again.");
           } finally {
@@ -1040,350 +1019,277 @@
 
         if (step === "contact") {
           return (
-            <div>
-              <button className="back-link" onClick={() => setStep("times")}>
-                ← Back
-              </button>
-              <div className="card">
-                <p className="section-label">Your details</p>
-                <div className="summary">
-                  📅 {fmtDayOfWeek(selectedDate)} {selectedDate.getDate()}{" "}
-                  {MONTH_NAMES[selectedDate.getMonth()].slice(0, 3)} ·{" "}
-                  {selectedTime}
-                  {selectedTable ? ` · ${selectedTable.name}` : ""}
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Full name *</label>
-                  <input
-                    className="form-input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Jane Smith"
-                    maxLength={100}
-                    autoComplete="name"
-                  />
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Email *</label>
-                  <input
-                    className="form-input"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="jane@example.com"
-                    maxLength={254}
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Phone</label>
-                  <input
-                    className="form-input"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+44 7700 900000"
-                  />
-                </div>
-                {error && (
-                  <p
-                    style={{
-                      color: "var(--error)",
-                      fontSize: 13,
-                      marginBottom: 12,
-                    }}
-                  >
-                    {error}
-                  </p>
-                )}
-                <button
-                  className="btn btn-primary"
-                  disabled={loading}
-                  onClick={handleSubmit}
-                >
-                  {loading ? "Sending…" : "Request Booking"}
-                </button>
-              </div>
-            </div>
+            <ContactForm
+              summary={summary}
+              onBack={() => setStep("times")}
+              onSubmit={handleSubmit}
+              loading={loading}
+              error={error}
+            />
           );
         }
 
         return (
           <div>
-            <button className="back-link" onClick={onBack}>
-              ← Back
+            <button className="back-btn" onClick={onBack}>
+              <IconArrowLeft /> Back
             </button>
             <div className="card">
-              <p className="section-label" style={{ marginBottom: 10 }}>
-                Pick a date
-              </p>
-              <div className="date-strip">
-                {dates.map((d, i) => {
-                  const sel = d.toDateString() === selectedDate.toDateString();
-                  return (
-                    <div
-                      key={i}
-                      className={`date-chip${sel ? " selected" : ""}`}
-                      onClick={() => {
-                        setSelectedDate(d);
-                        setSelectedTime(null);
-                      }}
-                    >
-                      <div className="date-chip-day">{fmtDayOfWeek(d)}</div>
-                      <div className="date-chip-num">{d.getDate()}</div>
-                    </div>
-                  );
-                })}
+              <p className="section-label">Pick a date</p>
+              <div className="date-strip-hdr">
+                <button
+                  className="strip-nav-btn"
+                  disabled={isPrevDisabled}
+                  onClick={goToPrevMonth}>
+                  &#8249;
+                </button>
+                <span className="date-strip-hdr-label">
+                  {MONTH_NAMES[selectedMonth.getUTCMonth()]} {selectedMonth.getUTCFullYear()}
+                </span>
+                <button className="strip-nav-btn" onClick={goToNextMonth}>
+                  &#8250;
+                </button>
+              </div>
+              <div className="date-strip-wrap">
+                <button
+                  className="strip-side-btn"
+                  onClick={() => scrollStrip(-1)}>
+                  &#8249;
+                </button>
+                <div className="date-strip" ref={dateStripRef}>
+                  {dates.map((d, i) => {
+                    const sel    = utcIsSameDay(d, selectedDate);
+                    const closed = isDayClosed(d, openHours, overrides);
+                    return (
+                      <div key={i}
+                        className={`date-chip${sel ? " selected" : ""}${closed ? " closed" : ""}`}
+                        onClick={() => { if (!closed) { setSelectedDate(d); setSelectedTime(null); } }}
+                        style={closed ? { opacity: 0.35, cursor: "default" } : undefined}>
+                        <div className="date-chip-day">{fmtDow(d)}</div>
+                        <div className="date-chip-num">{d.getUTCDate()}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <button className="strip-side-btn" onClick={() => scrollStrip(1)}>
+                  &#8250;
+                </button>
               </div>
             </div>
-
             <div className="card">
-              <p className="section-label" style={{ marginBottom: 14 }}>
-                Pick a time
-              </p>
-              {Object.entries(grouped).map(([period, periodSlots]) =>
+              <p className="section-label">Pick a time</p>
+              {loadingSlots && (
+                <p style={{ color: "var(--text-3)", fontSize: 14 }}>Checking availability…</p>
+              )}
+              {!loadingSlots && Object.entries(grouped).map(([period, periodSlots]) =>
                 periodSlots.length > 0 ? (
                   <div key={period} style={{ marginBottom: 16 }}>
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: "var(--text-2)",
-                        marginBottom: 8,
-                      }}
-                    >
-                      {period}
-                    </p>
+                    <p className="slot-period">{period}</p>
                     <div className="slot-grid">
-                      {periodSlots.map((slot) => (
-                        <button
-                          key={slot}
-                          className={`slot${selectedTime === slot ? " selected" : ""}`}
-                          onClick={() => setSelectedTime(slot)}
-                        >
-                          {slot}
-                        </button>
-                      ))}
+                      {periodSlots.map((slotTime) => {
+                        const slotData = slots.find(s => s.time === slotTime);
+                        const isAvailable = slotData ? slotData.available : true;
+                        const isSelected = selectedTime === slotTime;
+                        return (
+                          <button key={slotTime}
+                            className={`slot${isSelected ? " selected" : ""}`}
+                            disabled={!isAvailable}
+                            style={{ opacity: isAvailable ? 1 : 0.35, cursor: isAvailable ? "pointer" : "default" }}
+                            onClick={() => isAvailable && setSelectedTime(slotTime)}>
+                            {slotTime}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
-                ) : null,
+                ) : null
               )}
-              {slots.length === 0 && (
-                <p style={{ color: "var(--text-3)", fontSize: 14 }}>
-                  No time slots available.
-                </p>
+              {!loadingSlots && slots.length === 0 && (
+                <p style={{ color: "var(--text-3)", fontSize: 14 }}>No available times.</p>
               )}
             </div>
-
-            {tables.length > 0 && (
-              <div className="card">
-                <p className="section-label" style={{ marginBottom: 10 }}>
-                  Select table
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {tables.map((t) => (
-                    <button
-                      key={t.id}
-                      className={`entity-chip${selectedTable?.id === t.id ? " selected" : ""}`}
-                      onClick={() => setSelectedTable(t)}
-                    >
-                      {t.name}
-                    </button>
-                  ))}
-                </div>
+            <div className="card">
+              <p className="section-label">Number of guests</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <button
+                  style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid var(--border)",
+                    background: "var(--surface)", fontSize: 20, cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center" }}
+                  disabled={guests <= 1}
+                  onClick={() => setGuests(g => Math.max(1, g - 1))}>−</button>
+                <span style={{ fontSize: 18, minWidth: 24, textAlign: "center" }}>{guests}</span>
+                <button
+                  style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid var(--border)",
+                    background: "var(--surface)", fontSize: 20, cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center" }}
+                  onClick={() => setGuests(g => g + 1)}>+</button>
               </div>
-            )}
-
-            <button
-              className="btn btn-primary"
-              disabled={!canContinue}
-              onClick={() => setStep("contact")}
-            >
+            </div>
+            <button className="btn btn-primary" disabled={!selectedTime || guests < 1}
+              onClick={() => setStep("contact")}>
               Continue
             </button>
           </div>
         );
       };
 
-      // ── Confirmation screen ───────────────────────────────────────────────────
+      // ── Confirmation ──────────────────────────────────────────────────────────
       const Confirmation = ({ booking, orgName, onReset }) => (
-        <div className="card" style={{ textAlign: "center", padding: 32 }}>
-          <div className="confirm-icon">🎉</div>
-          <div className="confirm-title">Booking requested!</div>
-          <div className="confirm-sub" style={{ marginBottom: 24 }}>
-            Thanks {booking.name}! {orgName} has received your request and will
+        <div className="card" style={{ padding: "32px 24px", textAlign: "center" }}>
+          <div className="confirm-icon"><IconCheck /></div>
+          <div className="confirm-title">Booking requested</div>
+          <div className="confirm-sub">
+            Thanks, {booking.name}. {orgName} has received your request and will
             be in touch to confirm.
           </div>
-          <div className="summary" style={{ textAlign: "left" }}>
+          <div style={{ marginBottom: 24, background: "var(--accent-bg)", borderRadius: "var(--r-md)",
+            padding: "16px 18px", textAlign: "left", border: "1px solid var(--accent-mid)" }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", marginBottom: 6 }}>
+              View and manage your bookings
+            </div>
+            <div style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.6, marginBottom: 14 }}>
+              Download the At9 app to see your booking, receive updates, and manage future reservations.
+            </div>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <a href="https://apps.apple.com/app/at9/id6741687076"
+                target="_blank" rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#000",
+                  color: "#fff", borderRadius: "var(--r-sm)", padding: "9px 16px",
+                  fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                App Store
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=com.at9"
+                target="_blank" rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#000",
+                  color: "#fff", borderRadius: "var(--r-sm)", padding: "9px 16px",
+                  fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3.18 23.76c.3.17.64.24.99.19l12.24-12.24-2.75-2.75L3.18 23.76zM20.7 10.16l-2.56-1.48-3.09 3.09 3.09 3.09 2.58-1.49c.74-.43.74-1.78-.02-2.21zM2.01 1.05C1.86 1.3 1.78 1.62 1.78 2v20c0 .38.08.7.23.95l.12.12L13.38 12v-.27L2.13.93l-.12.12zM14.77 8.43l-1.39-1.39L2.14.93c-.27-.16-.56-.19-.83-.1l11.38 11.38 2.08-3.78z"/>
+                </svg>
+                Google Play
+              </a>
+            </div>
+          </div>
+          <div className="summary" style={{ textAlign: "left", marginBottom: 20 }}>
             {booking.type === "room" && (
               <>
-                <div>
-                  📅 {fmtDate(booking.checkIn)} — {fmtDate(booking.checkOut)}
-                </div>
-                <div>
-                  🌙 {booking.nights}{" "}
-                  {booking.nights === 1 ? "night" : "nights"} · {booking.guests}{" "}
-                  {booking.guests === 1 ? "guest" : "guests"}
-                </div>
+                <div>{fmtDate(booking.checkIn)} — {fmtDate(booking.checkOut)}</div>
+                <div>{booking.nights} {booking.nights === 1 ? "night" : "nights"} · {booking.guests} {booking.guests === 1 ? "guest" : "guests"}</div>
               </>
             )}
             {booking.type === "table" && (
-              <div>
-                📅 {fmtDayOfWeek(booking.date)} {booking.date.getDate()}{" "}
-                {MONTH_NAMES[booking.date.getMonth()].slice(0, 3)} ·{" "}
-                {booking.time}
-                {booking.table ? ` · ${booking.table.name}` : ""}
-              </div>
+              <div>{fmtDow(booking.date)} {booking.date.getDate()} {MONTH_NAMES[booking.date.getMonth()].slice(0,3)} · {booking.time}</div>
             )}
           </div>
-          <button className="btn btn-outline" onClick={onReset}>
-            Make another booking
-          </button>
+          <button className="btn btn-ghost" onClick={onReset}>Make another booking</button>
         </div>
       );
 
       // ── App ───────────────────────────────────────────────────────────────────
       const App = () => {
         const slug = getSlug();
-        const [loadState, setLoadState] = useState("loading"); // 'loading' | 'error' | 'ready'
-        const [org, setOrg] = useState(null);
-        const [bookingType, setBookingType] = useState(null); // null | 'room' | 'table'
-        const [confirmed, setConfirmed] = useState(null);
+        const [loadState,   setLoadState]   = useState("loading");
+        const [org,         setOrg]         = useState(null);
+        const [bookingType, setBookingType] = useState(null);
+        const [confirmed,   setConfirmed]   = useState(null);
 
         useEffect(() => {
-          if (!slug) {
-            setLoadState("error");
-            return;
-          }
+          if (!slug) { setLoadState("error"); return; }
           fetch(`${WS_URI}/organisations/public/${slug}`)
-            .then((r) => {
-              if (!r.ok) throw new Error();
-              return r.json();
-            })
-            .then((data) => {
-              setOrg(data);
-              setLoadState("ready");
-            })
+            .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
+            .then((data) => { setOrg(data); setLoadState("ready"); })
             .catch(() => setLoadState("error"));
         }, [slug]);
 
-        const hasRooms = org?.entities?.some((e) => e.type === "room");
+        const hasRooms  = org?.entities?.some((e) => e.type === "room");
         const hasTables = org?.entities?.some((e) => e.type === "table");
-
-        const handleReset = () => {
-          setBookingType(null);
-          setConfirmed(null);
-        };
 
         return (
           <div className="page">
             <div className="header">
-              <div className="header-logo">at9.app</div>
+              <div className="header-eyebrow">Booking</div>
               {org && <div className="header-org">{org.name}</div>}
               {!org && loadState === "loading" && (
-                <div className="header-org" style={{ opacity: 0.5 }}>
-                  Loading…
-                </div>
+                <div className="header-org" style={{ color: "var(--text-3)" }}>Loading…</div>
               )}
             </div>
 
             <div className="content">
+
               {loadState === "loading" && (
                 <div className="state-center">
                   <div className="spinner" />
-                  <span style={{ color: "var(--text-2)", fontSize: 14 }}>
-                    Loading…
-                  </span>
+                  <span style={{ color: "var(--text-2)", fontSize: 14 }}>Loading…</span>
                 </div>
               )}
 
               {loadState === "error" && (
                 <div className="state-center">
-                  <div style={{ fontSize: 36 }}>🔍</div>
-                  <div style={{ fontWeight: 600, fontSize: 18 }}>
-                    Organisation not found
-                  </div>
-                  <div
-                    style={{
-                      color: "var(--text-2)",
-                      fontSize: 14,
-                      textAlign: "center",
-                    }}
-                  >
-                    Check the link and try again, or contact the business
-                    directly.
+                  <IconSearch />
+                  <div style={{ fontWeight: 600, fontSize: 18 }}>Not found</div>
+                  <div style={{ color: "var(--text-2)", fontSize: 14, maxWidth: 260 }}>
+                    Check the link and try again, or contact the business directly.
                   </div>
                 </div>
               )}
 
               {loadState === "ready" && confirmed && (
-                <Confirmation
-                  booking={confirmed}
-                  orgName={org.name}
-                  onReset={handleReset}
-                />
+                <Confirmation booking={confirmed} orgName={org.name}
+                  onReset={() => { setBookingType(null); setConfirmed(null); }} />
               )}
 
               {loadState === "ready" && !confirmed && !bookingType && (
                 <>
-                  <p
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 500,
-                      marginBottom: 20,
-                      color: "var(--text-2)",
-                    }}
-                  >
-                    What would you like to book?
-                  </p>
-                  <div
-                    className={`type-grid${!hasRooms || !hasTables ? "" : ""}`}
-                  >
-                    {hasRooms && (
-                      <div
-                        className="type-card"
-                        onClick={() => setBookingType("room")}
-                      >
-                        <div className="type-card-icon">🛏</div>
-                        <div className="type-card-label">Book Room</div>
-                        <div className="type-card-sub">Overnight stays</div>
+                  {hasRooms || hasTables ? (
+                    <>
+                      <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-2)", marginBottom: 16 }}>
+                        What would you like to book?
+                      </p>
+                      <div className="type-grid">
+                        {hasRooms && (
+                          <div className="type-card" onClick={() => setBookingType("room")}>
+                            <div className="type-card-icon"><IconCalendar /></div>
+                            <div className="type-card-label">Book Room</div>
+                            <div className="type-card-sub">Select dates</div>
+                          </div>
+                        )}
+                        {hasTables && (
+                          <div className="type-card" onClick={() => setBookingType("table")}>
+                            <div className="type-card-icon"><IconClock /></div>
+                            <div className="type-card-label">Book Table</div>
+                            <div className="type-card-sub">Select a time</div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {hasTables && (
-                      <div
-                        className="type-card"
-                        onClick={() => setBookingType("table")}
-                      >
-                        <div className="type-card-icon">🍽</div>
-                        <div className="type-card-label">Book Table</div>
-                        <div className="type-card-sub">Reserve a spot</div>
+                    </>
+                  ) : (
+                    <div className="state-center">
+                      <IconSearch />
+                      <div style={{ fontWeight: 600, fontSize: 18 }}>No bookings available</div>
+                      <div style={{ color: "var(--text-2)", fontSize: 14, maxWidth: 260 }}>
+                        This business hasn't set up online bookings yet. Please contact them directly.
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </>
               )}
 
-              {loadState === "ready" &&
-                !confirmed &&
-                bookingType === "room" && (
-                  <RoomBooking
-                    org={org}
-                    entities={org.entities}
-                    onBack={() => setBookingType(null)}
-                    onDone={(b) => setConfirmed(b)}
-                  />
-                )}
+              {loadState === "ready" && !confirmed && bookingType === "room" && (
+                <RoomBooking org={org} entities={org.entities}
+                  onBack={() => setBookingType(null)}
+                  onDone={(b) => setConfirmed(b)} />
+              )}
 
-              {loadState === "ready" &&
-                !confirmed &&
-                bookingType === "table" && (
-                  <TableBooking
-                    org={org}
-                    entities={org.entities}
-                    preferences={org.preferences ?? {}}
-                    onBack={() => setBookingType(null)}
-                    onDone={(b) => setConfirmed(b)}
-                  />
-                )}
+              {loadState === "ready" && !confirmed && bookingType === "table" && (
+                <TableBooking org={org} entities={org.entities}
+                  preferences={org.preferences ?? {}}
+                  onBack={() => setBookingType(null)}
+                  onDone={(b) => setConfirmed(b)} />
+              )}
+
             </div>
           </div>
         );
