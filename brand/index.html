@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>at9 — Brand System</title>
+<style>
+  /* ─── COLOUR TOKENS ──────────────────────────────────────────────── */
+  :root, [data-theme="light"] {
+    --bg: #FBF7F4;
+    --surface: #FFFFFF;
+    --surface-elevated: #FFFFFF;
+    --on-bg: #1A1625;
+    --on-surface: #1A1625;
+
+    --primary: #5B3FE8;
+    --primary-pressed: #4830C4;
+    --on-primary: #FFFFFF;
+    --primary-container: #E8E2FF;
+    --on-primary-container: #1F0F6B;
+
+    --secondary: #C81B7A;
+    --secondary-pressed: #A8125F;
+    --on-secondary: #FFFFFF;
+    --secondary-container: #FCE4F2;
+    --on-secondary-container: #6B0030;
+
+    --tertiary: #A8FF8C;
+    --tertiary-pressed: #8FE874;
+    --on-tertiary: #0A3D14;
+    --tertiary-container: #D6FFC9;
+    --on-tertiary-container: #0A3D14;
+
+    --text: #1A1625;
+    --text-secondary: #4A4458;
+    --text-tertiary: #6B6478;
+
+    --outline: #C5BFD0;
+    --outline-variant: #E5E0EC;
+    --border: #E5E0EC;
+
+    --success: #1F9D5C;
+    --success-container: #C7F2D9;
+    --on-success-container: #003D1F;
+    --info: #1B6FD6;
+    --info-container: #D6E7FF;
+    --on-info-container: #003366;
+    --warning: #B8721C;
+    --warning-container: #FFE4B8;
+    --on-warning-container: #3D2400;
+    --error: #C0392B;
+    --on-error: #FFFFFF;
+    --error-container: #FFEDE9;
+    --on-error-container: #4E0D00;
+
+    --pastel-violet: #B0A0D8;
+    --pastel-pink: #DC9ED8;
+    --pastel-lime: #8EC878;
+    --pastel-sand: #EDCB96;
+    --on-pastel-violet: #1C0E68;
+    --on-pastel-pink: #3D0048;
+    --on-pastel-lime: #0C3010;
+    --on-pastel-sand: #3A2800;
+
+    --disabled-text: #9A93A6;
+    --disabled-bg: #EFEAF2;
+    --disabled-border: #D8D2DC;
+
+    --page-bg: #F0EBE6;
+  }
+
+  [data-theme="dark"] {
+    --bg: #141218;
+    --surface: #1F1D24;
+    --surface-elevated: #2A2730;
+    --on-bg: #EDE7F2;
+    --on-surface: #EDE7F2;
+
+    --primary: #C5B8FF;
+    --primary-pressed: #A89AEB;
+    --on-primary: #1F0F6B;
+    --primary-container: #3D2D8C;
+    --on-primary-container: #E8E2FF;
+
+    --secondary: #FF80C8;
+    --secondary-pressed: #E065A8;
+    --on-secondary: #6B0030;
+    --secondary-container: #7A0A3C;
+    --on-secondary-container: #FFD9EC;
+
+    --tertiary: #A8FF8C;
+    --tertiary-pressed: #8FE874;
+    --on-tertiary: #0A3D14;
+    --tertiary-container: #1F5C2E;
+    --on-tertiary-container: #D6FFC9;
+
+    --text: #EDE7F2;
+    --text-secondary: #C5BED1;
+    --text-tertiary: #948CA3;
+
+    --outline: #5C5668;
+    --outline-variant: #3A3543;
+    --border: #3A3543;
+
+    --success: #7DDDA8;
+    --success-container: #0F5C36;
+    --on-success-container: #C7F2D9;
+    --info: #6EC3FF;
+    --info-container: #0A4A80;
+    --on-info-container: #CCE8FF;
+    --warning: #EDC57D;
+    --warning-container: #704414;
+    --on-warning-container: #FFE4B8;
+    --error: #FF3B30;
+    --on-error: #4E0000;
+    --error-container: #7A0A0A;
+    --on-error-container: #FFD0CC;
+
+    --pastel-violet: #9284C8;
+    --pastel-pink: #C490C0;
+    --pastel-lime: #72A85E;
+    --pastel-sand: #D4A85A;
+    --on-pastel-violet: #180864;
+    --on-pastel-pink: #380040;
+    --on-pastel-lime: #0A2808;
+    --on-pastel-sand: #3A2800;
+
+    --disabled-text: #5C5668;
+    --disabled-bg: #2A2730;
+    --disabled-border: #3A3543;
+
+    --page-bg: #0A080D;
+  }
+
+  /* ─── RESET & BASE ───────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--page-bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  /* ─── LAYOUT ─────────────────────────────────────────────────────── */
+  .page-wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  .section {
+    margin-bottom: 80px;
+  }
+
+  /* ─── THEME TOGGLE ───────────────────────────────────────────────── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+
+  .theme-toggle button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+  }
+
+  .theme-toggle button.active {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+
+  /* ─── SECTION HEADING ────────────────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .section-num {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ─── GRIDS ──────────────────────────────────────────────────────── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+  @media (max-width: 900px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid-2, .grid-4 { grid-template-columns: 1fr; }
+    .page-wrapper { padding: 48px 16px 96px; }
+  }
+
+  /* ─── CARDS ──────────────────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .card-body { padding: 20px; }
+
+  /* ─── PILLS ──────────────────────────────────────────────────────── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ─── EYEBROW ────────────────────────────────────────────────────── */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  HERO                                                              */
+  /* ────────────────────────────────────────────────────────────────── */
+  .hero {
+    background: var(--primary);
+    border-radius: 24px;
+    padding: 56px 48px 40px;
+    position: relative;
+    overflow: hidden;
+    color: var(--on-primary);
+    margin-bottom: 80px;
+  }
+
+  .hero-deco {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-deco-1 {
+    width: 300px; height: 300px;
+    background: var(--secondary);
+    opacity: 0.25;
+    top: -80px; right: -60px;
+  }
+  .hero-deco-2 {
+    width: 180px; height: 180px;
+    background: var(--tertiary);
+    opacity: 0.3;
+    bottom: -40px; right: 160px;
+  }
+  .hero-deco-3 {
+    width: 120px; height: 120px;
+    background: var(--secondary);
+    opacity: 0.18;
+    bottom: 20px; right: 40px;
+  }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .hero-logo {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 24px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    letter-spacing: -0.04em;
+  }
+
+  .hero-tagline {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .hero-tagline em {
+    color: var(--tertiary);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 36px;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero-badge-primary {
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .hero-badge-secondary {
+    background: var(--secondary-container);
+    color: var(--on-secondary-container);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .hero-badge-tertiary {
+    background: var(--tertiary-container);
+    color: var(--on-tertiary-container);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  01 — COLOUR TRIAD                                                 */
+  /* ────────────────────────────────────────────────────────────────── */
+  .brand-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-card-body {
+    padding: 20px 20px 16px;
+    flex: 1;
+  }
+
+  .brand-card-eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+
+  .brand-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .brand-card p {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .swatch-strip {
+    display: flex;
+    height: 40px;
+  }
+
+  .swatch-strip-item {
+    flex: 1;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  02 — PINK VS RED                                                  */
+  /* ────────────────────────────────────────────────────────────────── */
+  .comparison-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .comparison-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 600px) {
+    .comparison-inner { grid-template-columns: 1fr; }
+  }
+
+  .comparison-col {
+    padding: 24px;
+  }
+
+  .comparison-col + .comparison-col {
+    border-left: 1px solid var(--border);
+  }
+
+  .comparison-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .colour-bars {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .colour-bar {
+    flex: 1;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-end;
+    padding: 6px 8px;
+  }
+
+  .colour-bar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.03em;
+  }
+
+  .comparison-note {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .mock-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .comparison-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .comparison-footer p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  03 — COLOUR ROLES                                                 */
+  /* ────────────────────────────────────────────────────────────────── */
+  .role-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .role-card-header {
+    height: 180px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .role-tag {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 4px;
+  }
+
+  .role-hex {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+
+  .role-card-body {
+    padding: 20px;
+  }
+
+  .role-card-body h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .role-card-body p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .token-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+  }
+
+  .token-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+
+  .usage-note {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    line-height: 1.55;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  04 — 60-30-7-3                                                    */
+  /* ────────────────────────────────────────────────────────────────── */
+  .ratio-bar {
+    display: flex;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .ratio-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    transition: flex 0.3s;
+  }
+
+  .ratio-legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .ratio-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .ratio-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  05 — COMPONENT SHOWCASE                                           */
+  /* ────────────────────────────────────────────────────────────────── */
+  .component-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .component-block-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 18px;
+  }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .btn {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary);
+  }
+
+  .btn-secondary-outlined {
+    background: transparent;
+    color: var(--secondary);
+    border-color: var(--secondary);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border-color: transparent;
+  }
+
+  .btn-error-outlined {
+    background: transparent;
+    color: var(--error);
+    border-color: var(--error);
+  }
+
+  .btn-disabled {
+    background: var(--disabled-bg);
+    color: var(--disabled-text);
+    border-color: var(--disabled-border);
+    cursor: not-allowed;
+  }
+
+  .btn-success {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+  }
+
+  .btn-caption {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    line-height: 1.55;
+  }
+
+  /* Form fields */
+  .fields-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 700px) {
+    .fields-row { grid-template-columns: 1fr; }
+  }
+
+  .field-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .field-label-error { color: var(--error); }
+
+  .field {
+    height: 48px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    padding: 0 16px;
+    font-size: 14px;
+    color: var(--text-tertiary);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .field::placeholder { color: var(--text-tertiary); }
+
+  .field-focused {
+    border-color: var(--secondary);
+    border-width: 2px;
+  }
+
+  .field-error-state {
+    border-color: var(--error);
+    border-width: 2px;
+  }
+
+  .field-error-msg {
+    font-size: 12px;
+    color: var(--error);
+  }
+
+  /* Pills row */
+  .pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Card states */
+  .card-states-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .card-states-row { grid-template-columns: 1fr; }
+  }
+
+  .plan-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .plan-card-default {
+    border: 1px solid var(--border);
+  }
+
+  .plan-card-selected {
+    border: 2px solid var(--secondary);
+  }
+
+  .plan-card-pill-tr {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .plan-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .plan-card-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .plan-card-price sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .plan-card-body {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  06 — APP SCREEN MOCKUPS                                           */
+  /* ────────────────────────────────────────────────────────────────── */
+  .mockup-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  /* Subscription tray */
+  .sub-tray {
+    max-width: 360px;
+    width: 100%;
+    background: var(--surface-elevated);
+    border-radius: 24px 24px 16px 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .sub-tray-handle {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 4px;
+  }
+
+  .sub-tray-handle-bar {
+    width: 36px;
+    height: 4px;
+    background: var(--outline);
+    border-radius: 2px;
+  }
+
+  .sub-tray-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    padding: 8px 20px 16px;
+  }
+
+  .sub-tray-body {
+    padding: 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sub-plan-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .sub-plan-card-default {
+    border: 1px solid var(--border);
+  }
+
+  .sub-plan-card-active {
+    border: 2px solid var(--secondary);
+  }
+
+  .sub-plan-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .sub-plan-sub {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+
+  .sub-plan-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+
+  .sub-plan-price span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .sub-feature-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .sub-feature-check {
+    color: var(--success);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .sub-btn-full {
+    width: 100%;
+    margin-top: 14px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sub-btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary);
+  }
+
+  .sub-btn-error-outlined {
+    background: transparent;
+    color: var(--error);
+    border-color: var(--error);
+    width: auto;
+    padding: 0 20px;
+    margin-top: 14px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .sub-plan-pill-tr {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .sub-tray-links {
+    padding: 8px 20px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+
+  .sub-tray-links a {
+    color: var(--text-tertiary);
+    text-decoration: none;
+  }
+
+  /* Booking cards strip */
+  .booking-strip {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .booking-strip-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .booking-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--outline) transparent;
+  }
+
+  .booking-card {
+    border-radius: 16px;
+    padding: 16px;
+    min-width: 160px;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .booking-card-room {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .booking-card-time {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-bottom: 4px;
+  }
+
+  .booking-card-guest {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-bottom: 12px;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  07 — WEBSITE USE CASES                                            */
+  /* ────────────────────────────────────────────────────────────────── */
+
+  /* Marketing hero */
+  .mktg-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #3B2ABB 100%);
+    border-radius: 20px;
+    padding: 52px 52px 44px;
+    position: relative;
+    overflow: hidden;
+    color: var(--on-primary);
+    margin-bottom: 24px;
+  }
+
+  .mktg-hero-deco-1 {
+    position: absolute;
+    width: 200px; height: 200px;
+    background: var(--tertiary);
+    opacity: 0.2;
+    border-radius: 50%;
+    bottom: -60px;
+    right: 80px;
+    pointer-events: none;
+  }
+
+  .mktg-hero-deco-2 {
+    position: absolute;
+    width: 150px; height: 150px;
+    background: var(--secondary);
+    opacity: 0.25;
+    border-radius: 50%;
+    top: -30px;
+    right: -20px;
+    pointer-events: none;
+  }
+
+  .mktg-hero-inner { position: relative; z-index: 1; }
+
+  .mktg-hero-eyebrow {
+    display: inline-flex;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .mktg-hero h2 {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.18;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .mktg-hero h2 em {
+    color: var(--tertiary);
+    font-style: italic;
+  }
+
+  .mktg-hero-body {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 28px;
+    max-width: 540px;
+    line-height: 1.6;
+  }
+
+  .mktg-hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .mktg-btn-primary {
+    background: #fff;
+    color: var(--primary);
+    border: 2px solid #fff;
+    padding: 0 22px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font-family: inherit;
+  }
+
+  .mktg-btn-outlined {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.7);
+    padding: 0 22px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font-family: inherit;
+  }
+
+  /* Pricing cards */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 600px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .mktg-hero { padding: 32px 24px 28px; }
+    .mktg-hero h2 { font-size: 26px; }
+  }
+
+  .pricing-card-free {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .pricing-card-pro {
+    background: var(--primary);
+    border-radius: 16px;
+    padding: 28px;
+    color: var(--on-primary);
+  }
+
+  .pricing-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .pricing-price {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .pricing-period {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pricing-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+  }
+
+  .pricing-check-success {
+    color: var(--success);
+    font-weight: 700;
+  }
+
+  .pricing-check-tertiary {
+    color: var(--tertiary);
+    font-weight: 700;
+  }
+
+  .pricing-btn-free {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pricing-btn-pro {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #fff;
+    color: var(--primary);
+    border: 2px solid #fff;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Feature strip */
+  .feature-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .feature-strip { grid-template-columns: 1fr; }
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  .feature-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+
+  .feature-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .feature-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  08 — PASTEL ILLUSTRATION REGISTER                                 */
+  /* ────────────────────────────────────────────────────────────────── */
+  .pastel-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .pastel-card-illo {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pastel-card-info {
+    padding: 16px;
+  }
+
+  .pastel-card-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .pastel-card-hex {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+  }
+
+  .pastel-card-use {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  09 — SEMANTIC COLOURS                                             */
+  /* ────────────────────────────────────────────────────────────────── */
+  .semantic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .semantic-stripe {
+    height: 6px;
+  }
+
+  .semantic-body {
+    padding: 16px 18px;
+  }
+
+  .semantic-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .semantic-hex {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  10 — TYPOGRAPHY ON COLOUR                                         */
+  /* ────────────────────────────────────────────────────────────────── */
+  .type-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .type-card-inner {
+    padding: 28px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .type-display {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .type-body {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  11 — LOGO LOCKUPS                                                 */
+  /* ────────────────────────────────────────────────────────────────── */
+  .logo-tile {
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo-mark {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
+
+  .logo-tile-label {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.6;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  12 — DESIGN RULES                                                 */
+  /* ────────────────────────────────────────────────────────────────── */
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .rule-preview {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .rule-info {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .rule-tag {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .rule-tag-do { color: var(--success); }
+  .rule-tag-dont { color: var(--error); }
+
+  .rule-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Rule preview elements */
+  .rule-plan-card-do {
+    background: var(--surface-elevated);
+    border: 2px solid var(--secondary);
+    border-radius: 10px;
+    padding: 14px 18px;
+    min-width: 180px;
+  }
+
+  .rule-plan-card-dont {
+    background: var(--surface-elevated);
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    padding: 14px 18px;
+    min-width: 180px;
+  }
+
+  .rule-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .rule-card-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .rule-lime-btn {
+    background: var(--tertiary);
+    color: var(--on-tertiary);
+    border: 2px solid var(--tertiary);
+    padding: 0 20px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  13 — ACCESSIBILITY TABLE                                          */
+  /* ────────────────────────────────────────────────────────────────── */
+  .a11y-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  th {
+    background: var(--bg);
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 18px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:nth-child(even) td { background: var(--bg); }
+
+  .a11y-sample {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  .grade-aaa {
+    color: var(--on-success-container);
+    background: var(--success-container);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-weight: 800;
+  }
+
+  .grade-aa {
+    color: var(--on-info-container);
+    background: var(--info-container);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-weight: 800;
+  }
+
+  .ratio-val {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /*  14 — PRODUCT FEATURES                                             */
+  /* ────────────────────────────────────────────────────────────────── */
+  .features-intro {
+    margin-bottom: 28px;
+  }
+
+  .features-intro h2 {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .features-intro h2 em {
+    color: var(--secondary);
+    font-style: italic;
+  }
+
+  .features-intro p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 540px;
+    line-height: 1.65;
+  }
+
+  .features-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .bento-card {
+    border-radius: 18px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bento-card-hero {
+    grid-column: span 2;
+    background: linear-gradient(135deg, var(--primary) 0%, #3B2ABB 100%);
+    min-height: 240px;
+    justify-content: flex-end;
+  }
+
+  .bento-card-hero .bento-deco {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .bento-card-hero .bento-deco-1 {
+    width: 260px; height: 260px;
+    background: var(--secondary);
+    opacity: 0.2;
+    top: -90px; right: -60px;
+  }
+
+  .bento-card-hero .bento-deco-2 {
+    width: 130px; height: 130px;
+    background: var(--tertiary);
+    opacity: 0.22;
+    bottom: -30px; right: 180px;
+  }
+
+  .bento-card-surface {
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .bento-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+
+  .bento-eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .bento-heading {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .bento-body {
+    font-size: 13px;
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .bento-url-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.24);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px;
+    width: fit-content;
+  }
+
+  .bento-hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 860px) {
+    .features-bento { grid-template-columns: repeat(2, 1fr); }
+    .bento-card-hero { grid-column: span 2; }
+  }
+
+  @media (max-width: 560px) {
+    .features-bento { grid-template-columns: 1fr; }
+    .bento-card-hero { grid-column: span 1; min-height: 200px; }
+    .features-intro h2 { font-size: 24px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- THEME TOGGLE -->
+<div class="theme-toggle">
+  <button id="btn-light" class="active" onclick="setTheme('light')">Light</button>
+  <button id="btn-dark" onclick="setTheme('dark')">Dark</button>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  HERO                                                          -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-deco hero-deco-1"></div>
+    <div class="hero-deco hero-deco-2"></div>
+    <div class="hero-deco hero-deco-3"></div>
+    <div class="hero-inner">
+      <div class="hero-logo">a9</div>
+      <div class="hero-tagline">Schedules that <em>just work.</em></div>
+      <div class="hero-sub">For cafés, kennels, salons and small hotels.</div>
+      <div class="hero-badges">
+        <span class="hero-badge-primary">Confident</span>
+        <span class="hero-badge-secondary">Warm</span>
+        <span class="hero-badge-tertiary">Alive</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  01 — THE COLOUR TRIAD                                         -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">The colour triad</h2>
+    </div>
+    <div class="grid-3">
+
+      <!-- Primary -->
+      <div class="brand-card">
+        <div class="brand-card-body">
+          <div class="brand-card-eyebrow">Primary · Violet</div>
+          <h3>Confident, not corporate</h3>
+          <p>Deep violet anchors every action. CTAs, the logo, navigation — this is the colour users remember and trust. It signals craft and capability without tipping into cold enterprise blue.</p>
+        </div>
+        <div class="swatch-strip">
+          <div class="swatch-strip-item" style="background: var(--primary);"></div>
+          <div class="swatch-strip-item" style="background: var(--primary-pressed);"></div>
+          <div class="swatch-strip-item" style="background: var(--primary-container);"></div>
+        </div>
+      </div>
+
+      <!-- Secondary -->
+      <div class="brand-card">
+        <div class="brand-card-body">
+          <div class="brand-card-eyebrow">Secondary · Fuchsia-Pink</div>
+          <h3>Warm and human</h3>
+          <p>Fuchsia-pink adds the human touch — empty states, selected card borders, 'Current Plan' badges. Cool enough (magenta direction) to read as pink, not red. At least 47° of hue distance from error keeps the two unmistakably separate.</p>
+        </div>
+        <div class="swatch-strip">
+          <div class="swatch-strip-item" style="background: var(--secondary);"></div>
+          <div class="swatch-strip-item" style="background: var(--secondary-container);"></div>
+          <div class="swatch-strip-item" style="background: var(--pastel-pink);"></div>
+        </div>
+      </div>
+
+      <!-- Tertiary -->
+      <div class="brand-card">
+        <div class="brand-card-body">
+          <div class="brand-card-eyebrow">Tertiary · Lime</div>
+          <h3>Alive in the details</h3>
+          <p>Lime earns attention by staying rare. One dot, one tick, one badge. Never a background. Use it and the eye finds it; overuse it and it becomes noise.</p>
+        </div>
+        <div class="swatch-strip">
+          <div class="swatch-strip-item" style="background: var(--tertiary);"></div>
+          <div class="swatch-strip-item" style="background: var(--tertiary-container);"></div>
+          <div class="swatch-strip-item" style="background: var(--pastel-lime);"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  02 — PINK VS RED                                              -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Pink vs red: the separation problem solved</h2>
+    </div>
+    <div class="comparison-card">
+      <div class="comparison-inner">
+
+        <!-- Before -->
+        <div class="comparison-col">
+          <div class="comparison-label" style="color: var(--error);">Before — Old rose</div>
+          <div class="colour-bars">
+            <div class="colour-bar" style="background: #C2185B;">
+              <span class="colour-bar-label">Secondary</span>
+            </div>
+            <div class="colour-bar" style="background: var(--error);">
+              <span class="colour-bar-label">Error</span>
+            </div>
+          </div>
+          <p class="comparison-note">HSL 338° vs 7° — only 31° apart. Both warm, both dark. Hard to tell at small sizes.</p>
+          <div class="mock-pills">
+            <span class="pill" style="background: #C2185B; color: #fff;">Current Plan</span>
+            <span class="pill" style="background: var(--error); color: var(--on-error);">Cancelled</span>
+          </div>
+        </div>
+
+        <!-- After -->
+        <div class="comparison-col">
+          <div class="comparison-label" style="color: var(--success);">After — New fuchsia</div>
+          <div class="colour-bars">
+            <div class="colour-bar" style="background: var(--secondary);">
+              <span class="colour-bar-label">Secondary</span>
+            </div>
+            <div class="colour-bar" style="background: var(--error);">
+              <span class="colour-bar-label">Error</span>
+            </div>
+          </div>
+          <p class="comparison-note">HSL 320° vs 7° — 47° apart + opposite temperatures. Cool magenta-pink vs warm orange-red. Instantly distinct.</p>
+          <div class="mock-pills">
+            <span class="pill" style="background: var(--secondary); color: var(--on-secondary);">Current Plan</span>
+            <span class="pill" style="background: var(--error); color: var(--on-error);">Cancelled</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="comparison-footer">
+        <p>Temperature contrast is as important as hue distance. Fuchsia (secondary) leans toward cool blue-purple. Tomato red (error) leans toward warm orange. Even at 4px text size, they read differently.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  03 — COLOUR ROLES                                             -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Colour roles</h2>
+    </div>
+    <div class="grid-3">
+
+      <!-- Primary -->
+      <div class="role-card">
+        <div class="role-card-header" style="background: var(--primary); color: var(--on-primary);">
+          <div class="role-tag">PRIMARY · 70% of brand surface</div>
+          <div style="font-size: 20px; font-weight: 800; margin-bottom: 2px;">The brand carrier</div>
+          <div class="role-hex">#5B3FE8 / #C5B8FF</div>
+        </div>
+        <div class="role-card-body">
+          <p>Logo, primary CTAs, navigation active states, key brand moments. This is the colour users see and remember.</p>
+          <div class="token-grid">
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--primary);"></div>
+              <span>primary</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--primary-pressed);"></div>
+              <span>pressed</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--primary-container); border-color: var(--outline);"></div>
+              <span>container</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--on-primary-container);"></div>
+              <span>on-container</span>
+            </div>
+          </div>
+          <div class="usage-note">Use for: primary buttons, links, active nav, brand surfaces, app icon.</div>
+        </div>
+      </div>
+
+      <!-- Secondary -->
+      <div class="role-card">
+        <div class="role-card-header" style="background: var(--secondary); color: var(--on-secondary);">
+          <div class="role-tag">SECONDARY · 25% — supporting</div>
+          <div style="font-size: 20px; font-weight: 800; margin-bottom: 2px;">The warmth</div>
+          <div class="role-hex">#C81B7A / #FF80C8</div>
+        </div>
+        <div class="role-card-body">
+          <p>Selected states, plan card borders, 'Current Plan' badges, human-moment surfaces. Fuchsia not rose — 47° hue gap from error, opposite temperature.</p>
+          <div class="token-grid">
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--secondary);"></div>
+              <span>secondary</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--secondary-pressed);"></div>
+              <span>pressed</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--secondary-container); border-color: var(--outline);"></div>
+              <span>container</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--on-secondary-container);"></div>
+              <span>on-container</span>
+            </div>
+          </div>
+          <div class="usage-note">Use for: selected card borders, secondary pills, empty-state accents, subscription highlights.</div>
+        </div>
+      </div>
+
+      <!-- Tertiary -->
+      <div class="role-card">
+        <div class="role-card-header" style="background: var(--tertiary); color: var(--on-tertiary);">
+          <div class="role-tag">TERTIARY · 5% — accent only</div>
+          <div style="font-size: 20px; font-weight: 800; margin-bottom: 2px;">The signal</div>
+          <div class="role-hex">#A8FF8C</div>
+        </div>
+        <div class="role-card-body">
+          <p>Tiny live moments — a confirmation tick, a 'now' dot, a 'Popular' badge. The most eye-catching colour in the palette, which means it must be the rarest.</p>
+          <div class="token-grid">
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--tertiary);"></div>
+              <span>tertiary</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--tertiary-pressed);"></div>
+              <span>pressed</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--tertiary-container); border-color: var(--outline);"></div>
+              <span>container</span>
+            </div>
+            <div class="token-item">
+              <div class="token-dot" style="background: var(--on-tertiary-container);"></div>
+              <span>on-container</span>
+            </div>
+          </div>
+          <div class="usage-note">Use for: success ticks, active-now indicators, 'Popular' badges, feature highlights.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  04 — 60-30-7-3 RULE                                           -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">60–30–7–3 rule</h2>
+    </div>
+    <div class="ratio-bar">
+      <div class="ratio-seg" style="flex: 60; background: var(--bg); color: var(--text-secondary);">
+        60% Background
+      </div>
+      <div class="ratio-seg" style="flex: 30; background: var(--primary); color: var(--on-primary);">
+        30% Primary
+      </div>
+      <div class="ratio-seg" style="flex: 7; background: var(--secondary); color: var(--on-secondary);">
+        7%
+      </div>
+      <div class="ratio-seg" style="flex: 3; background: var(--tertiary); color: var(--on-tertiary);">
+        3%
+      </div>
+    </div>
+    <div class="ratio-legend">
+      <div class="ratio-legend-item">
+        <div class="ratio-legend-dot" style="background: var(--bg); border: 1px solid var(--border);"></div>
+        <span>60% — Background / surfaces (neutral canvas)</span>
+      </div>
+      <div class="ratio-legend-item">
+        <div class="ratio-legend-dot" style="background: var(--primary);"></div>
+        <span>30% — Primary violet (CTAs, brand moments)</span>
+      </div>
+      <div class="ratio-legend-item">
+        <div class="ratio-legend-dot" style="background: var(--secondary);"></div>
+        <span>7% — Secondary fuchsia (selection, warmth)</span>
+      </div>
+      <div class="ratio-legend-item">
+        <div class="ratio-legend-dot" style="background: var(--tertiary);"></div>
+        <span>3% — Tertiary lime (signal, live moments)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  05 — COMPONENT SHOWCASE                                       -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Component showcase</h2>
+    </div>
+
+    <!-- Buttons -->
+    <div class="component-block">
+      <div class="component-block-title">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Save booking</button>
+        <button class="btn btn-secondary-outlined">Manage Plan</button>
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-error-outlined">Cancel Plan</button>
+        <button class="btn btn-disabled" disabled>Processing…</button>
+        <button class="btn btn-success">Confirmed ✓</button>
+      </div>
+      <div class="btn-caption">
+        Primary: main actions &nbsp;·&nbsp; Secondary outlined: management CTAs &nbsp;·&nbsp; Ghost: tertiary/cancel actions &nbsp;·&nbsp; Error outlined: destructive (outlined keeps it calm) &nbsp;·&nbsp; Disabled: in-progress states &nbsp;·&nbsp; Success: post-confirmation
+      </div>
+    </div>
+
+    <!-- Form fields -->
+    <div class="component-block">
+      <div class="component-block-title">Form fields — 3 states</div>
+      <div class="fields-row">
+        <div class="field-wrap">
+          <label class="field-label">Booking name</label>
+          <input class="field" type="text" placeholder="e.g. Morning grooming session">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Booking name</label>
+          <input class="field field-focused" type="text" value="Morning grooming session" readonly>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label field-label-error">Booking name</label>
+          <input class="field field-error-state" type="text" placeholder="e.g. Morning grooming session">
+          <span class="field-error-msg">This field is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pills / Badges -->
+    <div class="component-block">
+      <div class="component-block-title">Pills &amp; Badges</div>
+      <div class="pills-row">
+        <span class="pill" style="background: var(--primary-container); color: var(--on-primary-container);">Pro Plan</span>
+        <span class="pill" style="background: var(--secondary-container); color: var(--on-secondary-container);">Current Plan</span>
+        <span class="pill" style="background: var(--tertiary-container); color: var(--on-tertiary-container);">Popular</span>
+        <span class="pill" style="background: var(--success-container); color: var(--on-success-container);">Active</span>
+        <span class="pill" style="background: var(--warning-container); color: var(--on-warning-container);">Expiring soon</span>
+        <span class="pill" style="background: var(--error-container); color: var(--on-error-container);">Cancelled</span>
+      </div>
+    </div>
+
+    <!-- Card states -->
+    <div class="component-block">
+      <div class="component-block-title">Card states — default &amp; selected</div>
+      <div class="card-states-row">
+        <div class="plan-card plan-card-default">
+          <div class="plan-card h4" style="font-size:16px; font-weight:700; color:var(--text); margin-bottom:4px;">Solo Plan</div>
+          <div class="plan-card-price">£14.99<sub>/mo</sub></div>
+          <div class="plan-card-body">Everything you need to manage bookings solo. Up to 2 staff, 5 resources.</div>
+        </div>
+        <div class="plan-card plan-card-selected">
+          <div class="plan-card-pill-tr">
+            <span class="pill" style="background: var(--secondary-container); color: var(--on-secondary-container);">Current Plan</span>
+          </div>
+          <div style="font-size:16px; font-weight:700; color:var(--text); margin-bottom:4px;">Solo Plan</div>
+          <div class="plan-card-price">£14.99<sub>/mo</sub></div>
+          <div class="plan-card-body">Everything you need to manage bookings solo. Up to 2 staff, 5 resources.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  06 — APP SCREEN MOCKUPS                                       -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">App screen mockups</h2>
+    </div>
+
+    <div class="mockup-row">
+
+      <!-- Subscription tray -->
+      <div class="sub-tray">
+        <div class="sub-tray-handle">
+          <div class="sub-tray-handle-bar"></div>
+        </div>
+        <div class="sub-tray-title">Choose Your Plan</div>
+        <div class="sub-tray-body">
+
+          <!-- Solo card -->
+          <div class="sub-plan-card sub-plan-card-default">
+            <div class="sub-plan-name">Solo</div>
+            <div class="sub-plan-price">£14.99 <span>/ month</span></div>
+            <div class="sub-feature-row">
+              <span class="sub-feature-check">✓</span>
+              <span>Up to 2 staff members</span>
+            </div>
+            <div class="sub-feature-row">
+              <span class="sub-feature-check">✓</span>
+              <span>5 bookable resources</span>
+            </div>
+            <button class="sub-btn-full sub-btn-primary">Subscribe to Solo</button>
+          </div>
+
+          <!-- Team card -->
+          <div class="sub-plan-card sub-plan-card-active">
+            <div class="sub-plan-pill-tr">
+              <span class="pill" style="background: var(--secondary-container); color: var(--on-secondary-container);">Current Plan</span>
+            </div>
+            <div class="sub-plan-name">Team</div>
+            <div class="sub-plan-sub">For organisations</div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <div class="sub-plan-price" style="margin-bottom:0;">£29.99 <span>/ month</span></div>
+              <span class="pill" style="background: var(--tertiary-container); color: var(--on-tertiary-container); font-size:11px;">Popular</span>
+            </div>
+            <div class="sub-feature-row">
+              <span class="sub-feature-check">✓</span>
+              <span>Unlimited staff members</span>
+            </div>
+            <div class="sub-feature-row">
+              <span class="sub-feature-check">✓</span>
+              <span>Unlimited resources</span>
+            </div>
+            <button class="sub-btn-error-outlined">Cancel Plan</button>
+          </div>
+
+        </div>
+        <div class="sub-tray-links">
+          <a href="#">Restore Purchases</a> &nbsp;·&nbsp; <a href="#">Manage Billing</a>
+        </div>
+      </div>
+
+      <!-- Booking cards strip -->
+      <div class="booking-strip">
+        <div class="booking-strip-title">Today's bookings</div>
+        <div class="booking-scroll">
+
+          <div class="booking-card" style="background: var(--pastel-violet); color: var(--on-pastel-violet);">
+            <div class="booking-card-room">Room 4</div>
+            <div class="booking-card-time">09:00 – 11:00</div>
+            <div class="booking-card-guest">Sarah M.</div>
+            <span class="pill" style="background: var(--success-container); color: var(--on-success-container);">Confirmed</span>
+          </div>
+
+          <div class="booking-card" style="background: var(--pastel-sand); color: var(--on-pastel-sand);">
+            <div class="booking-card-room">Table 7</div>
+            <div class="booking-card-time">13:30 – 14:30</div>
+            <div class="booking-card-guest">James O.</div>
+            <span class="pill" style="background: var(--success-container); color: var(--on-success-container);">Confirmed</span>
+          </div>
+
+          <div class="booking-card" style="background: var(--pastel-pink); color: var(--on-pastel-pink);">
+            <div class="booking-card-room">Studio A</div>
+            <div class="booking-card-time">15:00 – 16:00</div>
+            <div class="booking-card-guest">Priya S.</div>
+            <span class="pill" style="background: var(--warning-container); color: var(--on-warning-container);">Pending</span>
+          </div>
+
+          <div class="booking-card" style="background: var(--pastel-lime); color: var(--on-pastel-lime);">
+            <div class="booking-card-room">Kennel 2</div>
+            <div class="booking-card-time">All day</div>
+            <div class="booking-card-guest">Biscuit</div>
+            <span class="pill" style="background: var(--success-container); color: var(--on-success-container);">Active</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  07 — WEBSITE USE CASES                                        -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Website use cases</h2>
+    </div>
+
+    <!-- Marketing hero -->
+    <div class="mktg-hero">
+      <div class="mktg-hero-deco-1"></div>
+      <div class="mktg-hero-deco-2"></div>
+      <div class="mktg-hero-inner">
+        <div class="mktg-hero-eyebrow">New · Team bookings</div>
+        <h2>The booking tool your team <em>actually uses.</em></h2>
+        <p class="mktg-hero-body">Designed for cafés, kennels, salons and small hotels. Everyone on the same schedule, from any device.</p>
+        <div class="mktg-hero-btns">
+          <button class="mktg-btn-primary">Start free trial</button>
+          <button class="mktg-btn-outlined">See how it works</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing cards -->
+    <div style="margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px;">Pricing cards</div>
+    <div class="pricing-grid">
+
+      <!-- Free -->
+      <div class="pricing-card-free">
+        <div class="pricing-title" style="color: var(--text);">Free</div>
+        <div class="pricing-price" style="color: var(--text);">£0</div>
+        <div class="pricing-period" style="color: var(--text-secondary);">Forever</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature-item" style="color: var(--text-secondary);">
+            <span class="pricing-check-success">✓</span> Up to 1 staff member
+          </li>
+          <li class="pricing-feature-item" style="color: var(--text-secondary);">
+            <span class="pricing-check-success">✓</span> 3 bookable resources
+          </li>
+          <li class="pricing-feature-item" style="color: var(--text-secondary);">
+            <span class="pricing-check-success">✓</span> Email confirmations
+          </li>
+        </ul>
+        <button class="pricing-btn-free">Get started</button>
+      </div>
+
+      <!-- Pro -->
+      <div class="pricing-card-pro">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+          <div class="pricing-title" style="color: #fff;">Pro</div>
+          <span class="pill" style="background: var(--tertiary-container); color: var(--on-tertiary-container);">Popular</span>
+        </div>
+        <div class="pricing-price" style="color: #fff;">£29.99</div>
+        <div class="pricing-period" style="color: rgba(255,255,255,0.75);">/month</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature-item" style="color: rgba(255,255,255,0.85);">
+            <span class="pricing-check-tertiary">✓</span> Unlimited staff
+          </li>
+          <li class="pricing-feature-item" style="color: rgba(255,255,255,0.85);">
+            <span class="pricing-check-tertiary">✓</span> Unlimited resources
+          </li>
+          <li class="pricing-feature-item" style="color: rgba(255,255,255,0.85);">
+            <span class="pricing-check-tertiary">✓</span> Priority support
+          </li>
+        </ul>
+        <button class="pricing-btn-pro">Start free trial</button>
+      </div>
+
+    </div>
+
+    <!-- Feature strip -->
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px; margin-top: 8px;">Feature strip</div>
+    <div class="feature-strip">
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap" style="background: var(--primary-container);">📅</div>
+        <h4>Smart scheduling</h4>
+        <p>Never double-book again. Real-time availability across all your rooms, tables and resources.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap" style="background: var(--secondary-container);">👥</div>
+        <h4>Team management</h4>
+        <p>Add your team, set their days, and let everyone see their week from any device.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap" style="background: var(--tertiary-container);">✓</div>
+        <h4>Instant confirmations</h4>
+        <p>Customers get confirmation the moment a booking is made. No chasing, no phone tag.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  08 — PASTEL ILLUSTRATION REGISTER                             -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Pastel illustration register</h2>
+    </div>
+    <div class="grid-4">
+
+      <!-- Violet pastel -->
+      <div class="pastel-card">
+        <div class="pastel-card-illo" style="background: var(--pastel-violet);">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <circle cx="36" cy="26" r="14" fill="var(--on-pastel-violet)" opacity="0.25"/>
+            <circle cx="36" cy="26" r="10" fill="var(--on-pastel-violet)" opacity="0.55"/>
+            <path d="M12 62c0-13.25 10.75-24 24-24s24 10.75 24 24" stroke="var(--on-pastel-violet)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.65"/>
+          </svg>
+        </div>
+        <div class="pastel-card-info">
+          <div class="pastel-card-name">People &amp; avatars</div>
+          <div class="pastel-card-hex">#B0A0D8 / #9284C8</div>
+          <div class="pastel-card-use">Staff avatars, customer profile illustrations, team moments</div>
+        </div>
+      </div>
+
+      <!-- Pink pastel -->
+      <div class="pastel-card">
+        <div class="pastel-card-illo" style="background: var(--pastel-pink);">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <path d="M36 60 C36 60 10 44 10 26a16 16 0 0 1 26-12.5A16 16 0 0 1 62 26C62 44 36 60 36 60Z" fill="var(--on-pastel-pink)" opacity="0.35"/>
+            <path d="M36 54 C36 54 14 40 14 26a12 12 0 0 1 22-6.8A12 12 0 0 1 58 26C58 40 36 54 36 54Z" fill="var(--on-pastel-pink)" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="pastel-card-info">
+          <div class="pastel-card-name">Warmth &amp; hospitality</div>
+          <div class="pastel-card-hex">#DC9ED8 / #C490C0</div>
+          <div class="pastel-card-use">Customer cards, booking confirmations, social moments</div>
+        </div>
+      </div>
+
+      <!-- Lime pastel -->
+      <div class="pastel-card">
+        <div class="pastel-card-illo" style="background: var(--pastel-lime);">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <circle cx="36" cy="36" r="22" fill="var(--on-pastel-lime)" opacity="0.15"/>
+            <circle cx="36" cy="36" r="16" fill="var(--on-pastel-lime)" opacity="0.2"/>
+            <path d="M22 36 l9 9 l19-18" stroke="var(--on-pastel-lime)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"/>
+          </svg>
+        </div>
+        <div class="pastel-card-info">
+          <div class="pastel-card-name">Confirmation &amp; availability</div>
+          <div class="pastel-card-hex">#8EC878 / #72A85E</div>
+          <div class="pastel-card-use">Available slots, completed bookings, confirmed states</div>
+        </div>
+      </div>
+
+      <!-- Sand pastel -->
+      <div class="pastel-card">
+        <div class="pastel-card-illo" style="background: var(--pastel-sand);">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <rect x="14" y="16" width="44" height="40" rx="6" fill="var(--on-pastel-sand)" opacity="0.2"/>
+            <rect x="14" y="16" width="44" height="12" rx="6" fill="var(--on-pastel-sand)" opacity="0.4"/>
+            <rect x="14" y="22" width="44" height="6" fill="var(--on-pastel-sand)" opacity="0.25"/>
+            <line x1="26" y1="10" x2="26" y2="22" stroke="var(--on-pastel-sand)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            <line x1="46" y1="10" x2="46" y2="22" stroke="var(--on-pastel-sand)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            <rect x="22" y="34" width="8" height="6" rx="2" fill="var(--on-pastel-sand)" opacity="0.45"/>
+            <rect x="34" y="34" width="8" height="6" rx="2" fill="var(--on-pastel-sand)" opacity="0.45"/>
+            <rect x="46" y="34" width="8" height="6" rx="2" fill="var(--on-pastel-sand)" opacity="0.45"/>
+            <rect x="22" y="44" width="8" height="6" rx="2" fill="var(--on-pastel-sand)" opacity="0.35"/>
+            <rect x="34" y="44" width="8" height="6" rx="2" fill="var(--on-pastel-sand)" opacity="0.35"/>
+          </svg>
+        </div>
+        <div class="pastel-card-info">
+          <div class="pastel-card-name">Bookings &amp; time</div>
+          <div class="pastel-card-hex">#EDCB96 / #D4A85A</div>
+          <div class="pastel-card-use">Booking cards, time slots, scheduled events</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  09 — SEMANTIC COLOURS                                         -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Semantic colours</h2>
+    </div>
+    <div class="grid-4">
+
+      <!-- Success -->
+      <div class="semantic-card">
+        <div class="semantic-stripe" style="background: var(--success);"></div>
+        <div class="semantic-body">
+          <div class="semantic-name">Success</div>
+          <div class="semantic-hex">
+            Light: #1F9D5C<br>
+            Dark: #7DDDA8
+          </div>
+          <span class="pill" style="background: var(--success-container); color: var(--on-success-container);">Active</span>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="semantic-card">
+        <div class="semantic-stripe" style="background: var(--info);"></div>
+        <div class="semantic-body">
+          <div class="semantic-name">Info</div>
+          <div class="semantic-hex">
+            Light: #1B6FD6<br>
+            Dark: #6EC3FF
+          </div>
+          <span class="pill" style="background: var(--info-container); color: var(--on-info-container);">Update available</span>
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div class="semantic-card">
+        <div class="semantic-stripe" style="background: var(--warning);"></div>
+        <div class="semantic-body">
+          <div class="semantic-name">Warning</div>
+          <div class="semantic-hex">
+            Light: #B8721C<br>
+            Dark: #EDC57D
+          </div>
+          <span class="pill" style="background: var(--warning-container); color: var(--on-warning-container);">Expiring soon</span>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="semantic-card">
+        <div class="semantic-stripe" style="background: var(--error);"></div>
+        <div class="semantic-body">
+          <div class="semantic-name">Error</div>
+          <div class="semantic-hex">
+            Light: #C0392B<br>
+            Dark: #FF3B30
+          </div>
+          <span class="pill" style="background: var(--error-container); color: var(--on-error-container);">Cancelled</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  10 — TYPOGRAPHY ON COLOUR                                     -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2 class="section-title">Typography on colour</h2>
+    </div>
+    <div class="grid-2">
+
+      <!-- On primary -->
+      <div class="type-card">
+        <div class="type-card-inner" style="background: var(--primary);">
+          <div class="type-display" style="color: var(--on-primary);">Schedules that work.</div>
+          <div class="type-body" style="color: var(--on-primary);">White text on deep violet — AAA on dark, AA on light. Hero, CTAs, marketing.</div>
+        </div>
+      </div>
+
+      <!-- On secondary container -->
+      <div class="type-card">
+        <div class="type-card-inner" style="background: var(--secondary-container);">
+          <div class="type-display" style="color: var(--on-secondary-container);">Hello, Helen.</div>
+          <div class="type-body" style="color: var(--on-secondary-container);">Deep wine on pale pink. Empty states, friendly moments, onboarding.</div>
+        </div>
+      </div>
+
+      <!-- On tertiary container -->
+      <div class="type-card">
+        <div class="type-card-inner" style="background: var(--tertiary-container);">
+          <div class="type-display" style="color: var(--on-tertiary-container);">All set for May.</div>
+          <div class="type-body" style="color: var(--on-tertiary-container);">Forest green on lime. Confirmations, success states, week complete.</div>
+        </div>
+      </div>
+
+      <!-- On surface -->
+      <div class="type-card">
+        <div class="type-card-inner" style="background: var(--surface);">
+          <div class="type-display" style="color: var(--text);">May 2026</div>
+          <div class="type-body" style="color: var(--text-secondary);">The default canvas. 80% of the app. Brand colours appear sparingly on top.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  11 — LOGO LOCKUPS                                             -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <h2 class="section-title">Logo lockups</h2>
+    </div>
+    <div class="grid-4">
+
+      <!-- On background -->
+      <div class="logo-tile" style="background: var(--bg);">
+        <div class="logo-mark" style="background: var(--primary); color: var(--on-primary);">a9</div>
+        <span class="logo-tile-label" style="color: var(--text-tertiary);">On background</span>
+      </div>
+
+      <!-- On primary -->
+      <div class="logo-tile" style="background: var(--primary);">
+        <div class="logo-mark" style="background: rgba(255,255,255,0.18); color: #fff; border: 1.5px solid rgba(255,255,255,0.35);">a9</div>
+        <span class="logo-tile-label" style="color: rgba(255,255,255,0.65);">On primary</span>
+      </div>
+
+      <!-- On secondary -->
+      <div class="logo-tile" style="background: var(--secondary);">
+        <div class="logo-mark" style="background: rgba(255,255,255,0.18); color: var(--on-secondary); border: 1.5px solid rgba(255,255,255,0.3);">a9</div>
+        <span class="logo-tile-label" style="color: rgba(255,255,255,0.65);">On secondary</span>
+      </div>
+
+      <!-- On tertiary -->
+      <div class="logo-tile" style="background: var(--tertiary);">
+        <div class="logo-mark" style="background: rgba(10,61,20,0.15); color: var(--on-tertiary); border: 1.5px solid rgba(10,61,20,0.2);">a9</div>
+        <span class="logo-tile-label" style="color: var(--on-tertiary); opacity: 0.65;">On tertiary</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  12 — DESIGN RULES (DO / DON'T)                               -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <h2 class="section-title">Design rules — Do / Don't</h2>
+    </div>
+    <div class="grid-2">
+
+      <!-- Rule 1 DO -->
+      <div class="rule-card">
+        <div class="rule-preview" style="background: var(--bg);">
+          <div class="rule-plan-card-do">
+            <div class="rule-card-title">Team Plan</div>
+            <div class="rule-card-sub">Selected — 2px secondary border</div>
+          </div>
+        </div>
+        <div class="rule-info">
+          <div class="rule-tag rule-tag-do">Do ✓ — Secondary for selection</div>
+          <div class="rule-description">Use secondary (pink) for selected card states. Primary is for actions. Secondary marks state.</div>
+        </div>
+      </div>
+
+      <!-- Rule 2 DON'T -->
+      <div class="rule-card">
+        <div class="rule-preview" style="background: var(--bg);">
+          <div class="rule-plan-card-dont">
+            <div class="rule-card-title">Team Plan</div>
+            <div class="rule-card-sub">Selected — 2px primary border</div>
+          </div>
+        </div>
+        <div class="rule-info">
+          <div class="rule-tag rule-tag-dont">Don't ✗ — Primary for selection</div>
+          <div class="rule-description">Avoid using primary for selection state — it creates visual competition with primary CTA buttons on the same screen.</div>
+        </div>
+      </div>
+
+      <!-- Rule 3 DO -->
+      <div class="rule-card">
+        <div class="rule-preview" style="background: var(--bg);">
+          <button class="btn btn-error-outlined" style="pointer-events: none;">Cancel Plan</button>
+        </div>
+        <div class="rule-info">
+          <div class="rule-tag rule-tag-do">Do ✓ — Error outlined for destructive</div>
+          <div class="rule-description">Outlined error stays calm. It communicates danger without dominating. The user still sees it.</div>
+        </div>
+      </div>
+
+      <!-- Rule 4 DON'T -->
+      <div class="rule-card">
+        <div class="rule-preview" style="background: var(--bg);">
+          <button class="rule-lime-btn" style="pointer-events: none;">Get Started</button>
+        </div>
+        <div class="rule-info">
+          <div class="rule-tag rule-tag-dont">Don't ✗ — Lime as button fill</div>
+          <div class="rule-description">Don't use tertiary at scale. Its value is scarcity — a small badge or dot. Fill a button with it and you've lost the signal.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  13 — ACCESSIBILITY                                            -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <h2 class="section-title">Accessibility</h2>
+    </div>
+    <div class="a11y-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Pair</th>
+            <th>Sample</th>
+            <th>Ratio</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Text on background</td>
+            <td><span class="a11y-sample" style="background: var(--bg); color: var(--text);">Dark text on --bg</span></td>
+            <td><span class="ratio-val">15.2:1</span></td>
+            <td><span class="grade-aaa">AAA</span></td>
+          </tr>
+          <tr>
+            <td>On-primary on primary</td>
+            <td><span class="a11y-sample" style="background: #5B3FE8; color: #FFFFFF;">White on #5B3FE8</span></td>
+            <td><span class="ratio-val">4.9:1</span></td>
+            <td><span class="grade-aa">AA</span></td>
+          </tr>
+          <tr>
+            <td>On-secondary on secondary</td>
+            <td><span class="a11y-sample" style="background: #C81B7A; color: #FFFFFF;">White on #C81B7A</span></td>
+            <td><span class="ratio-val">5.3:1</span></td>
+            <td><span class="grade-aa">AA</span></td>
+          </tr>
+          <tr>
+            <td>Secondary on background</td>
+            <td><span class="a11y-sample" style="background: var(--bg); color: #C81B7A;">#C81B7A on --bg</span></td>
+            <td><span class="ratio-val">4.8:1</span></td>
+            <td><span class="grade-aa">AA</span></td>
+          </tr>
+          <tr>
+            <td>On-secondary-container</td>
+            <td><span class="a11y-sample" style="background: #FCE4F2; color: #6B0030;">#6B0030 on #FCE4F2</span></td>
+            <td><span class="ratio-val">11.4:1</span></td>
+            <td><span class="grade-aaa">AAA</span></td>
+          </tr>
+          <tr>
+            <td>On-tertiary on tertiary</td>
+            <td><span class="a11y-sample" style="background: #A8FF8C; color: #0A3D14;">#0A3D14 on #A8FF8C</span></td>
+            <td><span class="ratio-val">8.2:1</span></td>
+            <td><span class="grade-aaa">AAA</span></td>
+          </tr>
+          <tr>
+            <td>Text-secondary on bg</td>
+            <td><span class="a11y-sample" style="background: var(--bg); color: #4A4458;">#4A4458 on --bg</span></td>
+            <td><span class="ratio-val">8.1:1</span></td>
+            <td><span class="grade-aaa">AAA</span></td>
+          </tr>
+          <tr>
+            <td>Error on background</td>
+            <td><span class="a11y-sample" style="background: var(--bg); color: #C0392B;">#C0392B on --bg</span></td>
+            <td><span class="ratio-val">5.4:1</span></td>
+            <td><span class="grade-aa">AA</span></td>
+          </tr>
+          <tr>
+            <td>Error on error-container</td>
+            <td><span class="a11y-sample" style="background: #FFEDE9; color: #4E0D00;">#4E0D00 on #FFEDE9</span></td>
+            <td><span class="ratio-val">10.2:1</span></td>
+            <td><span class="grade-aaa">AAA</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  14 — PRODUCT FEATURES                                         -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">14</span>
+      <h2 class="section-title">Product features — marketing application</h2>
+    </div>
+
+    <!-- Section intro -->
+    <div class="features-intro">
+      <div class="eyebrow" style="color: var(--primary);">Everything included</div>
+      <h2>Bookings, customers, and <em>everything in between.</em></h2>
+      <p>at9 ships with every tool a small business needs to take bookings, talk to customers, and stay in control — on iOS and Android, from anywhere.</p>
+    </div>
+
+    <!-- Bento grid -->
+    <div class="features-bento">
+
+      <!-- ── HERO: Social booking link ──────────────────────────────── -->
+      <div class="bento-card bento-card-hero">
+        <div class="bento-deco bento-deco-1"></div>
+        <div class="bento-deco bento-deco-2"></div>
+        <div class="bento-hero-inner">
+          <div class="bento-url-chip">
+            🔗 at9.app/book/your-venue
+          </div>
+          <div class="bento-eyebrow" style="color: var(--tertiary);">Social-ready booking link</div>
+          <div class="bento-heading" style="color: #fff; font-size: 20px; margin-bottom: 10px;">
+            Your booking page is one link away.
+          </div>
+          <div class="bento-body" style="color: rgba(255,255,255,0.8); max-width: 420px;">
+            Share a single URL on Instagram, Facebook, or WhatsApp — no app download required. Customers pick a date, choose a space, and send their request in under a minute. You get the booking; they get the confirmation.
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Customer bookings ──────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--secondary-container);">👤</div>
+        <div class="bento-eyebrow" style="color: var(--secondary);">Customer portal</div>
+        <div class="bento-heading" style="color: var(--text);">Customers manage their own bookings.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          View, track, and cancel — directly from the at9 app. Your support queue gets shorter. You focus on the people in front of you.
+        </div>
+      </div>
+
+      <!-- ── Rooms & Tables ─────────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--primary-container);">🏠</div>
+        <div class="bento-eyebrow" style="color: var(--primary);">Rooms &amp; Tables</div>
+        <div class="bento-heading" style="color: var(--text);">Every space. One schedule.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          Overnight room stays and same-day table sittings, side by side. Drag to reschedule, tap to view — nothing falls through the cracks.
+        </div>
+      </div>
+
+      <!-- ── Messaging ──────────────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--secondary-container);">💬</div>
+        <div class="bento-eyebrow" style="color: var(--secondary);">Built-in messaging</div>
+        <div class="bento-heading" style="color: var(--text);">Talk to customers without switching apps.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          Every conversation is linked to its booking, so context is never lost. No more WhatsApp threads tangled with personal messages.
+        </div>
+      </div>
+
+      <!-- ── Operation times ───────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--primary-container);">🕐</div>
+        <div class="bento-eyebrow" style="color: var(--primary);">Operating hours</div>
+        <div class="bento-heading" style="color: var(--text);">Set your hours once. Never explain again.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          Configure opening and closing times and at9 enforces them automatically. Customers only ever see availability inside your windows.
+        </div>
+      </div>
+
+      <!-- ── Block dates ────────────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--warning-container);">🚫</div>
+        <div class="bento-eyebrow" style="color: var(--warning);">Date blocking</div>
+        <div class="bento-heading" style="color: var(--text);">Close the calendar in seconds.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          Block any date or range — public holidays, maintenance, staff days. Customers see you as unavailable. No back-and-forth needed.
+        </div>
+      </div>
+
+      <!-- ── Bookable times ─────────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--primary-container);">⚡</div>
+        <div class="bento-eyebrow" style="color: var(--primary);">Bookable slots</div>
+        <div class="bento-heading" style="color: var(--text);">Granular control over when you're open.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          Fine-tune available booking windows beyond just your opening hours. Different rules for rooms and tables? at9 handles both independently.
+        </div>
+      </div>
+
+      <!-- ── Booking notes ──────────────────────────────────────────── -->
+      <div class="bento-card bento-card-surface">
+        <div class="bento-icon" style="background: var(--tertiary-container);">📝</div>
+        <div class="bento-eyebrow" style="color: var(--on-tertiary-container);">Booking notes</div>
+        <div class="bento-heading" style="color: var(--text);">Details that don't get forgotten.</div>
+        <div class="bento-body" style="color: var(--text-secondary);">
+          Add private notes to any booking — dietary needs, preferences, special requests. They travel with the reservation, not stuck in someone's head.
+        </div>
+      </div>
+
+    </div><!-- /.features-bento -->
+  </section>
+
+</div><!-- /.page-wrapper -->
+
+<script>
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('btn-light').classList.toggle('active', theme === 'light');
+    document.getElementById('btn-dark').classList.toggle('active', theme === 'dark');
+  }
+</script>
+
+</body>
+</html>

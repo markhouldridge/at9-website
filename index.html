@@ -297,29 +297,83 @@ p { margin: 0 0 1em; color: var(--ink-2); }
 }
 .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); display: inline-block; }
 
-/* Tablet — real app screenshot wrapped in a thin device bezel, contained */
-.tablet-wrap {
+/* Hero visual — two phone frames with soft glow + decorative accents */
+.hero-phones-wrap {
   position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  height: 560px;
   display: flex;
+  align-items: center;
   justify-content: center;
+  overflow: visible;
 }
-.tablet {
-  position: relative;
-  width: 100%;
-  max-width: 620px;
+.hero-phones-bg {
+  position: absolute;
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(ellipse at 50% 50%, #E8E0FF 0%, transparent 68%);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-phone {
+  position: absolute;
   background: #1A1825;
-  border-radius: 22px;
-  padding: 10px;
-  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  border-radius: 44px;
+  box-shadow:
+    0 32px 64px -16px rgba(0,0,0,.42),
+    0 12px 24px -8px rgba(0,0,0,.24);
 }
-.tablet img {
+.hero-phone img {
   display: block;
-  width: 100%;
+  border-radius: 37px;
+  width: 240px;
   height: auto;
-  border-radius: 14px;
+}
+.hero-phone--left {
+  transform: rotate(-8deg) translate(-84px, -22px);
+  z-index: 1;
+}
+.hero-phone--right {
+  transform: rotate(6deg) translate(84px, 28px);
+  z-index: 2;
+}
+.hero-deco {
+  position: absolute;
+  pointer-events: none;
+  color: var(--primary-dark);
+  z-index: 3;
+}
+
+/* "Designed for Tablet & Mobile" badge in hero */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transform: rotate(-1deg);
+}
+.hero-badge svg { color: var(--primary-dark); flex: none; }
+
+@media (max-width: 960px) {
+  .hero-phones-wrap { height: 460px; max-width: 460px; }
+  .hero-phone img { width: 190px; }
+  .hero-phone--left  { transform: rotate(-6deg) translate(-66px, -16px); }
+  .hero-phone--right { transform: rotate(5deg)  translate(66px,  22px); }
 }
 @media (max-width: 520px) {
-  .tablet { padding: 8px; border-radius: 18px; }
+  .hero-phones-wrap { height: 360px; }
+  .hero-phone img { width: 148px; }
+  .hero-phone--left  { transform: rotate(-5deg) translate(-52px, -12px); }
+  .hero-phone--right { transform: rotate(4deg)  translate(52px,  16px); }
 }
 
 /* ---------- Spacer band (sits between hero and features) ---------- */
@@ -430,6 +484,23 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 }
 .feature-card--lavender .phone-frame { transform: rotate(-3deg); }
 .feature-card--mint     .phone-frame { transform: rotate(3deg); }
+
+/* Dual-phone layout for "Bookings in seconds" card */
+.dual-phone {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.feature-card--lavender .dual-phone .phone-frame--back {
+  transform: rotate(-9deg);
+  margin-right: -36px;
+  z-index: 0;
+  opacity: 0.88;
+}
+.feature-card--lavender .dual-phone .phone-frame--front {
+  transform: rotate(5deg);
+  z-index: 1;
+}
 
 /* Corner line-art accents around the phone */
 .feature-card .corner-deco {
@@ -830,6 +901,138 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
 }
 .provider-line .company { color: var(--ink-2); font-weight: 600; }
 
+/* ---------- Web Booking Link section ---------- */
+.book-link-section { overflow: visible; }
+.book-link-head { max-width: 640px; margin: 0 auto 24px; text-align: center; }
+.book-link-section .eyebrow { background: rgba(144,124,255,.14); color: var(--primary-dark); }
+
+/* URL bar + scattered social badge scene */
+.book-share-scene {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto 60px;
+  padding: 38px 20px 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Floating social badge chips */
+.share-badge {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px -3px rgba(0,0,0,.13);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+.share-badge svg { flex-shrink: 0; }
+.share-badge--instagram { background:#FDF2F8; color:#9B245F; top:12px; left:3%; transform:rotate(-4deg); }
+.share-badge--facebook  { background:#EEF3FF; color:#1877F2; top:12px; right:3%; transform:rotate(3deg); }
+.share-badge--whatsapp  { background:#EDFBF1; color:#128C7E; bottom:20px; left:3%; transform:rotate(2.5deg); }
+.share-badge--tiktok    { background:#FFF0F3; color:#EE1D52; bottom:20px; right:3%; transform:rotate(-3deg); }
+.share-badge--website   { background:var(--bg-mute); color:var(--ink-2); bottom:16px; left:50%; transform:translateX(-50%) rotate(-1deg); }
+@media (max-width: 780px) { .share-badge { display: none; } }
+
+/* URL bar + annotation wrapper — keeps annotation aligned relative to the bar */
+.book-url-group {
+  max-width: 540px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.book-url-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1.5px solid var(--line-2);
+  border-radius: 22px;
+  padding: 20px 28px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+}
+.book-url-icon { color: var(--primary-dark); flex-shrink: 0; }
+.book-url-base { font-size: 18px; color: var(--ink-3); font-weight: 500; white-space: nowrap; }
+.book-url-slug {
+  background: var(--bg-lavender);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 18px;
+  padding: 5px 14px;
+  border-radius: 10px;
+  white-space: nowrap;
+  border: 1px solid rgba(144,124,255,.2);
+}
+.book-url-annotation {
+  font-family: 'Caveat', cursive;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink-3);
+  transform: rotate(-1.5deg);
+  margin: 8px 0 0;
+  padding-right: 56px;
+  text-align: right;
+  display: block;
+}
+
+/* Screenshots fan */
+.book-screens {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 56px;
+}
+.book-screen {
+  background: #1A1825;
+  padding: 8px;
+  border-radius: 38px;
+  box-shadow: 0 24px 48px -12px rgba(0,0,0,.32), 0 8px 16px -4px rgba(0,0,0,.16);
+  flex-shrink: 0;
+}
+.book-screen img {
+  display: block;
+  border-radius: 31px;
+  width: 210px;
+  height: auto;
+}
+.book-screen:first-child  { transform: rotate(-6deg) translateX(36px); z-index: 1; }
+.book-screen:nth-child(2) { transform: translateY(-24px); z-index: 3; }
+.book-screen:last-child   { transform: rotate(6deg) translateX(-36px); z-index: 2; }
+
+/* App nudge card */
+.book-app-nudge {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 36px 36px 32px;
+  background: rgba(255,255,255,.8);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+}
+.book-app-nudge p { font-size: 16px; line-height: 1.65; color: var(--ink-2); margin: 0 0 26px; }
+.book-app-nudge .store-row { justify-content: center; }
+
+@media (max-width: 700px) {
+  .book-screen img { width: 165px; }
+  .book-screen:first-child { transform: rotate(-4deg) translateX(24px); }
+  .book-screen:last-child  { transform: rotate(4deg)  translateX(-24px); }
+}
+@media (max-width: 480px) {
+  .book-screen img { width: 128px; }
+  .book-screen:first-child { transform: rotate(-3deg) translateX(16px); }
+  .book-screen:last-child  { transform: rotate(3deg)  translateX(-16px); }
+  .book-url-base, .book-url-slug { font-size: 13px; }
+  .book-app-nudge { padding: 24px 20px; }
+}
+
 /* small helpers */
 .center { text-align: center; }
 </style>
@@ -875,7 +1078,7 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
       </h1>
       <p class="lead">
         At9 gives restaurants, pubs, hotels, catteries and kennels a better way
-        to manage room and table bookings — simple, fast, and always in your pocket.
+        to manage room and table bookings - simple, fast, and always in your pocket.
       </p>
       <div class="ctas store-row">
         <!-- App Store -->
@@ -925,27 +1128,29 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
       </div>
     </div>
 
-    <!-- Tablet showing a real screenshot of At9 -->
-    <div class="tablet-wrap">
-      <div class="tablet">
-        <img src="screenshot.png" alt="At9 calendar view showing bookings across rooms" />
+    <!-- Hero phones: room booking + table bookings -->
+    <div class="hero-phones-wrap">
+      <div class="hero-phone hero-phone--left">
+        <img src="assets/screenshots/app-room-booking-view.png" alt="At9 room booking calendar view" />
+      </div>
+      <div class="hero-phone hero-phone--right">
+        <img src="assets/screenshots/app-table-bookings.png" alt="At9 table bookings view" />
       </div>
     </div>
   </div>
 
 </section>
 
-<!-- ---------- GROWTH BAND (social proof, sits between hero and features) ---------- -->
+<!-- ---------- DIVIDER BAND ---------- -->
 <div class="growth-band-wrap">
   <div class="container growth-band">
     <span class="line" aria-hidden="true"></span>
     <p class="growth-text">
       <svg class="device-icon" width="26" height="22" viewBox="0 0 28 22" fill="currentColor" aria-hidden="true">
-        <!-- two abstract pill shapes — small + large, suggesting mobile + tablet -->
         <rect x="2" y="4" width="7" height="14" rx="3.5"/>
         <rect x="12" y="1" width="14" height="20" rx="3.5"/>
       </svg>
-      Works on Mobile + Tablet
+      Designed for Tablet &amp; Mobile
     </p>
     <span class="line" aria-hidden="true"></span>
   </div>
@@ -988,8 +1193,13 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
             <circle cx="17" cy="10" r="2"/>
           </svg>
 
-          <div class="phone-frame">
-            <img src="app-add-booking.png" alt="Adding a new booking in At9 — date and customer selection" />
+          <div class="dual-phone">
+            <div class="phone-frame phone-frame--back">
+              <img src="assets/screenshots/app-table-booking-form.png" alt="Adding a table booking in At9" />
+            </div>
+            <div class="phone-frame phone-frame--front">
+              <img src="assets/screenshots/app-room-booking-form.png" alt="Adding a room booking in At9" />
+            </div>
           </div>
         </div>
       </article>
@@ -1020,12 +1230,95 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
           </svg>
 
           <div class="phone-frame">
-            <img src="app-schedule-view.png" alt="At9 schedule view showing the week's bookings across rooms" />
+            <img src="assets/screenshots/app-room-booking-view.png" alt="At9 room booking calendar view showing the week's bookings" />
           </div>
         </div>
       </article>
 
     </div>
+  </div>
+</section>
+
+<!-- ---------- WEB BOOKING LINK ---------- -->
+<section id="book-link" class="section-lavender book-link-section">
+  <div class="container">
+
+    <div class="book-link-head center">
+      <span class="eyebrow">Your booking page</span>
+      <h2>One link. Every booking.</h2>
+      <p class="lead">Drop your link in your Instagram bio, Facebook page or website — customers tap, pick a time and book. Every reservation lands straight in your app, instantly.</p>
+    </div>
+
+    <!-- URL bar + scattered social icons -->
+    <div class="book-share-scene">
+
+      <span class="share-badge share-badge--instagram" aria-hidden="true">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram
+      </span>
+      <span class="share-badge share-badge--facebook" aria-hidden="true">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        Facebook
+      </span>
+      <span class="share-badge share-badge--whatsapp" aria-hidden="true">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        WhatsApp
+      </span>
+      <span class="share-badge share-badge--tiktok" aria-hidden="true">
+        <svg width="12" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.09a8.16 8.16 0 0 0 4.77 1.52V7.17a4.85 4.85 0 0 1-1.01-.48z"/></svg>
+        TikTok
+      </span>
+      <span class="share-badge share-badge--website" aria-hidden="true">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Your website
+      </span>
+
+      <div class="book-url-group">
+        <div class="book-url-bar">
+          <svg class="book-url-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          <span class="book-url-base">at9.app/book/</span>
+          <span class="book-url-slug">the-crown-pub</span>
+        </div>
+        <p class="book-url-annotation">← your name, your link</p>
+      </div>
+    </div>
+
+    <!-- Web screenshots — three phones fanned -->
+    <div class="book-screens">
+      <div class="book-screen">
+        <img src="assets/screenshots/web-book-room.png" alt="Booking a room via the At9 web link" />
+      </div>
+      <div class="book-screen">
+        <img src="assets/screenshots/web-book-room-or-table.png" alt="Customer choosing to book a room or table" />
+      </div>
+      <div class="book-screen">
+        <img src="assets/screenshots/web-book-table.png" alt="Booking a table via the At9 web link" />
+      </div>
+    </div>
+
+    <!-- App download nudge -->
+    <div class="book-app-nudge">
+      <p>Every booking lands straight in your At9 app — no manual entry, no missed reservations.<br>Customers receive a link to download At9 so they can manage their booking and message you directly.</p>
+      <div class="store-row">
+        <a class="store-badge" href="#download" aria-label="Download on the App Store">
+          <svg width="22" height="26" viewBox="0 0 24 28" fill="currentColor" aria-hidden="true"><path d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"/></svg>
+          <span class="label"><span class="small">Download on the</span><span class="big">App Store</span></span>
+        </a>
+        <a class="store-badge" href="#download" aria-label="Get it on Google Play">
+          <svg width="22" height="26" viewBox="0 0 24 28" aria-hidden="true">
+            <path d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z" fill="url(#gp1)"/>
+            <path d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z" fill="url(#gp4)"/>
+            <path d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z" fill="url(#gp3)"/>
+            <path d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z" fill="url(#gp2)"/>
+          </svg>
+          <span class="label"><span class="small">Get it on</span><span class="big">Google Play</span></span>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1108,11 +1401,13 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
           <span class="per">/ month</span>
         </div>
         <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Single user</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Unlimited bookings</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> iOS &amp; Android apps</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Email &amp; SMS reminders</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Standard support</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Single-user login</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Unlimited room &amp; table bookings</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Shareable booking link — perfect for Instagram &amp; Facebook</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Customer app — they find you and book themselves</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> In-app messaging with customers</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Block dates, set opening hours &amp; bookable times</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> iOS &amp; Android</li>
         </ul>
         <a class="btn btn-ghost" href="#download">Start with Solo</a>
       </div>
@@ -1129,9 +1424,8 @@ section#features { padding-top: 56px; padding-bottom: 80px; }
         </div>
         <ul>
           <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Everything in Solo</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Up to 10 team members</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Roles &amp; permissions</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Advanced reports &amp; exports</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Multiple users — manage bookings together</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Role-based access (admin &amp; staff)</li>
           <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Priority support</li>
         </ul>
         <a class="btn btn-primary" href="#download">Start with Team</a>
