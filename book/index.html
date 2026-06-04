@@ -4,6 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Book | At9</title>
+    <meta name="description" content="Book a room, table or appointment with At9." />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#907CFF" />
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/icons/favicon-96x96.png" />
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/icons/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -608,6 +616,16 @@
         </svg>
       );
 
+      const IconScissors = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+          <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+          <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+          <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+        </svg>
+      );
+
       // ── Calendar component ────────────────────────────────────────────────────
       const Calendar = ({ startDate, endDate, onChange, disablePast }) => {
         const today = utcMidnight(new Date());
@@ -1133,6 +1151,227 @@
         );
       };
 
+      // ── Appointment booking ───────────────────────────────────────────────────
+      const AppointmentBooking = ({ org, services, onBack, onDone }) => {
+        const today = utcMidnight(new Date());
+        const todayMonthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
+        const openHours  = org.openHours ?? [];
+        const overrides  = org.openHoursOverrides ?? [];
+
+        const [selectedService,  setSelectedService]  = useState(services.length === 1 ? services[0] : null);
+        const [selectedMonth,    setSelectedMonth]    = useState(todayMonthStart);
+        const [selectedDate,     setSelectedDate]     = useState(today);
+        const [selectedTime,     setSelectedTime]     = useState(null);
+        const [slots,            setSlots]            = useState([]);
+        const [loadingSlots,     setLoadingSlots]     = useState(false);
+        const [step,             setStep]             = useState(services.length === 1 ? "times" : "service");
+        const [loading,          setLoading]          = useState(false);
+        const [error,            setError]            = useState("");
+
+        const dates = (() => {
+          const isCurrentMonth = selectedMonth.getUTCFullYear() === today.getUTCFullYear() &&
+                                 selectedMonth.getUTCMonth() === today.getUTCMonth();
+          const startDay = isCurrentMonth ? today : selectedMonth;
+          const monthEnd = new Date(Date.UTC(selectedMonth.getUTCFullYear(), selectedMonth.getUTCMonth() + 1, 0));
+          const count = Math.round((monthEnd.getTime() - startDay.getTime()) / 86400000) + 1;
+          return Array.from({ length: Math.max(count, 0) }, (_, i) =>
+            new Date(startDay.getTime() + i * 86400000)
+          );
+        })();
+
+        const isPrevDisabled = selectedMonth.getUTCFullYear() === todayMonthStart.getUTCFullYear() &&
+                               selectedMonth.getUTCMonth() === todayMonthStart.getUTCMonth();
+        const dateStripRef = React.useRef(null);
+        const scrollStrip = (dir) => {
+          if (dateStripRef.current) dateStripRef.current.scrollBy({ left: dir * dateStripRef.current.clientWidth, behavior: 'smooth' });
+        };
+
+        useEffect(() => {
+          if (!selectedService || !selectedDate) return;
+          if (isDayClosed(selectedDate, openHours, overrides)) { setSlots([]); setSelectedTime(null); return; }
+          let cancelled = false;
+          setLoadingSlots(true);
+          setSelectedTime(null);
+          const dateStr = fmtIso(selectedDate);
+          fetch(`${WS_URI}/services/public/${selectedService.id}/availability?date=${dateStr}`)
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => { if (!cancelled) setSlots(data.slots ?? []); })
+            .catch(() => { if (!cancelled) setSlots([]); })
+            .finally(() => { if (!cancelled) setLoadingSlots(false); });
+          return () => { cancelled = true; };
+        }, [selectedService, selectedDate]);
+
+        const grouped = (() => {
+          const out = { Morning: [], Afternoon: [], Evening: [] };
+          (slots ?? []).forEach(s => {
+            const h = parseInt(s.time);
+            if (h < 12) out.Morning.push(s);
+            else if (h < 17) out.Afternoon.push(s);
+            else out.Evening.push(s);
+          });
+          return out;
+        })();
+
+        const handleSubmit = async ({ name, email, phone }) => {
+          setLoading(true);
+          setError("");
+          try {
+            const res = await fetch(`${WS_URI}/appointments/public`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                organisationId: org.id,
+                serviceId:      selectedService.id,
+                date:           fmtIso(selectedDate),
+                time:           selectedTime,
+                customerName:   name,
+                customerEmail:  email,
+                customerPhone:  phone,
+              }),
+            });
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              setError(data.message || "Something went wrong. Please try again.");
+              return;
+            }
+            onDone({ date: selectedDate, time: selectedTime, name, service: selectedService.title, type: "appointment" });
+          } catch {
+            setError("Something went wrong. Please try again.");
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        const summary = selectedService && selectedTime
+          ? `${selectedService.title} · ${fmtDow(selectedDate)} ${selectedDate.getUTCDate()} ${MONTH_NAMES[selectedDate.getUTCMonth()].slice(0,3)} · ${selectedTime}`
+          : "";
+
+        if (step === "contact") {
+          return (
+            <ContactForm
+              summary={summary}
+              onBack={() => setStep("times")}
+              onSubmit={handleSubmit}
+              loading={loading}
+              error={error}
+            />
+          );
+        }
+
+        return (
+          <div>
+            <button className="back-btn" onClick={onBack}><IconArrowLeft /> Back</button>
+
+            {/* Service selector (skip if only one service) */}
+            {services.length > 1 && (
+              <div className="card">
+                <p className="section-label">Select a service</p>
+                {services.map(s => (
+                  <div key={s.id}
+                    onClick={() => { setSelectedService(s); setStep("times"); setSlots([]); setSelectedTime(null); }}
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "12px 0", borderBottom: "1px solid var(--border)", cursor: "pointer",
+                    }}>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 600 }}>{s.title}</div>
+                      {s.description && <div style={{ fontSize: 12, color: "var(--text-2)", marginTop: 2 }}>{s.description}</div>}
+                    </div>
+                    <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
+                      {s.duration != null && <div style={{ fontSize: 12, color: "var(--text-2)" }}>{s.duration} min</div>}
+                      {s.cost != null && <div style={{ fontSize: 12, color: "var(--text-2)" }}>£{Number(s.cost).toFixed(2)}</div>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {step !== "service" && selectedService && (
+              <>
+                {services.length > 1 && (
+                  <div style={{ marginBottom: 12, padding: "10px 14px", background: "var(--accent-bg)",
+                    borderRadius: "var(--r-sm)", border: "1px solid var(--accent-mid)",
+                    fontSize: 13, fontWeight: 600 }}>
+                    {selectedService.title}
+                    {selectedService.duration != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>{selectedService.duration} min</span>}
+                    {selectedService.cost != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>£{Number(selectedService.cost).toFixed(2)}</span>}
+                  </div>
+                )}
+
+                <div className="card">
+                  <p className="section-label">Pick a date</p>
+                  <div className="date-strip-hdr">
+                    <button className="strip-nav-btn" disabled={isPrevDisabled}
+                      onClick={() => {
+                        setSelectedMonth(prev => new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() - 1, 1)));
+                        setSelectedTime(null);
+                      }}>&#8249;</button>
+                    <span className="date-strip-hdr-label">
+                      {MONTH_NAMES[selectedMonth.getUTCMonth()]} {selectedMonth.getUTCFullYear()}
+                    </span>
+                    <button className="strip-nav-btn"
+                      onClick={() => {
+                        setSelectedMonth(prev => new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() + 1, 1)));
+                        setSelectedTime(null);
+                      }}>&#8250;</button>
+                  </div>
+                  <div className="date-strip-wrap">
+                    <button className="strip-side-btn" onClick={() => scrollStrip(-1)}>&#8249;</button>
+                    <div className="date-strip" ref={dateStripRef}>
+                      {dates.map((d, i) => {
+                        const sel    = utcIsSameDay(d, selectedDate);
+                        const closed = isDayClosed(d, openHours, overrides);
+                        return (
+                          <div key={i}
+                            className={`date-chip${sel ? " selected" : ""}`}
+                            onClick={() => { if (!closed) { setSelectedDate(d); setSelectedTime(null); } }}
+                            style={closed ? { opacity: 0.35, cursor: "default" } : undefined}>
+                            <div className="date-chip-day">{fmtDow(d)}</div>
+                            <div className="date-chip-num">{d.getUTCDate()}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <button className="strip-side-btn" onClick={() => scrollStrip(1)}>&#8250;</button>
+                  </div>
+                </div>
+
+                <div className="card">
+                  <p className="section-label">Pick a time</p>
+                  {loadingSlots && <p style={{ color: "var(--text-3)", fontSize: 14 }}>Checking availability…</p>}
+                  {!loadingSlots && Object.entries(grouped).map(([period, periodSlots]) =>
+                    periodSlots.length > 0 ? (
+                      <div key={period} style={{ marginBottom: 16 }}>
+                        <p className="slot-period">{period}</p>
+                        <div className="slot-grid">
+                          {periodSlots.map((s) => (
+                            <button key={s.time}
+                              className={`slot${selectedTime === s.time ? " selected" : ""}`}
+                              disabled={!s.available}
+                              style={{ opacity: s.available ? 1 : 0.35, cursor: s.available ? "pointer" : "default" }}
+                              onClick={() => s.available && setSelectedTime(s.time)}>
+                              {s.time}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null
+                  )}
+                  {!loadingSlots && slots.length === 0 && (
+                    <p style={{ color: "var(--text-3)", fontSize: 14 }}>No available times for this date.</p>
+                  )}
+                </div>
+
+                <button className="btn btn-primary" disabled={!selectedTime}
+                  onClick={() => setStep("contact")}>
+                  Continue
+                </button>
+              </>
+            )}
+          </div>
+        );
+      };
+
       // ── Confirmation ──────────────────────────────────────────────────────────
       const Confirmation = ({ booking, orgName, onReset }) => (
         <div className="card" style={{ padding: "32px 24px", textAlign: "center" }}>
@@ -1181,7 +1420,13 @@
               </>
             )}
             {booking.type === "table" && (
-              <div>{fmtDow(booking.date)} {booking.date.getDate()} {MONTH_NAMES[booking.date.getMonth()].slice(0,3)} · {booking.time}</div>
+              <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)} · {booking.time}</div>
+            )}
+            {booking.type === "appointment" && (
+              <>
+                <div>{booking.service}</div>
+                <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)} · {booking.time}</div>
+              </>
             )}
           </div>
           <button className="btn btn-ghost" onClick={onReset}>Make another booking</button>
@@ -1193,6 +1438,7 @@
         const slug = getSlug();
         const [loadState,   setLoadState]   = useState("loading");
         const [org,         setOrg]         = useState(null);
+        const [services,    setServices]    = useState([]);
         const [bookingType, setBookingType] = useState(null);
         const [confirmed,   setConfirmed]   = useState(null);
 
@@ -1200,12 +1446,21 @@
           if (!slug) { setLoadState("error"); return; }
           fetch(`${WS_URI}/organisations/public/${slug}`)
             .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
-            .then((data) => { setOrg(data); setLoadState("ready"); })
+            .then((data) => {
+              setOrg(data);
+              // Load services for this org
+              return fetch(`${WS_URI}/services/public/${data.id}`)
+                .then(r => r.ok ? r.json() : [])
+                .then(s => { setServices(s ?? []); setLoadState("ready"); })
+                .catch(() => { setLoadState("ready"); });
+            })
             .catch(() => setLoadState("error"));
         }, [slug]);
 
-        const hasRooms  = org?.entities?.some((e) => e.type === "room");
-        const hasTables = org?.entities?.some((e) => e.type === "table");
+        const hasRooms        = org?.entities?.some((e) => e.type === "room");
+        const hasTables       = org?.entities?.some((e) => e.type === "table");
+        const hasAppointments = services.length > 0;
+        const optionCount     = [hasRooms, hasTables, hasAppointments].filter(Boolean).length;
 
         return (
           <div className="page">
@@ -1243,12 +1498,15 @@
 
               {loadState === "ready" && !confirmed && !bookingType && (
                 <>
-                  {hasRooms || hasTables ? (
+                  {hasRooms || hasTables || hasAppointments ? (
                     <>
-                      <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-2)", marginBottom: 16 }}>
-                        What would you like to book?
-                      </p>
-                      <div className="type-grid">
+                      {optionCount > 1 && (
+                        <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-2)", marginBottom: 16 }}>
+                          What would you like to book?
+                        </p>
+                      )}
+                      <div className={`type-grid${optionCount === 1 ? "" : ""}`}
+                        style={optionCount === 1 ? { gridTemplateColumns: "1fr" } : undefined}>
                         {hasRooms && (
                           <div className="type-card" onClick={() => setBookingType("room")}>
                             <div className="type-card-icon"><IconCalendar /></div>
@@ -1261,6 +1519,13 @@
                             <div className="type-card-icon"><IconClock /></div>
                             <div className="type-card-label">Book Table</div>
                             <div className="type-card-sub">Select a time</div>
+                          </div>
+                        )}
+                        {hasAppointments && (
+                          <div className="type-card" onClick={() => setBookingType("appointment")}>
+                            <div className="type-card-icon"><IconScissors /></div>
+                            <div className="type-card-label">Book Appointment</div>
+                            <div className="type-card-sub">Select a service</div>
                           </div>
                         )}
                       </div>
@@ -1286,6 +1551,12 @@
               {loadState === "ready" && !confirmed && bookingType === "table" && (
                 <TableBooking org={org} entities={org.entities}
                   preferences={org.preferences ?? {}}
+                  onBack={() => setBookingType(null)}
+                  onDone={(b) => setConfirmed(b)} />
+              )}
+
+              {loadState === "ready" && !confirmed && bookingType === "appointment" && (
+                <AppointmentBooking org={org} services={services}
                   onBack={() => setBookingType(null)}
                   onDone={(b) => setConfirmed(b)} />
               )}

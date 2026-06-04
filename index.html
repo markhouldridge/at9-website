@@ -1,19 +1,107 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>At9 — Booking management, made simple</title>
-<meta name="description" content="At9 is the booking management app for restaurants, catteries, kennels and service businesses. Take bookings, manage customers and run your day from one beautifully simple app." />
-<link rel="canonical" href="https://www.at9.app" />
-<link rel="preconnect" href="https://api.fontshare.com">
-<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
-<style>
-/* -----------------------------------------------------------
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Room &amp; Table Booking App for Small Businesses | At9</title>
+    <meta
+      name="description"
+      content="Manage room and table bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, catteries, kennels and hospitality businesses."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#907CFF" />
+    <link rel="canonical" href="https://www.at9.app" />
+    <link rel="sitemap" type="application/xml" href="https://www.at9.app/sitemap.xml" />
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/icons/favicon-96x96.png"
+    />
+    <link rel="shortcut icon" href="assets/icons/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/icons/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="assets/icons/site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.at9.app" />
+    <meta
+      property="og:title"
+      content="Room &amp; Table Booking App for Small Businesses | At9"
+    />
+    <meta
+      property="og:description"
+      content="Manage room and table bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, catteries, kennels and hospitality businesses."
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="assets/screenshots/app-room-booking-view.png"
+    />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://www.at9.app/#website",
+          "url": "https://www.at9.app",
+          "name": "At9",
+          "description": "Room and table booking management app for small businesses."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "At9",
+          "operatingSystem": "iOS, Android",
+          "applicationCategory": "BusinessApplication",
+          "description": "Manage room and table bookings from your phone. Built for restaurants, hotels, pubs, catteries, kennels and hospitality businesses.",
+          "offers": [
+            {
+              "@type": "Offer",
+              "name": "Solo",
+              "price": "19.99",
+              "priceCurrency": "GBP",
+              "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "billingDuration": 1,
+                "billingIncrement": 1,
+                "unitCode": "MON"
+              }
+            },
+            {
+              "@type": "Offer",
+              "name": "Team",
+              "price": "39.99",
+              "priceCurrency": "GBP",
+              "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "billingDuration": 1,
+                "billingIncrement": 1,
+                "unitCode": "MON"
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* -----------------------------------------------------------
    At9 — landing page
    Brand palette (from app):
      primary       #907CFF
@@ -24,1623 +112,2694 @@
      accentYellow  #FADAA4
    ----------------------------------------------------------- */
 
-:root {
-  /* Warm, flatter palette — service-industry friendly, less gradient-heavy */
-  --bg: #FBFAF6;          /* warm off-white page background */
-  --bg-soft: #F5F1E9;     /* cream — full-bleed section bg */
-  --bg-lavender: #EFEAFB; /* soft purple — full-bleed section bg */
-  --bg-mint: #E9F3EC;     /* soft green — full-bleed section bg */
-  --bg-mute: #F1EDE3;     /* tag/chip background */
-
-  --ink: #1A1825;
-  --ink-2: #4a4658;
-  --ink-3: #7c7889;
-  --line: #ECE7DD;
-  --line-2: #DDD6CB;
-
-  --primary: #907CFF;
-  --primary-light: #B5A6FF;
-  --primary-dark: #705AC2;
-  --secondary: #F0A9FF;
-  --green: #A2F9B0;
-  --yellow: #FADAA4;
-
-  /* Kept for footer/founder sign-off avatar only */
-  --grad: linear-gradient(120deg, #907CFF 0%, #B07CFF 35%, #F0A9FF 65%, #A2F9B0 100%);
-
-  --radius: 18px;
-  --radius-lg: 28px;
-  --shadow-sm: 0 1px 2px rgba(21, 19, 28, .04), 0 2px 6px rgba(21, 19, 28, .04);
-  --shadow-md: 0 10px 30px rgba(26, 24, 37, .08), 0 2px 6px rgba(26, 24, 37, .04);
-  --shadow-lg: 0 30px 60px -20px rgba(26, 24, 37, .25), 0 12px 24px -10px rgba(26, 24, 37, .08);
-}
-
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: 'Switzer', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: var(--ink);
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 17px;
-  line-height: 1.55;
-}
-
-a { color: inherit; text-decoration: none; }
-img { max-width: 100%; display: block; }
-
-/* ---------- Layout ---------- */
-.container {
-  width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-section { padding: 96px 0; position: relative; }
-@media (max-width: 720px) { section { padding: 64px 0; } }
-
-/* Prevent decorative line art from causing horizontal scroll */
-body { overflow-x: clip; }
-
-
-/* Make sure inline content stays above decos */
-.container { position: relative; z-index: 1; }
-
-/* ---------- Typography ---------- */
-h1, h2, h3, h4 {
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.08;
-  margin: 0 0 0.4em;
-  color: var(--ink);
-}
-h1 { font-size: clamp(40px, 6.2vw, 72px); letter-spacing: -0.035em; font-weight: 600; }
-h2 { font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.03em; font-weight: 600; }
-h3 { font-size: 21px; font-weight: 600; }
-p { margin: 0 0 1em; color: var(--ink-2); }
-.lead { font-size: 20px; line-height: 1.5; color: var(--ink-2); }
-.eyebrow {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--primary-dark);
-  background: var(--bg-mute);
-  padding: 6px 14px;
-  border-radius: 999px;
-  margin-bottom: 18px;
-}
-
-/* Cycling industry chip — soft background and label fade between business types */
-.eyebrow-cycle {
-  transition: background-color .6s ease, color .6s ease;
-}
-.eyebrow-cycle .cycle-word {
-  display: inline-block;
-  transition: opacity .3s ease, transform .3s ease;
-  opacity: 1;
-  transform: translateY(0);
-  font-weight: 700;
-}
-.eyebrow-cycle.is-out .cycle-word {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-/* Per-industry palette — soft pastel background + readable matching text */
-.eyebrow-cycle[data-type="restaurants"] { background: #FBE3CD; color: #874810; }
-.eyebrow-cycle[data-type="pubs"]        { background: #FBF0D0; color: #7A5812; }
-.eyebrow-cycle[data-type="hotels"]      { background: #DDE4EF; color: #2A3F6A; }
-.eyebrow-cycle[data-type="catteries"]   { background: #FBDDEB; color: #8E2F60; }
-.eyebrow-cycle[data-type="kennels"]     { background: #EFE4D2; color: #69472A; }
-
-.gradient-text {
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Hand-drawn squiggle under highlighted hero words */
-.squiggle-wrap {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-}
-.squiggle-wrap .squiggle {
-  position: absolute;
-  left: -2%;
-  right: -2%;
-  bottom: -0.18em;
-  width: 104%;
-  height: 0.34em;
-  pointer-events: none;
-  color: var(--primary);
-  overflow: visible;
-}
-.squiggle-wrap .squiggle path {
-  stroke: currentColor;
-  stroke-width: 4;
-  stroke-linecap: round;
-  fill: none;
-  /* Subtle draw-on animation, runs once on load */
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  animation: squiggle-draw 1.1s ease-out 0.3s forwards;
-}
-@keyframes squiggle-draw {
-  to { stroke-dashoffset: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .squiggle-wrap .squiggle path {
-    stroke-dasharray: none;
-    stroke-dashoffset: 0;
-    animation: none;
-  }
-}
-
-/* ---------- Buttons ---------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: transform .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
-  white-space: nowrap;
-}
-.btn-primary {
-  background: var(--ink);
-  color: #fff;
-}
-.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); background: #2a2733; }
-.btn-ghost {
-  background: transparent;
-  color: var(--ink);
-  border-color: var(--line-2);
-}
-.btn-ghost:hover { background: var(--bg-mute); }
-
-/* App store badges */
-.store-row { display: flex; gap: 12px; flex-wrap: wrap; }
-.store-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: #15131c;
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 14px;
-  transition: transform .15s ease, box-shadow .2s ease;
-  min-width: 170px;
-}
-.store-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.store-badge svg { flex: none; }
-.store-badge .label { display: flex; flex-direction: column; line-height: 1.1; }
-.store-badge .label .small { font-size: 11px; opacity: .8; font-weight: 500; }
-.store-badge .label .big   { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
-
-/* ---------- Page top backdrop (a soft warm tint behind nav + hero) ---------- */
-.page-bg {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 760px;
-  z-index: -1;
-  background:
-    linear-gradient(180deg, #F4ECDD 0%, var(--bg) 100%);
-  pointer-events: none;
-}
-
-/* ---------- Nav ---------- */
-.nav {
-  position: sticky; top: 0; z-index: 50;
-  background: transparent;
-}
-/* When the user scrolls, give the nav a soft frosted backdrop so links stay legible */
-.nav.is-scrolled {
-  background: rgba(255,255,255,.72);
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom: 1px solid var(--line);
-}
-.nav-row {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 72px;
-}
-.nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a {
-  font-weight: 500; font-size: 15px; color: var(--ink-2);
-  transition: color .15s ease;
-}
-.nav-links a:hover { color: var(--ink); }
-.nav-cta { display: flex; align-items: center; gap: 10px; }
-@media (max-width: 820px) {
-  .nav-links { display: none; }
-}
-
-/* Wordmark */
-.wordmark {
-  display: inline-flex; align-items: center;
-  line-height: 0;
-}
-.wordmark img { height: 30px; width: auto; display: block; }
-.footer .wordmark img { height: 26px; }
-
-/* ---------- Hero ---------- */
-.hero {
-  position: relative;
-  padding-top: 40px;
-  padding-bottom: 80px;
-}
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 56px;
-  align-items: center;
-}
-@media (max-width: 960px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-}
-.hero h1 .gradient-text { display: inline-block; }
-.hero p.lead { max-width: 540px; margin-top: 8px; }
-.hero .ctas { margin-top: 28px; }
-.hero .meta {
-  margin-top: 20px;
-  font-size: 14px; color: var(--ink-3);
-  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-}
-.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); display: inline-block; }
-
-/* Hero visual — two phone frames with soft glow + decorative accents */
-.hero-phones-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
-  height: 560px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-}
-.hero-phones-bg {
-  position: absolute;
-  width: 460px;
-  height: 460px;
-  background: radial-gradient(ellipse at 50% 50%, #E8E0FF 0%, transparent 68%);
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.hero-phone {
-  position: absolute;
-  background: #1A1825;
-  padding: 8px;
-  border-radius: 44px;
-  box-shadow:
-    0 32px 64px -16px rgba(0,0,0,.42),
-    0 12px 24px -8px rgba(0,0,0,.24);
-}
-.hero-phone img {
-  display: block;
-  border-radius: 37px;
-  width: 240px;
-  height: auto;
-}
-.hero-phone--left {
-  transform: rotate(-8deg) translate(-84px, -22px);
-  z-index: 1;
-}
-.hero-phone--right {
-  transform: rotate(6deg) translate(84px, 28px);
-  z-index: 2;
-}
-.hero-deco {
-  position: absolute;
-  pointer-events: none;
-  color: var(--primary-dark);
-  z-index: 3;
-}
-
-/* "Designed for Tablet & Mobile" badge in hero */
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  margin-top: 18px;
-  font-family: 'Caveat', cursive;
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--ink-2);
-  transform: rotate(-1deg);
-}
-.hero-badge svg { color: var(--primary-dark); flex: none; }
-
-@media (max-width: 960px) {
-  .hero-phones-wrap { height: 460px; max-width: 460px; }
-  .hero-phone img { width: 190px; }
-  .hero-phone--left  { transform: rotate(-6deg) translate(-66px, -16px); }
-  .hero-phone--right { transform: rotate(5deg)  translate(66px,  22px); }
-}
-@media (max-width: 520px) {
-  .hero-phones-wrap { height: 360px; }
-  .hero-phone img { width: 148px; }
-  .hero-phone--left  { transform: rotate(-5deg) translate(-52px, -12px); }
-  .hero-phone--right { transform: rotate(4deg)  translate(52px,  16px); }
-}
-
-/* ---------- Spacer band (sits between hero and features) ---------- */
-.growth-band-wrap { padding: 36px 0 20px; }
-.growth-band {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-.growth-band .line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--line-2), transparent);
-}
-.growth-band .growth-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--ink-2);
-  font-family: 'Caveat', cursive;
-  font-size: 26px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin: 0;
-  line-height: 1.1;
-  white-space: nowrap;
-  transform: rotate(-1deg);
-}
-.growth-band .device-icon { color: var(--primary-dark); flex: none; }
-@media (max-width: 800px) {
-  .growth-band { flex-direction: column; gap: 14px; }
-  .growth-band .growth-text { white-space: normal; text-align: center; font-size: 22px; }
-  .growth-band .line { width: 60%; }
-}
-
-/* ---------- Features ---------- */
-section#features { padding-top: 56px; padding-bottom: 80px; }
-.features-head { max-width: 720px; margin: 0 auto 36px; text-align: center; }
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-@media (max-width: 800px) { .features-grid { grid-template-columns: 1fr; } }
-
-.feature-card {
-  border-radius: 28px;
-  padding: 44px 40px 0;
-  position: relative;
-  overflow: hidden;
-  height: 580px;
-  display: flex;
-  flex-direction: column;
-  isolation: isolate;
-}
-.feature-card--lavender {
-  background: #ECE4FA;
-  --accent: var(--primary-dark);
-}
-.feature-card--mint {
-  background: #DDEEE2;
-  --accent: #3F9C5A;
-}
-
-.feature-card .card-copy { max-width: 380px; margin-bottom: 20px; }
-.feature-card .card-copy h3 {
-  font-size: clamp(26px, 2.4vw, 32px);
-  margin: 0 0 10px;
-  letter-spacing: -0.02em;
-  font-weight: 600;
-  line-height: 1.1;
-  color: var(--ink);
-}
-.feature-card .card-copy p {
-  color: var(--ink-2);
-  font-size: 16px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.feature-card .card-art {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position: relative;
-  margin-top: auto;
-}
-
-/* Phone mockup wraps a phone screenshot with a thin dark bezel */
-.phone-frame {
-  background: #1A1825;
-  padding: 7px;
-  border-radius: 36px;
-  position: relative;
-  box-shadow:
-    0 30px 60px -18px rgba(0,0,0,.32),
-    0 12px 24px -8px rgba(0,0,0,.18);
-  margin-bottom: -110px;            /* phone bleeds off the bottom of the card */
-  z-index: 1;
-}
-.phone-frame img {
-  display: block;
-  border-radius: 30px;
-  width: 220px;
-  height: auto;
-}
-.feature-card--lavender .phone-frame { transform: rotate(-3deg); }
-.feature-card--mint     .phone-frame { transform: rotate(3deg); }
-
-/* Dual-phone layout for "Bookings in seconds" card */
-.dual-phone {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.feature-card--lavender .dual-phone .phone-frame--back {
-  transform: rotate(-9deg);
-  margin-right: -36px;
-  z-index: 0;
-  opacity: 0.88;
-}
-.feature-card--lavender .dual-phone .phone-frame--front {
-  transform: rotate(5deg);
-  z-index: 1;
-}
-
-/* Corner line-art accents around the phone */
-.feature-card .corner-deco {
-  position: absolute;
-  pointer-events: none;
-  color: var(--accent);
-  z-index: 2;
-}
-
-@media (max-width: 800px) {
-  .feature-card { height: auto; padding: 36px 28px 0; }
-  .phone-frame { margin-bottom: -80px; }
-  .feature-card--lavender .phone-frame,
-  .feature-card--mint .phone-frame { transform: none; }
-}
-
-/* ---------- Full-bleed section colors ---------- */
-.section-dark {
-  background: #1A1825;
-  color: #fff;
-  position: relative;
-}
-.section-cream { background: var(--bg-soft); }
-.section-lavender { background: var(--bg-lavender); }
-.section-mint { background: var(--bg-mint); }
-.beliefs { position: relative; }
-.beliefs .eyebrow { background: rgba(255,255,255,.08); color: #d3cdfa; }
-
-/* Two-column founder layout: polaroid left, beliefs right */
-.founder-grid {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 72px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .founder-grid { grid-template-columns: 1fr; gap: 48px; }
-}
-
-/* Polaroid frame */
-.polaroid {
-  background: #FBFAF6;
-  padding: 18px 18px 22px;
-  border-radius: 4px;
-  box-shadow:
-    0 30px 50px -20px rgba(0, 0, 0, .55),
-    0 8px 16px -8px rgba(0, 0, 0, .35);
-  transform: rotate(-2.5deg);
-  transition: transform .3s ease;
-  max-width: 340px;
-  margin: 8px auto 0;
-}
-.polaroid:hover { transform: rotate(-1deg); }
-.polaroid .photo {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  background: #F2D4B0;
-  overflow: hidden;
-  display: block;
-  margin-bottom: 18px;
-  border-radius: 1px;
-}
-.polaroid .photo img,
-.polaroid .photo svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.polaroid .caption {
-  text-align: center;
-  font-family: 'Caveat', 'Switzer', cursive;
-  color: #1A1825;
-  font-size: 26px;
-  line-height: 1.05;
-  letter-spacing: 0;
-  padding: 4px 6px 0;
-}
-.polaroid .caption small {
-  display: block;
-  font-size: 16px;
-  color: #4a4658;
-  margin-top: 4px;
-}
-
-/* Beliefs list — stacked vertically on the right */
-.beliefs-list {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.beliefs-list .belief {
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 16px;
-  padding: 22px 24px;
-  background: rgba(255,255,255,.03);
-  display: grid;
-  grid-template-columns: 38px 1fr;
-  gap: 14px;
-  align-items: start;
-}
-.beliefs-list .belief .num {
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  color: var(--primary-light);
-  display: block;
-  padding-top: 4px;
-}
-.beliefs-list .belief h3 {
-  color: #fff; font-size: 19px; margin: 0 0 4px;
-  font-weight: 600;
-}
-.beliefs-list .belief p {
-  color: rgba(255,255,255,.72); font-size: 15px; margin: 0;
-}
-.beliefs h2 { color: #fff; max-width: 720px; }
-.beliefs .lead { color: rgba(255,255,255,.78); max-width: 640px; }
-
-/* ---------- Pricing ---------- */
-.pricing-head { max-width: 720px; margin: 0 auto 56px; text-align: center; }
-
-/* Free-trial badge — green chip drawing attention to the offer */
-.trial-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: #DBF0E0;
-  color: #2A7A45;
-  margin-bottom: 22px;
-  border: 1px solid rgba(63, 156, 90, 0.20);
-}
-.trial-badge svg { flex: none; color: #3F9C5A; }
-.trial-badge .sep {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.5;
-  display: inline-block;
-}
-@media (max-width: 520px) {
-  .trial-badge {
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-    line-height: 1.4;
-  }
-}
-.pricing-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-  max-width: 880px; margin: 0 auto;
-}
-@media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } }
-
-.plan {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 32px;
-  display: flex; flex-direction: column;
-}
-.plan.featured {
-  border: 1.5px solid transparent;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    var(--grad) border-box;
-  box-shadow: var(--shadow-md);
-  position: relative;
-}
-.plan .plan-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.plan h3 { margin: 0; font-size: 22px; }
-.plan .tag {
-  font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 999px;
-  background: var(--grad); color: #15131c;
-}
-.plan .price {
-  display: flex; align-items: baseline; gap: 6px;
-  margin: 12px 0 6px;
-}
-.plan .price .amount { font-size: 48px; font-weight: 600; letter-spacing: -0.04em; }
-.plan .price .per { color: var(--ink-3); font-weight: 500; }
-.plan .summary { color: var(--ink-2); margin-bottom: 24px; min-height: 1.5em; }
-.plan ul { list-style: none; margin: 0 0 28px; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.plan li {
-  display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--ink-2);
-}
-.plan li .check {
-  flex: none; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--green);
-  display: inline-flex; align-items: center; justify-content: center;
-  margin-top: 3px;
-}
-.plan .btn { width: 100%; justify-content: center; }
-.plan.featured .btn-primary { background: var(--ink); }
-
-.plan .placeholder-note {
-  font-size: 12px; color: var(--ink-3); margin-top: 14px; font-style: italic;
-}
-
-/* ---------- FAQ ---------- */
-.faq-head { max-width: 720px; margin: 0 auto 48px; text-align: center; }
-.faq-list { max-width: 820px; margin: 0 auto; border-top: 1px solid var(--line); }
-.faq-item {
-  border-bottom: 1px solid var(--line);
-  padding: 0;
-}
-.faq-item summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 22px 4px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px;
-  font-weight: 600; font-size: 18px; color: var(--ink);
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary .toggle {
-  flex: none; width: 28px; height: 28px; border-radius: 50%;
-  background: var(--bg-mute); color: var(--primary-dark);
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: transform .2s ease, background .2s ease;
-  font-weight: 700;
-}
-.faq-item[open] summary .toggle { transform: rotate(45deg); background: var(--primary); color: #fff; }
-.faq-item .answer {
-  padding: 0 4px 22px;
-  color: var(--ink-2);
-  max-width: 720px;
-  font-size: 16px;
-}
-
-/* ---------- CTA banner — content inside a full-bleed section ---------- */
-.cta-banner {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
-}
-.cta-banner h2 { margin-bottom: 14px; }
-.cta-banner .store-row { justify-content: center; margin-top: 24px; }
-
-/* ---------- Footer (aboardhr-inspired) ---------- */
-.footer {
-  background: var(--bg);
-  border-top: 1px solid var(--line);
-  padding: 80px 0 28px;
-  color: var(--ink-2);
-  font-size: 14px;
-  overflow: hidden;
-}
-.footer-top {
-  display: grid;
-  grid-template-columns: 1.2fr 2fr;
-  gap: 56px;
-  align-items: start;
-  padding-bottom: 64px;
-}
-@media (max-width: 820px) {
-  .footer-top { grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
-}
-
-.footer .brand-col .wordmark img { height: 28px; }
-
-/* Contact / social rows in the brand column — borderless, flush-left, with a coloured icon tile */
-.contact-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 22px;
-}
-.contact-card {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 0;
-  text-decoration: none;
-  background: transparent;
-  border: 0;
-  position: relative;
-  width: fit-content;
-}
-.contact-card .icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  flex: none;
-  transition: transform .25s ease, box-shadow .25s ease;
-  position: relative;
-}
-.contact-card .icon svg { width: 16px; height: 16px; }
-.contact-card--instagram .icon {
-  background: linear-gradient(135deg, #907CFF 0%, #B07CFF 30%, #F0A9FF 65%, #FFB69E 100%);
-}
-.contact-card--email .icon {
-  background: var(--ink);
-}
-.contact-card:hover .icon {
-  transform: scale(1.06) rotate(-3deg);
-  box-shadow: 0 6px 14px -4px rgba(26, 24, 37, .25);
-}
-.contact-card .content {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-  min-width: 0;
-}
-.contact-card .label {
-  font-weight: 600;
-  font-size: 13.5px;
-  color: var(--ink);
-  transition: color .15s ease;
-}
-.contact-card .meta {
-  font-size: 12px;
-  color: var(--ink-3);
-  margin-top: 2px;
-}
-.contact-card:hover .label { color: var(--primary-dark); }
-.contact-card .arrow {
-  margin-left: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--primary-dark);
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity .2s ease, transform .2s ease;
-}
-.contact-card:hover .arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.link-cols {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-@media (max-width: 600px) {
-  .link-cols { grid-template-columns: repeat(2, 1fr); gap: 32px 16px; }
-}
-.link-col h4 {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--ink-3);
-  margin: 0 0 16px;
-}
-.link-col a {
-  display: block;
-  padding: 6px 0;
-  color: var(--ink-2);
-  font-size: 15px;
-  font-weight: 500;
-  transition: color .15s ease;
-}
-.link-col a:hover { color: var(--ink); }
-
-.footer-bottom {
-  border-top: 1px solid var(--line);
-  padding-top: 22px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 13px;
-  color: var(--ink-3);
-}
-.footer-bottom-links {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.footer-bottom-links a {
-  color: var(--ink-3);
-  text-decoration: none;
-  transition: color .15s ease;
-}
-.footer-bottom-links a:hover { color: var(--ink); }
-
-/* Parent-company attribution under the footer logo */
-.provider-line {
-  margin: 14px 0 0;
-  font-size: 13px;
-  color: var(--ink-3);
-  line-height: 1.5;
-}
-.provider-line .company { color: var(--ink-2); font-weight: 600; }
-
-/* ---------- Web Booking Link section ---------- */
-.book-link-section { overflow: visible; }
-.book-link-head { max-width: 640px; margin: 0 auto 24px; text-align: center; }
-.book-link-section .eyebrow { background: rgba(144,124,255,.14); color: var(--primary-dark); }
-
-/* URL bar + scattered social badge scene */
-.book-share-scene {
-  position: relative;
-  max-width: 760px;
-  margin: 0 auto 60px;
-  padding: 38px 20px 42px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
-/* Floating social badge chips */
-.share-badge {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  box-shadow: 0 4px 14px -3px rgba(0,0,0,.13);
-  white-space: nowrap;
-  user-select: none;
-  pointer-events: none;
-}
-.share-badge svg { flex-shrink: 0; }
-.share-badge--instagram { background:#FDF2F8; color:#9B245F; top:12px; left:3%; transform:rotate(-4deg); }
-.share-badge--facebook  { background:#EEF3FF; color:#1877F2; top:12px; right:3%; transform:rotate(3deg); }
-.share-badge--whatsapp  { background:#EDFBF1; color:#128C7E; bottom:20px; left:3%; transform:rotate(2.5deg); }
-.share-badge--tiktok    { background:#FFF0F3; color:#EE1D52; bottom:20px; right:3%; transform:rotate(-3deg); }
-.share-badge--website   { background:var(--bg-mute); color:var(--ink-2); bottom:16px; left:50%; transform:translateX(-50%) rotate(-1deg); }
-@media (max-width: 780px) { .share-badge { display: none; } }
-
-/* URL bar + annotation wrapper — keeps annotation aligned relative to the bar */
-.book-url-group {
-  max-width: 540px;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-.book-url-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border: 1.5px solid var(--line-2);
-  border-radius: 22px;
-  padding: 20px 28px;
-  box-shadow: var(--shadow-md);
-  width: 100%;
-}
-.book-url-icon { color: var(--primary-dark); flex-shrink: 0; }
-.book-url-base { font-size: 18px; color: var(--ink-3); font-weight: 500; white-space: nowrap; }
-.book-url-slug {
-  background: var(--bg-lavender);
-  color: var(--primary-dark);
-  font-weight: 700;
-  font-size: 18px;
-  padding: 5px 14px;
-  border-radius: 10px;
-  white-space: nowrap;
-  border: 1px solid rgba(144,124,255,.2);
-}
-.book-url-annotation {
-  font-family: 'Caveat', cursive;
-  font-size: 26px;
-  font-weight: 500;
-  color: var(--ink-3);
-  transform: rotate(-1.5deg);
-  margin: 8px 0 0;
-  padding-right: 56px;
-  text-align: right;
-  display: block;
-}
-
-/* Screenshots fan */
-.book-screens {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  margin-bottom: 56px;
-}
-.book-screen {
-  background: #1A1825;
-  padding: 8px;
-  border-radius: 38px;
-  box-shadow: 0 24px 48px -12px rgba(0,0,0,.32), 0 8px 16px -4px rgba(0,0,0,.16);
-  flex-shrink: 0;
-}
-.book-screen img {
-  display: block;
-  border-radius: 31px;
-  width: 210px;
-  height: auto;
-}
-.book-screen:first-child  { transform: rotate(-6deg) translateX(36px); z-index: 1; }
-.book-screen:nth-child(2) { transform: translateY(-24px); z-index: 3; }
-.book-screen:last-child   { transform: rotate(6deg) translateX(-36px); z-index: 2; }
-
-/* App nudge card */
-.book-app-nudge {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 36px 36px 32px;
-  background: rgba(255,255,255,.8);
-  border: 1px solid var(--line);
-  border-radius: 28px;
-}
-.book-app-nudge p { font-size: 16px; line-height: 1.65; color: var(--ink-2); margin: 0 0 26px; }
-.book-app-nudge .store-row { justify-content: center; }
-
-@media (max-width: 700px) {
-  .book-screen img { width: 165px; }
-  .book-screen:first-child { transform: rotate(-4deg) translateX(24px); }
-  .book-screen:last-child  { transform: rotate(4deg)  translateX(-24px); }
-}
-@media (max-width: 480px) {
-  .book-screen img { width: 128px; }
-  .book-screen:first-child { transform: rotate(-3deg) translateX(16px); }
-  .book-screen:last-child  { transform: rotate(3deg)  translateX(-16px); }
-  .book-url-base, .book-url-slug { font-size: 13px; }
-  .book-app-nudge { padding: 24px 20px; }
-}
-
-/* small helpers */
-.center { text-align: center; }
-</style>
-</head>
-<body>
-
-<!-- Soft gradient backdrop that runs behind both nav and hero so they feel continuous -->
-<div class="page-bg" aria-hidden="true"></div>
-
-<!-- ---------- NAV ---------- -->
-<header class="nav">
-  <div class="container nav-row">
-    <a href="#" class="wordmark" aria-label="At9 home">
-      <img src="At9.png" alt="At9" />
-    </a>
-
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#pricing">Pricing</a>
-      <a href="#faqs">FAQs</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-
-    <div class="nav-cta">
-      <a class="btn btn-primary" href="#download">
-        Get the app
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
-      </a>
-    </div>
-  </div>
-</header>
-
-<!-- ---------- HERO ---------- -->
-<section class="hero" id="top">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow eyebrow-cycle" data-type="restaurants">Designed for <span class="cycle-word">Restaurants</span></span>
-      <h1>
-        Booking management,<br>
-        <span class="squiggle-wrap">made simple<svg class="squiggle" viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9" vector-effect="non-scaling-stroke" />
-        </svg></span>.
-      </h1>
-      <p class="lead">
-        At9 gives restaurants, pubs, hotels, catteries and kennels a better way
-        to manage room and table bookings - simple, fast, and always in your pocket.
-      </p>
-      <div class="ctas store-row">
-        <!-- App Store -->
-        <a class="store-badge" href="#download" aria-label="Download At9 on the App Store">
-          <svg width="22" height="26" viewBox="0 0 24 28" fill="currentColor" aria-hidden="true">
-            <path d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"/>
-          </svg>
-          <span class="label">
-            <span class="small">Download on the</span>
-            <span class="big">App Store</span>
-          </span>
-        </a>
-        <!-- Google Play -->
-        <a class="store-badge" href="#download" aria-label="Get At9 on Google Play">
-          <svg width="22" height="26" viewBox="0 0 24 28" aria-hidden="true">
-            <defs>
-              <linearGradient id="gp1" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#00C3FF"/><stop offset="100%" stop-color="#1E88E5"/>
-              </linearGradient>
-              <linearGradient id="gp2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#FFD600"/><stop offset="100%" stop-color="#FFA000"/>
-              </linearGradient>
-              <linearGradient id="gp3" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#FF4081"/><stop offset="100%" stop-color="#D81B60"/>
-              </linearGradient>
-              <linearGradient id="gp4" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#00E676"/><stop offset="100%" stop-color="#00C853"/>
-              </linearGradient>
-            </defs>
-            <path d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z" fill="url(#gp1)"/>
-            <path d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z" fill="url(#gp4)"/>
-            <path d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z" fill="url(#gp3)"/>
-            <path d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z" fill="url(#gp2)"/>
-          </svg>
-          <span class="label">
-            <span class="small">Get it on</span>
-            <span class="big">Google Play</span>
-          </span>
-        </a>
-      </div>
-      <div class="meta">
-        <span>Free to try</span>
-        <span class="dot"></span>
-        <span>No card required</span>
-        <span class="dot"></span>
-        <span>Set up in minutes</span>
-      </div>
-    </div>
-
-    <!-- Hero phones: room booking + table bookings -->
-    <div class="hero-phones-wrap">
-      <div class="hero-phone hero-phone--left">
-        <img src="assets/screenshots/app-room-booking-view.png" alt="At9 room booking calendar view" />
-      </div>
-      <div class="hero-phone hero-phone--right">
-        <img src="assets/screenshots/app-table-bookings.png" alt="At9 table bookings view" />
-      </div>
-    </div>
-  </div>
-
-</section>
-
-<!-- ---------- DIVIDER BAND ---------- -->
-<div class="growth-band-wrap">
-  <div class="container growth-band">
-    <span class="line" aria-hidden="true"></span>
-    <p class="growth-text">
-      <svg class="device-icon" width="26" height="22" viewBox="0 0 28 22" fill="currentColor" aria-hidden="true">
-        <rect x="2" y="4" width="7" height="14" rx="3.5"/>
-        <rect x="12" y="1" width="14" height="20" rx="3.5"/>
-      </svg>
-      Designed for Tablet &amp; Mobile
-    </p>
-    <span class="line" aria-hidden="true"></span>
-  </div>
-</div>
-
-<!-- ---------- FEATURES ---------- -->
-<section id="features">
-  <div class="container">
-    <div class="features-head">
-      <span class="eyebrow">Everything you need</span>
-      <h2>Run your day from the palm of your hand.</h2>
-      <p class="lead">A focused set of tools that replaces the diary, the spreadsheet and the back-and-forth calls — without the bloat of legacy booking software.</p>
-    </div>
-
-    <div class="features-grid">
-
-      <!-- Card 1: Add booking — lavender background, purple accents -->
-      <article class="feature-card feature-card--lavender">
-        <div class="card-copy">
-          <h3>Bookings in seconds.</h3>
-          <p>From an empty diary to a confirmed booking in just a few taps — pick the date, pick the room, save. Done.</p>
-        </div>
-        <div class="card-art">
-          <!-- corner decoration: sparkle top-right -->
-          <svg class="corner-deco" style="top: 4%; right: 8%; width: 26px;" viewBox="0 0 28 28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" aria-hidden="true">
-            <path d="M14 3 L 14 25"/>
-            <path d="M3 14 L 25 14"/>
-            <path d="M6 6 L 22 22"/>
-            <path d="M22 6 L 6 22"/>
-          </svg>
-          <!-- corner decoration: wavy line bottom-left -->
-          <svg class="corner-deco" style="bottom: 22%; left: 6%; width: 70px;" viewBox="0 0 70 18" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-hidden="true">
-            <path d="M3 9 Q 18 1, 35 9 T 67 9"/>
-          </svg>
-          <!-- corner decoration: small dot cluster -->
-          <svg class="corner-deco" style="top: 38%; left: 4%; width: 18px;" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <circle cx="3" cy="10" r="2"/>
-            <circle cx="10" cy="3" r="2"/>
-            <circle cx="10" cy="17" r="2"/>
-            <circle cx="17" cy="10" r="2"/>
-          </svg>
-
-          <div class="dual-phone">
-            <div class="phone-frame phone-frame--back">
-              <img src="assets/screenshots/app-table-booking-form.png" alt="Adding a table booking in At9" />
-            </div>
-            <div class="phone-frame phone-frame--front">
-              <img src="assets/screenshots/app-room-booking-form.png" alt="Adding a room booking in At9" />
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 2: Schedule — mint background, green accents -->
-      <article class="feature-card feature-card--mint">
-        <div class="card-copy">
-          <h3>Your week, at a glance.</h3>
-          <p>Every room, every customer, every booking — laid out in one calm view that's actually fast on a phone.</p>
-        </div>
-        <div class="card-art">
-          <!-- corner decoration: curl top-left -->
-          <svg class="corner-deco" style="top: 4%; left: 8%; width: 38px;" viewBox="0 0 40 40" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 28 C 5 10, 28 4, 35 18 Q 38 30, 22 30 Q 12 30, 18 22"/>
-          </svg>
-          <!-- corner decoration: dotted arc bottom-right -->
-          <svg class="corner-deco" style="bottom: 20%; right: 6%; width: 70px;" viewBox="0 0 70 24" fill="currentColor" aria-hidden="true">
-            <circle cx="5" cy="20" r="2.5"/>
-            <circle cx="18" cy="13" r="2.5"/>
-            <circle cx="32" cy="7" r="2.5"/>
-            <circle cx="48" cy="11" r="2.5"/>
-            <circle cx="64" cy="18" r="2.5"/>
-          </svg>
-          <!-- corner decoration: small plus -->
-          <svg class="corner-deco" style="top: 36%; right: 4%; width: 22px;" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" aria-hidden="true">
-            <path d="M12 4 L 12 20"/>
-            <path d="M4 12 L 20 12"/>
-          </svg>
-
-          <div class="phone-frame">
-            <img src="assets/screenshots/app-room-booking-view.png" alt="At9 room booking calendar view showing the week's bookings" />
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ---------- WEB BOOKING LINK ---------- -->
-<section id="book-link" class="section-lavender book-link-section">
-  <div class="container">
-
-    <div class="book-link-head center">
-      <span class="eyebrow">Your booking page</span>
-      <h2>One link. Every booking.</h2>
-      <p class="lead">Drop your link in your Instagram bio, Facebook page or website — customers tap, pick a time and book. Every reservation lands straight in your app, instantly.</p>
-    </div>
-
-    <!-- URL bar + scattered social icons -->
-    <div class="book-share-scene">
-
-      <span class="share-badge share-badge--instagram" aria-hidden="true">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        Instagram
-      </span>
-      <span class="share-badge share-badge--facebook" aria-hidden="true">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        Facebook
-      </span>
-      <span class="share-badge share-badge--whatsapp" aria-hidden="true">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        WhatsApp
-      </span>
-      <span class="share-badge share-badge--tiktok" aria-hidden="true">
-        <svg width="12" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.09a8.16 8.16 0 0 0 4.77 1.52V7.17a4.85 4.85 0 0 1-1.01-.48z"/></svg>
-        TikTok
-      </span>
-      <span class="share-badge share-badge--website" aria-hidden="true">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        Your website
-      </span>
-
-      <div class="book-url-group">
-        <div class="book-url-bar">
-          <svg class="book-url-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-          </svg>
-          <span class="book-url-base">at9.app/book/</span>
-          <span class="book-url-slug">the-crown-pub</span>
-        </div>
-        <p class="book-url-annotation">← your name, your link</p>
-      </div>
-    </div>
-
-    <!-- Web screenshots — three phones fanned -->
-    <div class="book-screens">
-      <div class="book-screen">
-        <img src="assets/screenshots/web-book-room.png" alt="Booking a room via the At9 web link" />
-      </div>
-      <div class="book-screen">
-        <img src="assets/screenshots/web-book-room-or-table.png" alt="Customer choosing to book a room or table" />
-      </div>
-      <div class="book-screen">
-        <img src="assets/screenshots/web-book-table.png" alt="Booking a table via the At9 web link" />
-      </div>
-    </div>
-
-    <!-- App download nudge -->
-    <div class="book-app-nudge">
-      <p>Every booking lands straight in your At9 app — no manual entry, no missed reservations.<br>Customers receive a link to download At9 so they can manage their booking and message you directly.</p>
-      <div class="store-row">
-        <a class="store-badge" href="#download" aria-label="Download on the App Store">
-          <svg width="22" height="26" viewBox="0 0 24 28" fill="currentColor" aria-hidden="true"><path d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"/></svg>
-          <span class="label"><span class="small">Download on the</span><span class="big">App Store</span></span>
-        </a>
-        <a class="store-badge" href="#download" aria-label="Get it on Google Play">
-          <svg width="22" height="26" viewBox="0 0 24 28" aria-hidden="true">
-            <path d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z" fill="url(#gp1)"/>
-            <path d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z" fill="url(#gp4)"/>
-            <path d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z" fill="url(#gp3)"/>
-            <path d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z" fill="url(#gp2)"/>
-          </svg>
-          <span class="label"><span class="small">Get it on</span><span class="big">Google Play</span></span>
-        </a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ---------- BELIEFS (Founder section) — full-bleed dark, polaroid + beliefs ---------- -->
-<section id="about" class="section-dark">
-  <div class="container">
-    <div class="beliefs founder-grid">
-
-      <div class="polaroid">
-        <div class="photo">
-          <img src="Profile.png" alt="Mark Houldridge, founder of At9" />
-        </div>
-        <div class="caption">
-          Mark Houldridge
-          <small>Founder, At9</small>
-        </div>
-      </div>
-
-      <!-- Beliefs content on the right -->
-      <div class="founder-copy">
-        <span class="eyebrow">From the founder</span>
-        <h2>Three beliefs that shape At9.</h2>
-        <p class="lead">I built At9 after watching small business owners — friends, family, neighbours — wrestle with software clearly built for someone else. These are the principles I keep coming back to.</p>
-
-        <div class="beliefs-list">
-          <div class="belief">
-            <span class="num">01</span>
-            <div>
-              <h3>Software should fit how you actually work.</h3>
-              <p>Not the other way around. If a tool needs a manual, it's already in your way. At9 is what you'd build if you'd ever run the floor on a Friday night.</p>
-            </div>
-          </div>
-          <div class="belief">
-            <span class="num">02</span>
-            <div>
-              <h3>Small businesses deserve great tools.</h3>
-              <p>Not stripped-back versions of enterprise products. Real craft, real care, real polish — at a price that respects the size of your business.</p>
-            </div>
-          </div>
-          <div class="belief">
-            <span class="num">03</span>
-            <div>
-              <h3>Your time is better spent with customers.</h3>
-              <p>Every minute you save in the diary is a minute back with the people that pay your bills. At9's job is to disappear into the background.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ---------- PRICING — full-bleed cream ---------- -->
-<section id="pricing" class="section-cream">
-  <div class="container">
-    <div class="pricing-head">
-      <span class="trial-badge">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-          <path d="M8 0 L 9.2 5.2 L 14.4 6.4 L 9.2 7.6 L 8 12.8 L 6.8 7.6 L 1.6 6.4 L 6.8 5.2 Z"/>
-        </svg>
-        Try free for 30 days
-        <span class="sep"></span>
-        No credit card required
-      </span>
-      <h2>One price, <span class="squiggle-wrap">no surprises<svg class="squiggle" viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9" vector-effect="non-scaling-stroke" />
-      </svg></span>.</h2>
-      <p class="lead">Start your 30-day trial today. Upgrade when you're ready, cancel any time — your data is always yours to take with you.</p>
-    </div>
-
-    <div class="pricing-grid">
-      <div class="plan">
-        <div class="plan-head">
-          <h3>Solo</h3>
-        </div>
-        <p class="summary">For owner-operators running the show themselves.</p>
-        <div class="price">
-          <span class="amount">£14.99</span>
-          <span class="per">/ month</span>
-        </div>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Single-user login</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Unlimited room &amp; table bookings</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Shareable booking link — perfect for Instagram &amp; Facebook</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Customer app — they find you and book themselves</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> In-app messaging with customers</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Block dates, set opening hours &amp; bookable times</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> iOS &amp; Android</li>
-        </ul>
-        <a class="btn btn-ghost" href="#download">Start with Solo</a>
-      </div>
-
-      <div class="plan featured">
-        <div class="plan-head">
-          <h3>Team</h3>
-          <span class="tag">Most popular</span>
-        </div>
-        <p class="summary">For teams sharing a calendar and growing the business.</p>
-        <div class="price">
-          <span class="amount">£34.99</span>
-          <span class="per">/ month</span>
-        </div>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Everything in Solo</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Multiple users — manage bookings together</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Role-based access (admin &amp; staff)</li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#15131c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Priority support</li>
-        </ul>
-        <a class="btn btn-primary" href="#download">Start with Team</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ---------- FAQs ---------- -->
-<section id="faqs">
-  <div class="container">
-    <div class="faq-head">
-      <span class="eyebrow">FAQs</span>
-      <h2>Questions, answered.</h2>
-    </div>
-
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>What is At9? <span class="toggle">+</span></summary>
-        <div class="answer">At9 is a booking management app for businesses with rooms or tables to fill. Create and manage bookings, track customers, and see your availability at a glance — all from your phone or tablet.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Which businesses is At9 built for? <span class="toggle">+</span></summary>
-        <div class="answer">At9 is built for any business that takes room or table bookings — restaurants, pubs, hotels, catteries, kennels, and any other service with a bookable space. If you're still managing a paper diary or a spreadsheet, At9 can replace it.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Does At9 work on phones and tablets? <span class="toggle">+</span></summary>
-        <div class="answer">Yes — At9 is available on iOS and Android, on both phones and tablets. The same login works everywhere and your data syncs in real time.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Can my whole team use it? <span class="toggle">+</span></summary>
-        <div class="answer">Yes. The Team plan supports multiple staff with role-based permissions, so front-of-house, managers and owners each see what they need.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Is there a free trial? <span class="toggle">+</span></summary>
-        <div class="answer">Yes — you can try At9 free with no credit card required. Upgrade only when it's working for you.</div>
-      </details>
-      <details class="faq-item">
-        <summary>What happens to my data if I cancel? <span class="toggle">+</span></summary>
-        <div class="answer">Your data is yours. You can export it any time, and we'll never sell it. If you cancel, you keep access to a read-only export for 30 days.</div>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ---------- DOWNLOAD CTA — full-bleed mint ---------- -->
-<section id="download" class="section-mint">
-  <div class="container">
-    <div class="cta-banner">
-      <span class="eyebrow">Get the app</span>
-      <h2>Your bookings, sorted by tonight.</h2>
-      <p class="lead" style="margin: 0 auto; max-width: 560px;">Download At9 for iOS or Android. Free to try, no card required.</p>
-
-      <div class="store-row">
-        <a class="store-badge" href="#" aria-label="Download on the App Store">
-          <svg width="22" height="26" viewBox="0 0 24 28" fill="currentColor" aria-hidden="true">
-            <path d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"/>
-          </svg>
-          <span class="label">
-            <span class="small">Download on the</span>
-            <span class="big">App Store</span>
-          </span>
-        </a>
-        <a class="store-badge" href="#" aria-label="Get it on Google Play">
-          <svg width="22" height="26" viewBox="0 0 24 28" aria-hidden="true">
-            <defs>
-              <linearGradient id="gp1b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00C3FF"/><stop offset="100%" stop-color="#1E88E5"/></linearGradient>
-              <linearGradient id="gp2b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFD600"/><stop offset="100%" stop-color="#FFA000"/></linearGradient>
-              <linearGradient id="gp3b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF4081"/><stop offset="100%" stop-color="#D81B60"/></linearGradient>
-              <linearGradient id="gp4b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00E676"/><stop offset="100%" stop-color="#00C853"/></linearGradient>
-            </defs>
-            <path d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z" fill="url(#gp1b)"/>
-            <path d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z" fill="url(#gp4b)"/>
-            <path d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z" fill="url(#gp3b)"/>
-            <path d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z" fill="url(#gp2b)"/>
-          </svg>
-          <span class="label">
-            <span class="small">Get it on</span>
-            <span class="big">Google Play</span>
-          </span>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ---------- FOOTER ---------- -->
-<footer class="footer" id="contact">
-  <div class="container">
-
-    <!-- Top: brand on left, link columns on right -->
-    <div class="footer-top">
-      <div class="brand-col">
-        <a href="#top" class="wordmark" aria-label="At9 home">
+      :root {
+        /* Warm, flatter palette — service-industry friendly, less gradient-heavy */
+        --bg: #fbfaf6; /* warm off-white page background */
+        --bg-soft: #f5f1e9; /* cream — full-bleed section bg */
+        --bg-lavender: #efeafb; /* soft purple — full-bleed section bg */
+        --bg-mint: #e9f3ec; /* soft green — full-bleed section bg */
+        --bg-mute: #f1ede3; /* tag/chip background */
+
+        --ink: #1a1825;
+        --ink-2: #4a4658;
+        --ink-3: #7c7889;
+        --line: #ece7dd;
+        --line-2: #ddd6cb;
+
+        --primary: #907cff;
+        --primary-light: #b5a6ff;
+        --primary-dark: #705ac2;
+        --secondary: #f0a9ff;
+        --green: #a2f9b0;
+        --yellow: #fadaa4;
+
+        /* Kept for footer/founder sign-off avatar only */
+        --grad: linear-gradient(
+          120deg,
+          #907cff 0%,
+          #b07cff 35%,
+          #f0a9ff 65%,
+          #a2f9b0 100%
+        );
+
+        --radius: 18px;
+        --radius-lg: 28px;
+        --shadow-sm:
+          0 1px 2px rgba(21, 19, 28, 0.04), 0 2px 6px rgba(21, 19, 28, 0.04);
+        --shadow-md:
+          0 10px 30px rgba(26, 24, 37, 0.08), 0 2px 6px rgba(26, 24, 37, 0.04);
+        --shadow-lg:
+          0 30px 60px -20px rgba(26, 24, 37, 0.25),
+          0 12px 24px -10px rgba(26, 24, 37, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          "Switzer",
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: 17px;
+        line-height: 1.55;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* ---------- Layout ---------- */
+      .container {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      section {
+        padding: 96px 0;
+        position: relative;
+      }
+      @media (max-width: 720px) {
+        section {
+          padding: 64px 0;
+        }
+      }
+
+      /* Prevent decorative line art from causing horizontal scroll */
+      body {
+        overflow-x: clip;
+      }
+
+      /* Make sure inline content stays above decos */
+      .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ---------- Typography ---------- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+        margin: 0 0 0.4em;
+        color: var(--ink);
+      }
+      h1 {
+        font-size: clamp(40px, 6.2vw, 72px);
+        letter-spacing: -0.035em;
+        font-weight: 600;
+      }
+      h2 {
+        font-size: clamp(30px, 3.6vw, 46px);
+        letter-spacing: -0.03em;
+        font-weight: 600;
+      }
+      h3 {
+        font-size: 21px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0 0 1em;
+        color: var(--ink-2);
+      }
+      .lead {
+        font-size: 20px;
+        line-height: 1.5;
+        color: var(--ink-2);
+      }
+      .eyebrow {
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--primary-dark);
+        background: var(--bg-mute);
+        padding: 6px 14px;
+        border-radius: 999px;
+        margin-bottom: 18px;
+      }
+
+      /* Cycling industry chip — soft background and label fade between business types */
+      .eyebrow-cycle {
+        transition:
+          background-color 0.6s ease,
+          color 0.6s ease;
+      }
+      .eyebrow-cycle .cycle-word {
+        display: inline-block;
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+        opacity: 1;
+        transform: translateY(0);
+        font-weight: 700;
+      }
+      .eyebrow-cycle.is-out .cycle-word {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      /* Per-industry palette — soft pastel background + readable matching text */
+      .eyebrow-cycle[data-type="restaurants"] {
+        background: #fbe3cd;
+        color: #874810;
+      }
+      .eyebrow-cycle[data-type="pubs"] {
+        background: #fbf0d0;
+        color: #7a5812;
+      }
+      .eyebrow-cycle[data-type="hotels"] {
+        background: #dde4ef;
+        color: #2a3f6a;
+      }
+      .eyebrow-cycle[data-type="catteries"] {
+        background: #fbddeb;
+        color: #8e2f60;
+      }
+      .eyebrow-cycle[data-type="kennels"] {
+        background: #efe4d2;
+        color: #69472a;
+      }
+
+      .gradient-text {
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* Hand-drawn squiggle under highlighted hero words */
+      .squiggle-wrap {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+      }
+      .squiggle-wrap .squiggle {
+        position: absolute;
+        left: -2%;
+        right: -2%;
+        bottom: -0.18em;
+        width: 104%;
+        height: 0.34em;
+        pointer-events: none;
+        color: var(--primary);
+        overflow: visible;
+      }
+      .squiggle-wrap .squiggle path {
+        stroke: currentColor;
+        stroke-width: 4;
+        stroke-linecap: round;
+        fill: none;
+        /* Subtle draw-on animation, runs once on load */
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: squiggle-draw 1.1s ease-out 0.3s forwards;
+      }
+      @keyframes squiggle-draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .squiggle-wrap .squiggle path {
+          stroke-dasharray: none;
+          stroke-dashoffset: 0;
+          animation: none;
+        }
+      }
+
+      /* ---------- Buttons ---------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 12px 20px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease,
+          color 0.2s ease;
+        white-space: nowrap;
+      }
+      .btn-primary {
+        background: var(--ink);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+        background: #2a2733;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--line-2);
+      }
+      .btn-ghost:hover {
+        background: var(--bg-mute);
+      }
+
+      /* App store badges */
+      .store-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .store-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background: #15131c;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 14px;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.2s ease;
+        min-width: 170px;
+      }
+      .store-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      .store-badge svg {
+        flex: none;
+      }
+      .store-badge .label {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+      .store-badge .label .small {
+        font-size: 11px;
+        opacity: 0.8;
+        font-weight: 500;
+      }
+      .store-badge .label .big {
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      /* ---------- Page top backdrop (a soft warm tint behind nav + hero) ---------- */
+      .page-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 760px;
+        z-index: -1;
+        background: linear-gradient(180deg, #f4ecdd 0%, var(--bg) 100%);
+        pointer-events: none;
+      }
+
+      /* ---------- Nav ---------- */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: transparent;
+      }
+      /* When the user scrolls, give the nav a soft frosted backdrop so links stay legible */
+      .nav.is-scrolled {
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: saturate(180%) blur(14px);
+        -webkit-backdrop-filter: saturate(180%) blur(14px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+      .nav-links a {
+        font-weight: 500;
+        font-size: 15px;
+        color: var(--ink-2);
+        transition: color 0.15s ease;
+      }
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+      .nav-cta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      @media (max-width: 820px) {
+        .nav-links {
+          display: none;
+        }
+      }
+
+      /* Wordmark */
+      .wordmark {
+        display: inline-flex;
+        align-items: center;
+        line-height: 0;
+      }
+      .wordmark img {
+        height: 30px;
+        width: auto;
+        display: block;
+      }
+      .footer .wordmark img {
+        height: 26px;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        position: relative;
+        padding-top: 40px;
+        padding-bottom: 80px;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 56px;
+        align-items: center;
+      }
+      @media (max-width: 960px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+      .hero h1 .gradient-text {
+        display: inline-block;
+      }
+      .hero p.lead {
+        max-width: 540px;
+        margin-top: 8px;
+      }
+      .hero .ctas {
+        margin-top: 28px;
+      }
+      .hero .meta {
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--ink-3);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--ink-3);
+        display: inline-block;
+      }
+
+      /* Hero visual — two phone frames with soft glow + decorative accents */
+      .hero-phones-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto;
+        height: 560px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+      }
+      .hero-phones-bg {
+        position: absolute;
+        width: 460px;
+        height: 460px;
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          #e8e0ff 0%,
+          transparent 68%
+        );
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+      .hero-phone {
+        position: absolute;
+        background: #1a1825;
+        padding: 8px;
+        border-radius: 44px;
+        box-shadow:
+          0 32px 64px -16px rgba(0, 0, 0, 0.42),
+          0 12px 24px -8px rgba(0, 0, 0, 0.24);
+      }
+      .hero-phone img {
+        display: block;
+        border-radius: 37px;
+        width: 240px;
+        height: auto;
+      }
+      .hero-phone--left {
+        transform: rotate(-8deg) translate(-84px, -22px);
+        z-index: 1;
+      }
+      .hero-phone--right {
+        transform: rotate(6deg) translate(84px, 28px);
+        z-index: 2;
+      }
+      .hero-deco {
+        position: absolute;
+        pointer-events: none;
+        color: var(--primary-dark);
+        z-index: 3;
+      }
+
+      /* "Designed for Tablet & Mobile" badge in hero */
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 18px;
+        font-family: "Caveat", cursive;
+        font-size: 22px;
+        font-weight: 500;
+        color: var(--ink-2);
+        transform: rotate(-1deg);
+      }
+      .hero-badge svg {
+        color: var(--primary-dark);
+        flex: none;
+      }
+
+      @media (max-width: 960px) {
+        .hero-phones-wrap {
+          height: 460px;
+          max-width: 460px;
+        }
+        .hero-phone img {
+          width: 190px;
+        }
+        .hero-phone--left {
+          transform: rotate(-6deg) translate(-66px, -16px);
+        }
+        .hero-phone--right {
+          transform: rotate(5deg) translate(66px, 22px);
+        }
+      }
+      @media (max-width: 520px) {
+        .hero-phones-wrap {
+          height: 360px;
+        }
+        .hero-phone img {
+          width: 148px;
+        }
+        .hero-phone--left {
+          transform: rotate(-5deg) translate(-52px, -12px);
+        }
+        .hero-phone--right {
+          transform: rotate(4deg) translate(52px, 16px);
+        }
+      }
+
+      /* ---------- Spacer band (sits between hero and features) ---------- */
+      .growth-band-wrap {
+        padding: 36px 0 20px;
+      }
+      .growth-band {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+      .growth-band .line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--line-2),
+          transparent
+        );
+      }
+      .growth-band .growth-text {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--ink-2);
+        font-family: "Caveat", cursive;
+        font-size: 26px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        margin: 0;
+        line-height: 1.1;
+        white-space: nowrap;
+        transform: rotate(-1deg);
+      }
+      .growth-band .device-icon {
+        color: var(--primary-dark);
+        flex: none;
+      }
+      @media (max-width: 800px) {
+        .growth-band {
+          flex-direction: column;
+          gap: 14px;
+        }
+        .growth-band .growth-text {
+          white-space: normal;
+          text-align: center;
+          font-size: 22px;
+        }
+        .growth-band .line {
+          width: 60%;
+        }
+      }
+
+      /* ---------- Features ---------- */
+      section#features {
+        padding-top: 56px;
+        padding-bottom: 80px;
+      }
+      .features-head {
+        max-width: 720px;
+        margin: 0 auto 36px;
+        text-align: center;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+      @media (max-width: 800px) {
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .feature-card {
+        border-radius: 28px;
+        padding: 44px 40px 0;
+        position: relative;
+        overflow: hidden;
+        height: 580px;
+        display: flex;
+        flex-direction: column;
+        isolation: isolate;
+      }
+      .feature-card--lavender {
+        background: #ece4fa;
+        --accent: var(--primary-dark);
+      }
+      .feature-card--mint {
+        background: #ddeee2;
+        --accent: #3f9c5a;
+      }
+
+      .feature-card .card-copy {
+        max-width: 380px;
+        margin-bottom: 20px;
+      }
+      .feature-card .card-copy h3 {
+        font-size: clamp(26px, 2.4vw, 32px);
+        margin: 0 0 10px;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+        line-height: 1.1;
+        color: var(--ink);
+      }
+      .feature-card .card-copy p {
+        color: var(--ink-2);
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .feature-card .card-art {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        position: relative;
+        margin-top: auto;
+      }
+
+      /* Phone mockup wraps a phone screenshot with a thin dark bezel */
+      .phone-frame {
+        background: #1a1825;
+        padding: 7px;
+        border-radius: 36px;
+        position: relative;
+        box-shadow:
+          0 30px 60px -18px rgba(0, 0, 0, 0.32),
+          0 12px 24px -8px rgba(0, 0, 0, 0.18);
+        margin-bottom: -110px; /* phone bleeds off the bottom of the card */
+        z-index: 1;
+      }
+      .phone-frame img {
+        display: block;
+        border-radius: 30px;
+        width: 220px;
+        height: auto;
+      }
+      .feature-card--lavender .phone-frame {
+        transform: rotate(-3deg);
+      }
+      .feature-card--mint .phone-frame {
+        transform: rotate(3deg);
+      }
+
+      /* Dual-phone layout for "Bookings in seconds" card */
+      .dual-phone {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .feature-card--lavender .dual-phone .phone-frame--back {
+        transform: rotate(-9deg);
+        margin-right: -36px;
+        z-index: 0;
+        opacity: 0.88;
+      }
+      .feature-card--lavender .dual-phone .phone-frame--front {
+        transform: rotate(5deg);
+        z-index: 1;
+      }
+
+      /* Corner line-art accents around the phone */
+      .feature-card .corner-deco {
+        position: absolute;
+        pointer-events: none;
+        color: var(--accent);
+        z-index: 2;
+      }
+
+      @media (max-width: 800px) {
+        .feature-card {
+          height: auto;
+          padding: 36px 28px 0;
+        }
+        .phone-frame {
+          margin-bottom: -80px;
+        }
+        .feature-card--lavender .phone-frame,
+        .feature-card--mint .phone-frame {
+          transform: none;
+        }
+      }
+
+      /* ---------- Full-bleed section colors ---------- */
+      .section-dark {
+        background: #1a1825;
+        color: #fff;
+        position: relative;
+      }
+      .section-cream {
+        background: var(--bg-soft);
+      }
+      .section-lavender {
+        background: var(--bg-lavender);
+      }
+      .section-mint {
+        background: var(--bg-mint);
+      }
+      .beliefs {
+        position: relative;
+      }
+      .beliefs .eyebrow {
+        background: rgba(255, 255, 255, 0.08);
+        color: #d3cdfa;
+      }
+
+      /* Two-column founder layout: polaroid left, beliefs right */
+      .founder-grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 72px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .founder-grid {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+      }
+
+      /* Polaroid frame */
+      .polaroid {
+        background: #fbfaf6;
+        padding: 18px 18px 22px;
+        border-radius: 4px;
+        box-shadow:
+          0 30px 50px -20px rgba(0, 0, 0, 0.55),
+          0 8px 16px -8px rgba(0, 0, 0, 0.35);
+        transform: rotate(-2.5deg);
+        transition: transform 0.3s ease;
+        max-width: 340px;
+        margin: 8px auto 0;
+      }
+      .polaroid:hover {
+        transform: rotate(-1deg);
+      }
+      .polaroid .photo {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        background: #f2d4b0;
+        overflow: hidden;
+        display: block;
+        margin-bottom: 18px;
+        border-radius: 1px;
+      }
+      .polaroid .photo img,
+      .polaroid .photo svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .polaroid .caption {
+        text-align: center;
+        font-family: "Caveat", "Switzer", cursive;
+        color: #1a1825;
+        font-size: 26px;
+        line-height: 1.05;
+        letter-spacing: 0;
+        padding: 4px 6px 0;
+      }
+      .polaroid .caption small {
+        display: block;
+        font-size: 16px;
+        color: #4a4658;
+        margin-top: 4px;
+      }
+
+      /* Beliefs — three inline cards spanning full width below the polaroid row */
+      .beliefs-list {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .beliefs-list .belief {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 2px solid var(--primary-light);
+        border-radius: 16px;
+        padding: 26px 24px 24px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .beliefs-list .belief .num {
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        color: var(--primary-light);
+        display: block;
+        margin-bottom: 14px;
+      }
+      .beliefs-list .belief h3 {
+        color: #fff;
+        font-size: 16px;
+        margin: 0 0 8px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .beliefs-list .belief p {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 14px;
+        margin: 0;
+        line-height: 1.6;
+      }
+      @media (max-width: 700px) {
+        .beliefs-list {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+      }
+      .beliefs h2 {
+        color: #fff;
+        max-width: 720px;
+      }
+      .beliefs .lead {
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 640px;
+      }
+
+      /* ---------- Pricing ---------- */
+      .pricing-head {
+        max-width: 720px;
+        margin: 0 auto 56px;
+        text-align: center;
+      }
+
+      /* Free-trial badge — green chip drawing attention to the offer */
+      .trial-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: #dbf0e0;
+        color: #2a7a45;
+        margin-bottom: 22px;
+        border: 1px solid rgba(63, 156, 90, 0.2);
+      }
+      .trial-badge svg {
+        flex: none;
+        color: #3f9c5a;
+      }
+      .trial-badge .sep {
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.5;
+        display: inline-block;
+      }
+      @media (max-width: 520px) {
+        .trial-badge {
+          flex-wrap: wrap;
+          justify-content: center;
+          text-align: center;
+          line-height: 1.4;
+        }
+      }
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 880px;
+        margin: 0 auto;
+      }
+      @media (max-width: 700px) {
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .plan {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+      }
+      .plan.featured {
+        border: 1.5px solid transparent;
+        background:
+          linear-gradient(#fff, #fff) padding-box,
+          var(--grad) border-box;
+        box-shadow: var(--shadow-md);
+        position: relative;
+      }
+      .plan .plan-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .plan h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+      .plan .tag {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--grad);
+        color: #15131c;
+      }
+      .plan .price {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        margin: 12px 0 6px;
+      }
+      .plan .price .amount {
+        font-size: 48px;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+      }
+      .plan .price .per {
+        color: var(--ink-3);
+        font-weight: 500;
+      }
+      .plan .price-note {
+        font-size: 11px;
+        color: var(--ink-3);
+        margin: 2px 0 16px;
+      }
+      .plan .summary {
+        color: var(--ink-2);
+        margin-bottom: 24px;
+        min-height: 1.5em;
+      }
+      .plan ul {
+        list-style: none;
+        margin: 0 0 28px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .plan li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 15px;
+        color: var(--ink-2);
+      }
+      .plan li .check {
+        flex: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--green);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3px;
+      }
+      .plan .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .plan.featured .btn-primary {
+        background: var(--ink);
+      }
+
+      .plan .placeholder-note {
+        font-size: 12px;
+        color: var(--ink-3);
+        margin-top: 14px;
+        font-style: italic;
+      }
+
+      /* ---------- FAQ ---------- */
+      .faq-head {
+        max-width: 720px;
+        margin: 0 auto 48px;
+        text-align: center;
+      }
+      .faq-list {
+        max-width: 820px;
+        margin: 0 auto;
+        border-top: 1px solid var(--line);
+      }
+      .faq-item {
+        border-bottom: 1px solid var(--line);
+        padding: 0;
+      }
+      .faq-item summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 22px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        font-weight: 600;
+        font-size: 18px;
+        color: var(--ink);
+      }
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq-item summary .toggle {
+        flex: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--bg-mute);
+        color: var(--primary-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease;
+        font-weight: 700;
+      }
+      .faq-item[open] summary .toggle {
+        transform: rotate(45deg);
+        background: var(--primary);
+        color: #fff;
+      }
+      .faq-item .answer {
+        padding: 0 4px 22px;
+        color: var(--ink-2);
+        max-width: 720px;
+        font-size: 16px;
+      }
+
+      /* ---------- CTA banner — content inside a full-bleed section ---------- */
+      .cta-banner {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .cta-banner h2 {
+        margin-bottom: 14px;
+      }
+      .cta-banner .store-row {
+        justify-content: center;
+        margin-top: 24px;
+      }
+
+      /* ---------- Footer (aboardhr-inspired) ---------- */
+      .footer {
+        background: var(--bg);
+        border-top: 1px solid var(--line);
+        padding: 80px 0 28px;
+        color: var(--ink-2);
+        font-size: 14px;
+        overflow: hidden;
+      }
+      .footer-top {
+        display: grid;
+        grid-template-columns: 1.2fr 2fr;
+        gap: 56px;
+        align-items: start;
+        padding-bottom: 64px;
+      }
+      @media (max-width: 820px) {
+        .footer-top {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding-bottom: 48px;
+        }
+      }
+
+      .footer .brand-col .wordmark img {
+        height: 28px;
+      }
+
+      /* Contact / social rows in the brand column — borderless, flush-left, with a coloured icon tile */
+      .contact-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 22px;
+      }
+      .contact-card {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 0;
+        text-decoration: none;
+        background: transparent;
+        border: 0;
+        position: relative;
+        width: fit-content;
+      }
+      .contact-card .icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        flex: none;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        position: relative;
+      }
+      .contact-card .icon svg {
+        width: 16px;
+        height: 16px;
+      }
+      .contact-card--instagram .icon {
+        background: linear-gradient(
+          135deg,
+          #907cff 0%,
+          #b07cff 30%,
+          #f0a9ff 65%,
+          #ffb69e 100%
+        );
+      }
+      .contact-card--email .icon {
+        background: var(--ink);
+      }
+      .contact-card:hover .icon {
+        transform: scale(1.06) rotate(-3deg);
+        box-shadow: 0 6px 14px -4px rgba(26, 24, 37, 0.25);
+      }
+      .contact-card .content {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+        min-width: 0;
+      }
+      .contact-card .label {
+        font-weight: 600;
+        font-size: 13.5px;
+        color: var(--ink);
+        transition: color 0.15s ease;
+      }
+      .contact-card .meta {
+        font-size: 12px;
+        color: var(--ink-3);
+        margin-top: 2px;
+      }
+      .contact-card:hover .label {
+        color: var(--primary-dark);
+      }
+      .contact-card .arrow {
+        margin-left: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--primary-dark);
+        opacity: 0;
+        transform: translateX(-6px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+      .contact-card:hover .arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .link-cols {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      @media (max-width: 600px) {
+        .link-cols {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 32px 16px;
+        }
+      }
+      .link-col h4 {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--ink-3);
+        margin: 0 0 16px;
+      }
+      .link-col a {
+        display: block;
+        padding: 6px 0;
+        color: var(--ink-2);
+        font-size: 15px;
+        font-weight: 500;
+        transition: color 0.15s ease;
+      }
+      .link-col a:hover {
+        color: var(--ink);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid var(--line);
+        padding-top: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 13px;
+        color: var(--ink-3);
+      }
+      .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .footer-bottom-links a {
+        color: var(--ink-3);
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+      .footer-bottom-links a:hover {
+        color: var(--ink);
+      }
+
+      /* Parent-company attribution under the footer logo */
+      .provider-line {
+        margin: 14px 0 0;
+        font-size: 13px;
+        color: var(--ink-3);
+        line-height: 1.5;
+      }
+      .provider-line .company {
+        color: var(--ink-2);
+        font-weight: 600;
+      }
+
+      /* ---------- Web Booking Link section ---------- */
+      .book-link-section {
+        overflow: visible;
+      }
+      .book-link-head {
+        max-width: 640px;
+        margin: 0 auto 24px;
+        text-align: center;
+      }
+      .book-link-section .eyebrow {
+        background: rgba(144, 124, 255, 0.14);
+        color: var(--primary-dark);
+      }
+
+      /* URL bar + scattered social badge scene */
+      .book-share-scene {
+        position: relative;
+        max-width: 760px;
+        margin: 0 auto 60px;
+        padding: 38px 20px 42px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+
+      /* Floating social badge chips */
+      .share-badge {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.13);
+        white-space: nowrap;
+        user-select: none;
+        pointer-events: none;
+      }
+      .share-badge svg {
+        flex-shrink: 0;
+      }
+      .share-badge--instagram {
+        background: #fdf2f8;
+        color: #9b245f;
+        top: 12px;
+        left: 3%;
+        transform: rotate(-4deg);
+      }
+      .share-badge--facebook {
+        background: #eef3ff;
+        color: #1877f2;
+        top: 12px;
+        right: 3%;
+        transform: rotate(3deg);
+      }
+      .share-badge--whatsapp {
+        background: #edfbf1;
+        color: #128c7e;
+        bottom: 20px;
+        left: 3%;
+        transform: rotate(2.5deg);
+      }
+      .share-badge--tiktok {
+        background: #fff0f3;
+        color: #ee1d52;
+        bottom: 20px;
+        right: 3%;
+        transform: rotate(-3deg);
+      }
+      .share-badge--website {
+        background: var(--bg-mute);
+        color: var(--ink-2);
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-1deg);
+      }
+      @media (max-width: 780px) {
+        .share-badge {
+          display: none;
+        }
+      }
+
+      /* URL bar + annotation wrapper — keeps annotation aligned relative to the bar */
+      .book-url-group {
+        max-width: 540px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+      .book-url-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1.5px solid var(--line-2);
+        border-radius: 22px;
+        padding: 20px 28px;
+        box-shadow: var(--shadow-md);
+        width: 100%;
+      }
+      .book-url-icon {
+        color: var(--primary-dark);
+        flex-shrink: 0;
+      }
+      .book-url-base {
+        font-size: 18px;
+        color: var(--ink-3);
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .book-url-slug {
+        background: var(--bg-lavender);
+        color: var(--primary-dark);
+        font-weight: 700;
+        font-size: 18px;
+        padding: 5px 14px;
+        border-radius: 10px;
+        white-space: nowrap;
+        border: 1px solid rgba(144, 124, 255, 0.2);
+      }
+      .book-url-annotation {
+        font-family: "Caveat", cursive;
+        font-size: 26px;
+        font-weight: 500;
+        color: var(--ink-3);
+        transform: rotate(-1.5deg);
+        margin: 8px 0 0;
+        padding-right: 56px;
+        text-align: right;
+        display: block;
+      }
+
+      /* Screenshots fan */
+      .book-screens {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        margin-bottom: 56px;
+      }
+      .book-screen {
+        background: #1a1825;
+        padding: 8px;
+        border-radius: 38px;
+        box-shadow:
+          0 24px 48px -12px rgba(0, 0, 0, 0.32),
+          0 8px 16px -4px rgba(0, 0, 0, 0.16);
+        flex-shrink: 0;
+      }
+      .book-screen img {
+        display: block;
+        border-radius: 31px;
+        width: 210px;
+        height: auto;
+      }
+      .book-screen:first-child {
+        transform: rotate(-6deg) translateX(36px);
+        z-index: 1;
+      }
+      .book-screen:nth-child(2) {
+        transform: translateY(-24px);
+        z-index: 3;
+      }
+      .book-screen:last-child {
+        transform: rotate(6deg) translateX(-36px);
+        z-index: 2;
+      }
+
+      /* App nudge card */
+      .book-app-nudge {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 36px 36px 32px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+      }
+      .book-app-nudge p {
+        font-size: 16px;
+        line-height: 1.65;
+        color: var(--ink-2);
+        margin: 0 0 26px;
+      }
+      .book-app-nudge .store-row {
+        justify-content: center;
+      }
+
+      @media (max-width: 700px) {
+        .book-screen img {
+          width: 165px;
+        }
+        .book-screen:first-child {
+          transform: rotate(-4deg) translateX(24px);
+        }
+        .book-screen:last-child {
+          transform: rotate(4deg) translateX(-24px);
+        }
+      }
+      @media (max-width: 480px) {
+        .book-screen img {
+          width: 128px;
+        }
+        .book-screen:first-child {
+          transform: rotate(-3deg) translateX(16px);
+        }
+        .book-screen:last-child {
+          transform: rotate(3deg) translateX(-16px);
+        }
+        .book-url-base,
+        .book-url-slug {
+          font-size: 13px;
+        }
+        .book-app-nudge {
+          padding: 24px 20px;
+        }
+      }
+
+      /* small helpers */
+      .center {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Soft gradient backdrop that runs behind both nav and hero so they feel continuous -->
+    <div class="page-bg" aria-hidden="true"></div>
+
+    <!-- ---------- NAV ---------- -->
+    <header class="nav">
+      <div class="container nav-row">
+        <a href="#" class="wordmark" aria-label="At9 home">
           <img src="At9.png" alt="At9" />
         </a>
-        <p class="provider-line">At9 is a service provided by <span class="company">Digital Team Group Limited</span>.</p>
 
-        <div class="contact-stack">
-          <a class="contact-card contact-card--instagram" href="https://instagram.com/at9" aria-label="Follow At9 on Instagram">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="5"/>
-                <circle cx="12" cy="12" r="4"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-              </svg>
-            </span>
-            <span class="content">
-              <span class="label">Follow us on Instagram</span>
-              <span class="meta">@at9</span>
-            </span>
-            <span class="arrow" aria-hidden="true">→</span>
-          </a>
-
-          <a class="contact-card contact-card--email" href="mailto:contact@at9.app" aria-label="Email At9">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="5" width="18" height="14" rx="2"/>
-                <path d="M3 7l9 6 9-6"/>
-              </svg>
-            </span>
-            <span class="content">
-              <span class="label">Email us</span>
-              <span class="meta">contact@at9.app</span>
-            </span>
-            <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="link-cols">
-        <div class="link-col">
-          <h4>Product</h4>
-          <a href="#features">Features</a>
+        <nav class="nav-links" aria-label="Primary">
           <a href="#pricing">Pricing</a>
-          <a href="getting-started/">Getting Started</a>
-        </div>
-        <div class="link-col">
-          <h4>Company</h4>
-          <a href="#about">About</a>
           <a href="#faqs">FAQs</a>
-          <a href="mailto:hello@at9.app">Contact</a>
-        </div>
-        <div class="link-col">
-          <h4>Legal</h4>
-          <a href="privacy-policy/">Privacy Policy</a>
-          <a href="terms/">Terms of Use</a>
-          <a href="data-protection/">Data Protection</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-cta">
+          <a class="btn btn-primary" href="#download">
+            Get the app
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 5 7 7-7 7" />
+            </svg>
+          </a>
         </div>
       </div>
+    </header>
 
-    </div>
+    <!-- ---------- HERO ---------- -->
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow eyebrow-cycle" data-type="restaurants"
+            >Designed for <span class="cycle-word">Restaurants</span></span
+          >
+          <h1>
+            Room &amp; table bookings,<br />
+            <span class="squiggle-wrap"
+              >made simple<svg
+                class="squiggle"
+                viewBox="0 0 300 18"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9"
+                  vector-effect="non-scaling-stroke"
+                /></svg></span
+            >.
+          </h1>
+          <p class="lead">
+            Ditch the paper diary and the spreadsheet. At9 gives restaurants,
+            pubs, hotels, catteries and kennels a faster, simpler way to manage
+            room and table bookings, right from your phone.
+          </p>
+          <div class="ctas store-row">
+            <!-- App Store -->
+            <a
+              class="store-badge"
+              href="#download"
+              aria-label="Download At9 on the App Store"
+            >
+              <svg
+                width="22"
+                height="26"
+                viewBox="0 0 24 28"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"
+                />
+              </svg>
+              <span class="label">
+                <span class="small">Download on the</span>
+                <span class="big">App Store</span>
+              </span>
+            </a>
+            <!-- Google Play -->
+            <a
+              class="store-badge"
+              href="#download"
+              aria-label="Get At9 on Google Play"
+            >
+              <svg
+                width="22"
+                height="26"
+                viewBox="0 0 24 28"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="gp1" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00C3FF" />
+                    <stop offset="100%" stop-color="#1E88E5" />
+                  </linearGradient>
+                  <linearGradient id="gp2" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#FFD600" />
+                    <stop offset="100%" stop-color="#FFA000" />
+                  </linearGradient>
+                  <linearGradient id="gp3" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#FF4081" />
+                    <stop offset="100%" stop-color="#D81B60" />
+                  </linearGradient>
+                  <linearGradient id="gp4" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00E676" />
+                    <stop offset="100%" stop-color="#00C853" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z"
+                  fill="url(#gp1)"
+                />
+                <path
+                  d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z"
+                  fill="url(#gp4)"
+                />
+                <path
+                  d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z"
+                  fill="url(#gp3)"
+                />
+                <path
+                  d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z"
+                  fill="url(#gp2)"
+                />
+              </svg>
+              <span class="label">
+                <span class="small">Get it on</span>
+                <span class="big">Google Play</span>
+              </span>
+            </a>
+          </div>
+          <div class="meta">
+            <span>Free to try</span>
+            <span class="dot"></span>
+            <span>No card required</span>
+            <span class="dot"></span>
+            <span>Set up in minutes</span>
+          </div>
+        </div>
 
-    <div class="footer-bottom">
-      <span>&copy; 2026 At9. All rights reserved.</span>
-      <div class="footer-bottom-links">
-        <a href="getting-started/">Getting Started</a>
-        <a href="privacy-policy/">Privacy Policy</a>
-        <a href="terms/">Terms of Use</a>
-        <a href="data-protection/">Data Protection</a>
-        <a href="data-deletion/">Account &amp; Data Deletion</a>
+        <!-- Hero phones: room booking + table bookings -->
+        <div class="hero-phones-wrap">
+          <div class="hero-phone hero-phone--left">
+            <img
+              src="assets/screenshots/app-room-booking-view.png"
+              alt="At9 room booking calendar view"
+            />
+          </div>
+          <div class="hero-phone hero-phone--right">
+            <img
+              src="assets/screenshots/app-table-bookings.png"
+              alt="At9 table bookings view"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- DIVIDER BAND ---------- -->
+    <div class="growth-band-wrap">
+      <div class="container growth-band">
+        <span class="line" aria-hidden="true"></span>
+        <p class="growth-text">
+          <svg
+            class="device-icon"
+            width="26"
+            height="22"
+            viewBox="0 0 28 22"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <rect x="2" y="4" width="7" height="14" rx="3.5" />
+            <rect x="12" y="1" width="14" height="20" rx="3.5" />
+          </svg>
+          Works on Mobile &amp; Tablet
+        </p>
+        <span class="line" aria-hidden="true"></span>
       </div>
     </div>
 
-  </div>
-</footer>
+    <!-- ---------- FEATURES ---------- -->
+    <section id="features">
+      <div class="container">
+        <div class="features-head">
+          <span class="eyebrow">Everything you need</span>
+          <h2>Run your bookings from the palm of your hand.</h2>
+          <p class="lead">
+            Swap the paper diary and the spreadsheet for something that actually
+            keeps pace with your day. No training manual, no bloat, just the
+            tools that matter.
+          </p>
+        </div>
 
-<script>
-  // Add a frosted backdrop to the nav once the user scrolls past the hero,
-  // so links stay legible over white and dark sections below.
-  (function () {
-    var nav = document.querySelector('.nav');
-    if (!nav) return;
-    var threshold = 60;
-    function onScroll() {
-      if (window.scrollY > threshold) nav.classList.add('is-scrolled');
-      else nav.classList.remove('is-scrolled');
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  })();
+        <div class="features-grid">
+          <!-- Card 1: Add booking — lavender background, purple accents -->
+          <article class="feature-card feature-card--lavender">
+            <div class="card-copy">
+              <h3>Bookings in seconds.</h3>
+              <p>
+                From an empty diary to a confirmed booking in just a few taps.
+                Pick the date, pick the room or table, save. Done.
+              </p>
+            </div>
+            <div class="card-art">
+              <!-- corner decoration: sparkle top-right -->
+              <svg
+                class="corner-deco"
+                style="top: 4%; right: 8%; width: 26px"
+                viewBox="0 0 28 28"
+                stroke="currentColor"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M14 3 L 14 25" />
+                <path d="M3 14 L 25 14" />
+                <path d="M6 6 L 22 22" />
+                <path d="M22 6 L 6 22" />
+              </svg>
+              <!-- corner decoration: wavy line bottom-left -->
+              <svg
+                class="corner-deco"
+                style="bottom: 22%; left: 6%; width: 70px"
+                viewBox="0 0 70 18"
+                stroke="currentColor"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M3 9 Q 18 1, 35 9 T 67 9" />
+              </svg>
+              <!-- corner decoration: small dot cluster -->
+              <svg
+                class="corner-deco"
+                style="top: 38%; left: 4%; width: 18px"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <circle cx="3" cy="10" r="2" />
+                <circle cx="10" cy="3" r="2" />
+                <circle cx="10" cy="17" r="2" />
+                <circle cx="17" cy="10" r="2" />
+              </svg>
 
-  // Cycle the hero industry chip through business types.
-  // The data-type attribute drives the soft background colour via CSS.
-  (function () {
-    var chip = document.querySelector('.eyebrow-cycle');
-    if (!chip) return;
-    var wordEl = chip.querySelector('.cycle-word');
-    if (!wordEl) return;
+              <div class="dual-phone">
+                <div class="phone-frame phone-frame--back">
+                  <img
+                    src="assets/screenshots/app-table-booking-form.png"
+                    alt="Adding a table booking in At9"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="phone-frame phone-frame--front">
+                  <img
+                    src="assets/screenshots/app-room-booking-form.png"
+                    alt="Adding a room booking in At9"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+          </article>
 
-    var industries = [
-      { word: 'Restaurants', key: 'restaurants' },
-      { word: 'Pubs',        key: 'pubs'        },
-      { word: 'Hotels',      key: 'hotels'      },
-      { word: 'Catteries',   key: 'catteries'   },
-      { word: 'Kennels',     key: 'kennels'     }
-    ];
-    var i = 0;
+          <!-- Card 2: Schedule — mint background, green accents -->
+          <article class="feature-card feature-card--mint">
+            <div class="card-copy">
+              <h3>Your week, at a glance.</h3>
+              <p>
+                Every room, every customer, every booking, laid out in one clear
+                view. Check availability instantly and never double-book again.
+              </p>
+            </div>
+            <div class="card-art">
+              <!-- corner decoration: curl top-left -->
+              <svg
+                class="corner-deco"
+                style="top: 4%; left: 8%; width: 38px"
+                viewBox="0 0 40 40"
+                stroke="currentColor"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 28 C 5 10, 28 4, 35 18 Q 38 30, 22 30 Q 12 30, 18 22"
+                />
+              </svg>
+              <!-- corner decoration: dotted arc bottom-right -->
+              <svg
+                class="corner-deco"
+                style="bottom: 20%; right: 6%; width: 70px"
+                viewBox="0 0 70 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <circle cx="5" cy="20" r="2.5" />
+                <circle cx="18" cy="13" r="2.5" />
+                <circle cx="32" cy="7" r="2.5" />
+                <circle cx="48" cy="11" r="2.5" />
+                <circle cx="64" cy="18" r="2.5" />
+              </svg>
+              <!-- corner decoration: small plus -->
+              <svg
+                class="corner-deco"
+                style="top: 36%; right: 4%; width: 22px"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M12 4 L 12 20" />
+                <path d="M4 12 L 20 12" />
+              </svg>
 
-    function next() {
-      chip.classList.add('is-out');
-      setTimeout(function () {
-        i = (i + 1) % industries.length;
-        wordEl.textContent = industries[i].word;
-        chip.dataset.type = industries[i].key;
-        chip.classList.remove('is-out');
-      }, 320);
-    }
+              <div class="phone-frame">
+                <img
+                  src="assets/screenshots/app-room-booking-view.png"
+                  alt="At9 room booking calendar view showing the week's bookings"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    // Respect reduced-motion: keep the chip on the first item only
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    <!-- ---------- WEB BOOKING LINK ---------- -->
+    <section id="book-link" class="section-lavender book-link-section">
+      <div class="container">
+        <div class="book-link-head center">
+          <span class="eyebrow">Your booking page</span>
+          <h2>One link. Every booking.</h2>
+          <p class="lead">
+            Drop your link in your Instagram bio, Facebook page or website.
+            Customers tap, pick a time and book. Every reservation lands
+            straight in your app, instantly.
+          </p>
+        </div>
 
-    setInterval(next, 2600);
-  })();
-</script>
+        <!-- URL bar + scattered social icons -->
+        <div class="book-share-scene">
+          <span class="share-badge share-badge--instagram" aria-hidden="true">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+            Instagram
+          </span>
+          <span class="share-badge share-badge--facebook" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+              />
+            </svg>
+            Facebook
+          </span>
+          <span class="share-badge share-badge--whatsapp" aria-hidden="true">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+              />
+            </svg>
+            WhatsApp
+          </span>
+          <span class="share-badge share-badge--tiktok" aria-hidden="true">
+            <svg width="12" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.09a8.16 8.16 0 0 0 4.77 1.52V7.17a4.85 4.85 0 0 1-1.01-.48z"
+              />
+            </svg>
+            TikTok
+          </span>
+          <span class="share-badge share-badge--website" aria-hidden="true">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <path
+                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+              />
+            </svg>
+            Your website
+          </span>
 
-</body>
+          <div class="book-url-group">
+            <div class="book-url-bar">
+              <svg
+                class="book-url-icon"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                />
+                <path
+                  d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                />
+              </svg>
+              <span class="book-url-base">at9.app/book/</span>
+              <span class="book-url-slug">the-crown-pub</span>
+            </div>
+            <p class="book-url-annotation">← your name, your link</p>
+          </div>
+        </div>
+
+        <!-- Web screenshots — three phones fanned -->
+        <div class="book-screens">
+          <div class="book-screen">
+            <img
+              src="assets/screenshots/web-book-room.png"
+              alt="Booking a room via the At9 web link"
+              loading="lazy"
+            />
+          </div>
+          <div class="book-screen">
+            <img
+              src="assets/screenshots/web-book-room-or-table.png"
+              alt="Customer choosing to book a room or table"
+              loading="lazy"
+            />
+          </div>
+          <div class="book-screen">
+            <img
+              src="assets/screenshots/web-book-table.png"
+              alt="Booking a table via the At9 web link"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- App download nudge -->
+        <div class="book-app-nudge">
+          <p>
+            Every booking lands straight in your At9 app. No manual entry, no
+            missed reservations.<br />Customers get a link to download At9, so
+            they can manage their booking and message you directly.
+          </p>
+          <div class="store-row">
+            <a
+              class="store-badge"
+              href="#download"
+              aria-label="Download on the App Store"
+            >
+              <svg
+                width="22"
+                height="26"
+                viewBox="0 0 24 28"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"
+                />
+              </svg>
+              <span class="label"
+                ><span class="small">Download on the</span
+                ><span class="big">App Store</span></span
+              >
+            </a>
+            <a
+              class="store-badge"
+              href="#download"
+              aria-label="Get it on Google Play"
+            >
+              <svg
+                width="22"
+                height="26"
+                viewBox="0 0 24 28"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z"
+                  fill="url(#gp1)"
+                />
+                <path
+                  d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z"
+                  fill="url(#gp4)"
+                />
+                <path
+                  d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z"
+                  fill="url(#gp3)"
+                />
+                <path
+                  d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z"
+                  fill="url(#gp2)"
+                />
+              </svg>
+              <span class="label"
+                ><span class="small">Get it on</span
+                ><span class="big">Google Play</span></span
+              >
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- BELIEFS (Founder section) — full-bleed dark, polaroid + beliefs ---------- -->
+    <section id="about" class="section-dark">
+      <div class="container">
+        <div class="beliefs founder-grid">
+          <div class="polaroid">
+            <div class="photo">
+              <img
+                src="Profile.png"
+                alt="Mark Houldridge, founder of At9"
+                loading="lazy"
+              />
+            </div>
+            <div class="caption">
+              Mark Houldridge
+              <small>Founder, At9</small>
+            </div>
+          </div>
+
+          <!-- Beliefs content on the right -->
+          <div class="founder-copy">
+            <span class="eyebrow">From the founder</span>
+            <h2>Why I built At9...</h2>
+            <p class="lead">
+              I've spent 20 years building tools that help businesses work
+              better. The ones I love most are the small ones, run by people who
+              are brilliant at what they do but stuck managing bookings on a bit
+              of paper or a spreadsheet that was never really up to the job. At9
+              is my attempt to fix that.
+            </p>
+
+            <div class="beliefs-list">
+              <div class="belief">
+                <span class="num">01</span>
+                <h3>Simple tools get used.</h3>
+                <p>
+                  At9 is built to feel obvious from the first tap, no training
+                  required.
+                </p>
+              </div>
+              <div class="belief">
+                <span class="num">02</span>
+                <h3>Listen first. Build second.</h3>
+                <p>
+                  Every good idea in At9 came from a customer conversation. That
+                  never stops.
+                </p>
+              </div>
+              <div class="belief">
+                <span class="num">03</span>
+                <h3>Support is part of the product.</h3>
+                <p>
+                  When something is not working, you get a real answer quickly,
+                  every time.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PRICING — full-bleed cream ---------- -->
+    <section id="pricing" class="section-cream">
+      <div class="container">
+        <div class="pricing-head">
+          <span class="trial-badge">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M8 0 L 9.2 5.2 L 14.4 6.4 L 9.2 7.6 L 8 12.8 L 6.8 7.6 L 1.6 6.4 L 6.8 5.2 Z"
+              />
+            </svg>
+            Try free for 30 days
+            <span class="sep"></span>
+            No credit card required
+          </span>
+          <h2>
+            One price,
+            <span class="squiggle-wrap"
+              >no surprises<svg
+                class="squiggle"
+                viewBox="0 0 300 18"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9"
+                  vector-effect="non-scaling-stroke"
+                /></svg></span
+            >.
+          </h2>
+          <p class="lead">
+            Start your 30-day trial today. Upgrade when you're ready, cancel any
+            time. Your data is always yours to take with you.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="plan">
+            <div class="plan-head">
+              <h3>Solo</h3>
+            </div>
+            <p class="summary">
+              Perfect for owner-operators who run the show themselves.
+            </p>
+            <div class="price">
+              <span class="amount">£19.99</span>
+              <span class="per">/ month</span>
+            </div>
+            <p class="price-note">Prices shown exclude local taxes. Your App Store or Google Play price may differ.</p>
+            <ul>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Single-user login
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Unlimited room &amp; table bookings
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Shareable booking link, perfect for Instagram &amp; Facebook
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Customer app so they can find you and book themselves
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                In-app messaging with customers
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Block dates, set opening hours &amp; bookable times
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                iOS &amp; Android
+              </li>
+            </ul>
+            <a class="btn btn-ghost" href="#download">Start with Solo</a>
+          </div>
+
+          <div class="plan featured">
+            <div class="plan-head">
+              <h3>Team</h3>
+              <span class="tag">Most popular</span>
+            </div>
+            <p class="summary">
+              For teams who share the diary and want everyone on the same page.
+            </p>
+            <div class="price">
+              <span class="amount">£39.99</span>
+              <span class="per">/ month</span>
+            </div>
+            <p class="price-note">Prices shown exclude local taxes. Your App Store or Google Play price may differ.</p>
+            <ul>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Everything in Solo
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Multiple users to manage bookings together
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Role-based access (admin &amp; staff)
+              </li>
+              <li>
+                <span class="check"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Priority support
+              </li>
+            </ul>
+            <a class="btn btn-primary" href="#download">Start with Team</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- FAQs ---------- -->
+    <section id="faqs">
+      <div class="container">
+        <div class="faq-head">
+          <span class="eyebrow">FAQs</span>
+          <h2>Questions, answered.</h2>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>What is At9? <span class="toggle">+</span></summary>
+            <div class="answer">
+              At9 is a booking management app for businesses with rooms or
+              tables to fill. Create and manage bookings, track customers, and
+              see your availability at a glance, all from your phone or tablet.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Which businesses is At9 built for? <span class="toggle">+</span>
+            </summary>
+            <div class="answer">
+              At9 is built for any business that takes room or table bookings:
+              restaurants, pubs, hotels, catteries, kennels, and any other
+              service with a bookable space. If you're still managing a paper
+              diary or a spreadsheet, At9 can replace it.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Is At9 easy to set up? <span class="toggle">+</span>
+            </summary>
+            <div class="answer">
+              Yes, most businesses are up and running in under 10 minutes. You
+              don't need any technical knowledge. Just download the app, add
+              your rooms or tables, set your availability, and you're ready to
+              take bookings.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Does At9 work on phones and tablets? <span class="toggle">+</span>
+            </summary>
+            <div class="answer">
+              Yes. At9 is available on iOS and Android, on both phones and
+              tablets. The same login works everywhere and your data syncs in
+              real time.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Can my whole team use it? <span class="toggle">+</span>
+            </summary>
+            <div class="answer">
+              Yes. The Team plan supports multiple staff with role-based
+              permissions, so front-of-house, managers and owners each see what
+              they need.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Is there a free trial? <span class="toggle">+</span>
+            </summary>
+            <div class="answer">
+              Yes, you can try At9 free for 30-days with no credit card
+              required. Upgrade only when it's working for you.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              What happens to my data if I cancel? <span class="toggle">+</span>
+            </summary>
+            <div class="answer">
+              Your data is always yours and we will never sell it. If you cancel
+              and need a copy of your data, just email us at contact@at9.app and
+              we will send everything to you within 24 hours.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- DOWNLOAD CTA — full-bleed mint ---------- -->
+    <section id="download" class="section-mint">
+      <div class="container">
+        <div class="cta-banner">
+          <span class="eyebrow">Get the app</span>
+          <h2>Your bookings, sorted by tonight.</h2>
+          <p class="lead" style="margin: 0 auto; max-width: 560px">
+            Download At9 for iOS or Android. Free to try, no card required.
+          </p>
+
+          <div class="store-row">
+            <a
+              class="store-badge"
+              href="#"
+              aria-label="Download on the App Store"
+            >
+              <svg
+                width="22"
+                height="26"
+                viewBox="0 0 24 28"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"
+                />
+              </svg>
+              <span class="label">
+                <span class="small">Download on the</span>
+                <span class="big">App Store</span>
+              </span>
+            </a>
+            <a class="store-badge" href="#" aria-label="Get it on Google Play">
+              <svg
+                width="22"
+                height="26"
+                viewBox="0 0 24 28"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="gp1b" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00C3FF" />
+                    <stop offset="100%" stop-color="#1E88E5" />
+                  </linearGradient>
+                  <linearGradient id="gp2b" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#FFD600" />
+                    <stop offset="100%" stop-color="#FFA000" />
+                  </linearGradient>
+                  <linearGradient id="gp3b" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#FF4081" />
+                    <stop offset="100%" stop-color="#D81B60" />
+                  </linearGradient>
+                  <linearGradient id="gp4b" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00E676" />
+                    <stop offset="100%" stop-color="#00C853" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z"
+                  fill="url(#gp1b)"
+                />
+                <path
+                  d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z"
+                  fill="url(#gp4b)"
+                />
+                <path
+                  d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z"
+                  fill="url(#gp3b)"
+                />
+                <path
+                  d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z"
+                  fill="url(#gp2b)"
+                />
+              </svg>
+              <span class="label">
+                <span class="small">Get it on</span>
+                <span class="big">Google Play</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- FOOTER ---------- -->
+    <footer class="footer" id="contact">
+      <div class="container">
+        <!-- Top: brand on left, link columns on right -->
+        <div class="footer-top">
+          <div class="brand-col">
+            <a href="#top" class="wordmark" aria-label="At9 home">
+              <img src="At9.png" alt="At9" />
+            </a>
+            <p class="provider-line">
+              At9 is a service provided by
+              <span class="company">Digital Team Group Limited</span>.
+            </p>
+
+            <div class="contact-stack">
+              <a
+                class="contact-card contact-card--instagram"
+                href="https://instagram.com/at9app"
+                aria-label="Follow At9 on Instagram"
+              >
+                <span class="icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle
+                      cx="17.5"
+                      cy="6.5"
+                      r="1"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                </span>
+                <span class="content">
+                  <span class="label">Follow us on Instagram</span>
+                  <span class="meta">@at9app</span>
+                </span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a
+                class="contact-card contact-card--email"
+                href="mailto:contact@at9.app"
+                aria-label="Email At9"
+              >
+                <span class="icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <path d="M3 7l9 6 9-6" />
+                  </svg>
+                </span>
+                <span class="content">
+                  <span class="label">Email us</span>
+                  <span class="meta">contact@at9.app</span>
+                </span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="link-cols">
+            <div class="link-col">
+              <h4>Product</h4>
+              <a href="#features">Features</a>
+              <a href="#pricing">Pricing</a>
+              <a href="getting-started/">Getting Started</a>
+            </div>
+            <div class="link-col">
+              <h4>Company</h4>
+              <a href="#about">About</a>
+              <a href="#faqs">FAQs</a>
+              <a href="mailto:hello@at9.app">Contact</a>
+            </div>
+            <div class="link-col">
+              <h4>Legal</h4>
+              <a href="privacy-policy/">Privacy Policy</a>
+              <a href="terms/">Terms of Use</a>
+              <a href="data-protection/">Data Protection</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>&copy; 2026 At9. All rights reserved.</span>
+          <div class="footer-bottom-links">
+            <a href="getting-started/">Getting Started</a>
+            <a href="privacy-policy/">Privacy Policy</a>
+            <a href="terms/">Terms of Use</a>
+            <a href="data-protection/">Data Protection</a>
+            <a href="data-deletion/">Account &amp; Data Deletion</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Add a frosted backdrop to the nav once the user scrolls past the hero,
+      // so links stay legible over white and dark sections below.
+      (function () {
+        var nav = document.querySelector(".nav");
+        if (!nav) return;
+        var threshold = 60;
+        function onScroll() {
+          if (window.scrollY > threshold) nav.classList.add("is-scrolled");
+          else nav.classList.remove("is-scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+      })();
+
+      // Cycle the hero industry chip through business types.
+      // The data-type attribute drives the soft background colour via CSS.
+      (function () {
+        var chip = document.querySelector(".eyebrow-cycle");
+        if (!chip) return;
+        var wordEl = chip.querySelector(".cycle-word");
+        if (!wordEl) return;
+
+        var industries = [
+          { word: "Restaurants", key: "restaurants" },
+          { word: "Pubs", key: "pubs" },
+          { word: "Hotels", key: "hotels" },
+          { word: "Catteries", key: "catteries" },
+          { word: "Kennels", key: "kennels" },
+        ];
+        var i = 0;
+
+        function next() {
+          chip.classList.add("is-out");
+          setTimeout(function () {
+            i = (i + 1) % industries.length;
+            wordEl.textContent = industries[i].word;
+            chip.dataset.type = industries[i].key;
+            chip.classList.remove("is-out");
+          }, 320);
+        }
+
+        // Respect reduced-motion: keep the chip on the first item only
+        if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        )
+          return;
+
+        setInterval(next, 2600);
+      })();
+    </script>
+  </body>
 </html>

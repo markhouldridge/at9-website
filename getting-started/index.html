@@ -4,17 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Getting Started — At9</title>
-    <meta
-      name="description"
-      content="Step-by-step guides for setting up At9, managing bookings, and running your team."
-    />
+    <meta name="description" content="Step-by-step guides for setting up At9, managing bookings, and running your team." />
     <link rel="canonical" href="https://www.at9.app/getting-started" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#907CFF" />
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/icons/favicon-96x96.png" />
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/icons/site.webmanifest" />
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg: #fbfaf6;
@@ -28,291 +29,255 @@
         --primary: #907cff;
         --primary-dark: #705ac2;
         --primary-pale: #f3f0ff;
+        --nav-h: 64px;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-      html,
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; height: 100%; }
       body {
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family:
-          "Switzer",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
+        font-family: "Switzer", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background: var(--bg);
         color: var(--ink);
-        font-size: 17px;
+        font-size: 16px;
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
       }
-      a {
-        color: var(--primary-dark);
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 3px;
-      }
-      a:hover {
-        color: var(--primary);
-      }
+      a { color: var(--primary-dark); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+      a:hover { color: var(--primary); }
 
-      .container {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 0 24px;
-      }
-
-      /* ---------- Nav ---------- */
+      /* ── Nav ── */
       .nav {
         position: sticky;
         top: 0;
-        z-index: 50;
-        background: rgba(251, 250, 246, 0.85);
+        z-index: 100;
+        background: rgba(251,250,246,.9);
         backdrop-filter: saturate(180%) blur(14px);
         -webkit-backdrop-filter: saturate(180%) blur(14px);
         border-bottom: 1px solid var(--line);
+        height: var(--nav-h);
       }
       .nav-row {
-        max-width: 1180px;
+        height: 100%;
+        max-width: 1400px;
         margin: 0 auto;
         padding: 0 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 72px;
+        gap: 16px;
       }
-      .wordmark {
-        display: inline-flex;
-        align-items: center;
-        line-height: 0;
-        text-decoration: none;
-      }
-      .wordmark img {
-        height: 30px;
-        width: auto;
-        display: block;
-      }
-      .nav-links {
-        display: flex;
-        gap: 28px;
-      }
-      .nav-links a {
-        color: var(--ink-2);
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 15px;
-        transition: color 0.15s ease;
-      }
-      .nav-links a:hover {
-        color: var(--ink);
-      }
-      @media (max-width: 720px) {
-        .nav-links {
-          display: none;
-        }
-      }
+      .wordmark { display: inline-flex; align-items: center; line-height: 0; text-decoration: none; }
+      .wordmark img { height: 28px; width: auto; display: block; }
+      .nav-links { display: flex; gap: 24px; }
+      .nav-links a { color: var(--ink-2); text-decoration: none; font-weight: 500; font-size: 14px; transition: color .15s; }
+      .nav-links a:hover { color: var(--ink); }
+      @media (max-width: 720px) { .nav-links { display: none; } }
       .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--ink);
-        color: #fff;
-        font-weight: 600;
-        font-size: 15px;
-        padding: 10px 18px;
-        border-radius: 999px;
-        text-decoration: none;
-        transition:
-          transform 0.15s ease,
-          background 0.2s ease;
-      }
-      .btn-primary:hover {
-        transform: translateY(-1px);
-        background: #2a2733;
-        color: #fff;
-      }
-
-      /* ---------- Page ---------- */
-      .gs-page {
-        padding: 56px 0 100px;
-      }
-
-      .back-link {
-        margin: 0 0 28px;
-        font-size: 14px;
-      }
-      .back-link a {
-        color: var(--ink-3);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.15s ease;
-      }
-      .back-link a:hover {
-        color: var(--ink);
-      }
-
-      .page-header {
-        margin-bottom: 56px;
-      }
-      .page-header h1 {
-        font-size: clamp(36px, 4.5vw, 52px);
-        font-weight: 600;
-        letter-spacing: -0.03em;
-        line-height: 1.05;
-        margin: 0 0 14px;
-      }
-      .page-header .sub {
-        font-size: 18px;
-        color: var(--ink-2);
-        margin: 0 0 28px;
-        max-width: 560px;
-      }
-
-      /* ---------- Table of contents ---------- */
-      .toc {
-        background: var(--bg-soft);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 20px 24px 24px;
-        display: inline-block;
-        min-width: 280px;
-      }
-      .toc-title {
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--ink-3);
-        margin: 0 0 16px;
-      }
-      .toc-group {
-        margin-bottom: 14px;
-      }
-      .toc-group:last-child {
-        margin-bottom: 0;
-      }
-      .toc-group-label {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ink-3);
-        margin: 0 0 4px;
-      }
-      .toc ol {
-        margin: 0;
-        padding-left: 20px;
-        font-size: 15px;
-        line-height: 1.9;
-      }
-      .toc a {
-        text-decoration: none;
-        color: var(--ink-2);
-      }
-      .toc a:hover {
-        color: var(--primary);
-      }
-
-      /* ---------- Section group heading ---------- */
-      .section-heading {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin: 64px 0 40px;
-      }
-      .section-heading h2 {
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-        color: var(--ink-3);
-        margin: 0;
+        display: inline-flex; align-items: center; gap: 7px;
+        background: var(--ink); color: #fff; font-weight: 600; font-size: 14px;
+        padding: 9px 16px; border-radius: 999px; text-decoration: none;
+        transition: transform .15s, background .2s;
         white-space: nowrap;
       }
-      .section-heading .rule {
-        flex: 1;
-        height: 1px;
-        background: var(--line);
-      }
+      .btn-primary:hover { transform: translateY(-1px); background: #2a2733; color: #fff; }
 
-      /* ---------- Steps ---------- */
-      .steps {
+      /* ── Mobile sidebar toggle ── */
+      .sidebar-toggle {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg-soft);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink-2);
+        cursor: pointer;
+        margin: 16px 20px;
+        width: calc(100% - 40px);
+      }
+      @media (max-width: 860px) { .sidebar-toggle { display: flex; } }
+
+      /* ── Docs layout ── */
+      .docs-layout {
         display: flex;
-        flex-direction: column;
-        gap: 48px;
+        min-height: calc(100vh - var(--nav-h));
+        max-width: 1060px;
+        margin: 0 auto;
+        border-left: 1px solid var(--line);
+        border-right: 1px solid var(--line);
       }
 
-      .step {
-        display: flex;
-        gap: 28px;
-        align-items: flex-start;
-      }
-      @media (max-width: 600px) {
-        .step {
-          flex-direction: column;
-          gap: 16px;
-        }
-      }
-
-      .step-number {
+      /* ── Sidebar ── */
+      .sidebar {
+        width: 256px;
         flex-shrink: 0;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: var(--primary);
-        color: #fff;
-        font-size: 15px;
-        font-weight: 700;
+        border-right: 1px solid var(--line);
+        background: #fff;
+      }
+      .sidebar-inner {
+        position: sticky;
+        top: var(--nav-h);
+        height: calc(100vh - var(--nav-h));
+        overflow-y: auto;
+        padding: 20px 0 40px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--line) transparent;
+      }
+      .sidebar-inner::-webkit-scrollbar { width: 4px; }
+      .sidebar-inner::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+
+      .sidebar-home {
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin-top: 3px;
+        gap: 6px;
+        padding: 0 16px 16px;
+        font-size: 13px;
+        color: var(--ink-3);
+        text-decoration: none;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 12px;
+        transition: color .15s;
+      }
+      .sidebar-home:hover { color: var(--primary-dark); }
+
+      .sidebar-section { margin-bottom: 4px; }
+
+      .sidebar-group-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 8px 16px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        transition: color .15s;
+      }
+      .sidebar-group-btn:hover { color: var(--ink-2); }
+      .sidebar-group-btn .chevron { transition: transform .2s; flex-shrink: 0; }
+      .sidebar-group-btn.collapsed .chevron { transform: rotate(-90deg); }
+
+      .sidebar-guides {
+        list-style: none;
+        margin: 2px 0 8px;
+        padding: 0;
+        overflow: hidden;
+      }
+      .sidebar-guides.hidden { display: none; }
+
+      .sidebar-link {
+        display: block;
+        padding: 7px 16px 7px 24px;
+        font-size: 14px;
+        color: var(--ink-2);
+        text-decoration: none;
+        border-radius: 6px;
+        margin: 1px 8px;
+        transition: background .1s, color .1s;
+        cursor: pointer;
+      }
+      .sidebar-link:hover { background: var(--bg-mute); color: var(--ink); }
+      .sidebar-link.active {
+        background: var(--primary-pale);
+        color: var(--primary-dark);
+        font-weight: 500;
       }
 
-      .step-body {
+      /* ── Main content ── */
+      .docs-main {
         flex: 1;
         min-width: 0;
+        padding: 48px 52px 80px;
       }
+      @media (max-width: 860px) { .docs-main { padding: 32px 20px 80px; } }
 
-      .step-body h3 {
-        font-size: 20px;
-        font-weight: 600;
-        letter-spacing: -0.015em;
-        margin: 0 0 10px;
-        line-height: 1.2;
-        color: var(--ink);
-      }
-      .step-body p {
-        margin: 0 0 12px;
-        color: var(--ink-2);
-        font-size: 16px;
-      }
-      .step-body p:last-child {
-        margin-bottom: 0;
-      }
-      .step-body ul,
-      .step-body ol {
-        margin: 0 0 12px;
-        padding-left: 20px;
-        color: var(--ink-2);
-        font-size: 16px;
-      }
-      .step-body li {
-        margin-bottom: 6px;
-      }
-      .step-body li::marker {
+      /* ── Guide panels ── */
+      .guide-panel { display: none; }
+      .guide-panel.active { display: block; }
+
+      .guide-breadcrumb {
+        font-size: 13px;
         color: var(--ink-3);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
-      .step-body strong {
+      .guide-breadcrumb svg { flex-shrink: 0; }
+
+      .guide-panel h1 {
+        font-size: clamp(26px, 3vw, 36px);
+        font-weight: 600;
+        letter-spacing: -.025em;
+        line-height: 1.1;
+        margin: 0 0 20px;
         color: var(--ink);
       }
+      .guide-panel p {
+        color: var(--ink-2);
+        margin: 0 0 14px;
+        font-size: 16px;
+      }
+      .guide-panel p:last-of-type { margin-bottom: 0; }
+      .guide-panel ul, .guide-panel ol {
+        margin: 0 0 14px;
+        padding-left: 22px;
+        color: var(--ink-2);
+        font-size: 16px;
+      }
+      .guide-panel li { margin-bottom: 6px; }
+      .guide-panel li::marker { color: var(--ink-3); }
+      .guide-panel strong { color: var(--ink); }
 
+      .guide-divider { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
+
+      /* Image layout */
+      .guide-image {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--bg-soft);
+      }
+      .guide-image img { width: 100%; height: auto; display: block; }
+
+      .guide-image-block {
+        margin: 28px 0;
+        display: flex;
+        justify-content: center;
+      }
+      .guide-image-block > .guide-image {
+        max-width: 300px;
+        width: 100%;
+      }
+      .guide-image-block .images-pair {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+      .guide-image-block .images-pair .guide-image {
+        max-width: 220px;
+        flex: 1;
+      }
+      .guide-image-block .images-trio {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+      .guide-image-block .images-trio .guide-image {
+        max-width: 180px;
+        flex: 1;
+      }
+
+      /* Tip / note */
       .tip {
         display: flex;
         gap: 10px;
@@ -323,77 +288,98 @@
         margin-top: 14px;
         font-size: 15px;
       }
-      .tip-icon {
-        flex-shrink: 0;
-        font-size: 16px;
-        line-height: 1.6;
+      .tip-icon { flex-shrink: 0; line-height: 1.6; }
+      .tip p { margin: 0; color: var(--ink-2); }
+      .tip strong { color: var(--ink); }
+      .note {
+        display: flex;
+        gap: 10px;
+        background: var(--bg-soft);
+        border-left: 3px solid var(--line-2);
+        border-radius: 0 8px 8px 0;
+        padding: 12px 16px;
+        margin-top: 14px;
+        font-size: 15px;
       }
-      .tip p {
-        margin: 0;
+      .note p { margin: 0; color: var(--ink-2); }
+
+      /* Guide nav (prev/next) */
+      .guide-nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+      .guide-nav-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        background: var(--bg-soft);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 16px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: border-color .15s, background .15s;
+        max-width: 240px;
+        flex: 1;
+      }
+      .guide-nav-btn:hover { border-color: var(--primary); background: var(--primary-pale); }
+      .guide-nav-btn.next { text-align: right; margin-left: auto; }
+      .guide-nav-btn.hidden { visibility: hidden; }
+      .guide-nav-label { font-size: 12px; color: var(--ink-3); }
+      .guide-nav-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+      /* ── Overview panel ── */
+      .guide-panel#panel-overview p {
+        font-size: 17px;
         color: var(--ink-2);
-      }
-      .tip strong {
-        color: var(--ink);
+        max-width: 560px;
       }
 
-      /* ---------- Help callout ---------- */
+      /* ── Help callout ── */
       .help-callout {
-        margin-top: 72px;
+        margin-top: 56px;
         background: var(--bg-soft);
         border: 1px solid var(--line);
         border-radius: 16px;
-        padding: 36px 40px;
+        padding: 32px 36px;
         text-align: center;
+        max-width: 720px;
       }
-      .help-callout h2 {
-        font-size: 24px;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        margin: 0 0 10px;
-      }
-      .help-callout p {
-        color: var(--ink-2);
-        margin: 0 0 20px;
-        font-size: 16px;
-      }
-      .help-callout .btn-primary {
-        margin: 0 auto;
-      }
+      .help-callout h2 { font-size: 22px; font-weight: 600; margin: 0 0 10px; letter-spacing: -.02em; }
+      .help-callout p { color: var(--ink-2); margin: 0 0 18px; font-size: 15px; }
 
-      /* ---------- Footer ---------- */
-      .footer {
-        background: var(--bg);
-        border-top: 1px solid var(--line);
-        padding: 36px 0 28px;
-        color: var(--ink-3);
-        font-size: 13px;
-      }
-      .footer-inner {
-        max-width: 1180px;
-        margin: 0 auto;
-        padding: 0 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 16px;
-      }
-      .footer-links {
-        display: flex;
-        gap: 22px;
-        flex-wrap: wrap;
-      }
-      .footer-links a {
-        color: var(--ink-3);
-        text-decoration: none;
-      }
-      .footer-links a:hover {
-        color: var(--ink);
+      /* ── Footer ── */
+      .footer { background: var(--bg); border-top: 1px solid var(--line); padding: 32px 0 24px; color: var(--ink-3); font-size: 13px; }
+      .footer-inner { max-width: 1060px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+      .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+      .footer-links a { color: var(--ink-3); text-decoration: none; }
+      .footer-links a:hover { color: var(--ink); }
+
+      /* ── Responsive: sidebar hides on mobile ── */
+      @media (max-width: 860px) {
+        .docs-layout { flex-direction: column; }
+        .sidebar {
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+        .sidebar-inner {
+          position: static;
+          height: auto;
+          overflow: visible;
+          padding-bottom: 12px;
+        }
+        .sidebar.mobile-hidden { display: none; }
       }
     </style>
   </head>
   <body>
-    <!-- ---------- NAV ---------- -->
+
+    <!-- ── NAV ── -->
     <header class="nav">
       <div class="nav-row">
         <a href="../" class="wordmark" aria-label="At9 home">
@@ -407,458 +393,766 @@
         </nav>
         <a class="btn-primary" href="../#download">
           Get the app
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14" />
-            <path d="m13 5 7 7-7 7" />
-          </svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
         </a>
       </div>
     </header>
 
-    <!-- ---------- CONTENT ---------- -->
-    <main class="gs-page">
-      <div class="container">
-        <p class="back-link"><a href="../">← Back to home</a></p>
+    <!-- ── DOCS LAYOUT ── -->
+    <div class="docs-layout">
 
-        <div class="page-header">
-          <h1>Getting Started</h1>
-          <p class="sub">
-            Everything you need to set up At9, manage bookings, and run your
-            team — all in one place.
-          </p>
-
-          <!-- Table of contents -->
-          <div class="toc">
-            <p class="toc-title">Contents</p>
-
-            <div class="toc-group">
-              <p class="toc-group-label">Setup</p>
-              <ol>
-                <li><a href="#installing">Installing the app</a></li>
-                <li><a href="#registering">Registering</a></li>
-                <li><a href="#register-org">Registering your organisation</a></li>
-                <li><a href="#join-org">Joining an organisation</a></li>
-              </ol>
-            </div>
-
-            <div class="toc-group">
-              <p class="toc-group-label">Bookings</p>
-              <ol>
-                <li><a href="#entities">Adding bookable entities</a></li>
-                <li><a href="#create-booking">Creating a booking</a></li>
-                <li><a href="#update-booking">Updating a booking</a></li>
-                <li><a href="#move-booking">Moving a booking</a></li>
-                <li><a href="#booking-prefs">Setting booking preferences</a></li>
-              </ol>
-            </div>
-
-            <div class="toc-group">
-              <p class="toc-group-label">Managing Teams</p>
-              <ol>
-                <li><a href="#invite-team">Inviting users to your organisation</a></li>
-                <li><a href="#join-team">Joining an organisation</a></li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== SETUP ===== -->
-        <div class="section-heading">
-          <h2>Setup</h2>
-          <span class="rule" aria-hidden="true"></span>
-        </div>
-
-        <div class="steps">
-
-          <!-- 1. Installing the app -->
-          <div class="step" id="installing">
-            <div class="step-number" aria-hidden="true">1</div>
-            <div class="step-body">
-              <h3>Installing the app</h3>
-              <p>
-                At9 is available for free on both iOS and Android. Search for
-                <strong>At9</strong> in the App Store or Google Play, or tap the
-                download links on the At9 website.
-              </p>
-              <p>
-                The app works on both phones and tablets. The same account works
-                across all your devices and keeps everything in sync
-                automatically.
-              </p>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Tip:</strong> On a tablet, At9 shows a wider schedule
-                  view with more entities visible at once — ideal for a desk or
-                  counter setup.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. Registering -->
-          <div class="step" id="registering">
-            <div class="step-number" aria-hidden="true">2</div>
-            <div class="step-body">
-              <h3>Registering</h3>
-              <p>
-                Open At9 and tap <strong>Create account</strong>. Enter your
-                name and email address, then choose a password. You'll receive a
-                verification email — tap the link inside to confirm your address
-                and activate your account.
-              </p>
-              <p>
-                Once verified, sign in and you'll be taken to the setup flow
-                where you can configure your organisation.
-              </p>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Note:</strong> If you've been invited to join an
-                  existing organisation, follow the link in your invitation
-                  email instead — it will walk you through registration and add
-                  you automatically.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Registering your organisation -->
-          <div class="step" id="register-org">
-            <div class="step-number" aria-hidden="true">3</div>
-            <div class="step-body">
-              <h3>Registering your organisation</h3>
-              <p>
-                After verifying your email, At9 will prompt you to set up your
-                organisation. Enter your business name, then add your first
-                bookable entity — for example, a room name, table number, or
-                kennel name.
-              </p>
-              <p>
-                You can add more entities and adjust settings at any time from
-                <strong>Admin → Entities</strong> once you're up and running.
-              </p>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Tip:</strong> Don't worry about getting everything
-                  perfect at setup. Add one or two entities to get started —
-                  it's easy to rename, reorder or add more later.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. Joining an organisation -->
-          <div class="step" id="join-org">
-            <div class="step-number" aria-hidden="true">4</div>
-            <div class="step-body">
-              <h3>Joining an organisation</h3>
-              <p>
-                If someone has invited you to their organisation, you'll receive
-                an email with a link. Tap that link to open At9 (or download it
-                first if you haven't already), then follow the prompts to create
-                your account or sign in.
-              </p>
-              <p>
-                Once you complete sign-in, you'll be added to the organisation
-                automatically with the role your admin assigned — no extra steps
-                needed.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ===== BOOKINGS ===== -->
-        <div class="section-heading">
-          <h2>Bookings</h2>
-          <span class="rule" aria-hidden="true"></span>
-        </div>
-
-        <div class="steps">
-
-          <!-- 5. Adding bookable entities -->
-          <div class="step" id="entities">
-            <div class="step-number" aria-hidden="true">5</div>
-            <div class="step-body">
-              <h3>Adding bookable entities</h3>
-              <p>
-                Entities are the resources your customers book — rooms, tables,
-                kennels, treatment rooms, or any space or asset in your
-                business. You need at least one entity to take bookings.
-              </p>
-              <p>
-                To add or manage entities, go to
-                <strong>Admin → Entities</strong>. From there you can:
-              </p>
-              <ul>
-                <li>
-                  Add a new entity — give it a name, type, and maximum
-                  occupancy.
-                </li>
-                <li>Edit an existing entity to update its name or capacity.</li>
-                <li>
-                  Reorder entities by dragging them into position — this
-                  controls the column order on your schedule.
-                </li>
-              </ul>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Tip:</strong> Use specific names — "Garden Room"
-                  rather than "Room 1" — so entities are easy to tell apart at a
-                  glance.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 6. Creating a booking -->
-          <div class="step" id="create-booking">
-            <div class="step-number" aria-hidden="true">6</div>
-            <div class="step-body">
-              <h3>Creating a booking</h3>
-              <p>You can start a new booking in two ways:</p>
-              <ul>
-                <li>
-                  <strong>From the schedule:</strong> tap the
-                  <strong>+</strong> button, or tap directly on an empty slot
-                  for a given entity and time.
-                </li>
-                <li>
-                  <strong>From anywhere:</strong> tap the floating add button
-                  at the bottom-right of the main view.
-                </li>
-              </ul>
-              <p>In the booking form, fill in:</p>
-              <ul>
-                <li>
-                  <strong>Customer</strong> — search for an existing customer or
-                  add a new one.
-                </li>
-                <li>
-                  <strong>Entity</strong> — the room, table, or resource being
-                  reserved.
-                </li>
-                <li>
-                  <strong>Start and end date/time</strong> — At9 checks
-                  availability for the chosen entity as you fill in the dates
-                  and warns you of any conflicts before you save.
-                </li>
-              </ul>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Checking availability:</strong> switch to the
-                  <strong>Availability</strong> tab within the booking form to
-                  see which slots are free across all entities for your chosen
-                  dates — useful when a customer isn't set on a specific room.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 7. Updating a booking -->
-          <div class="step" id="update-booking">
-            <div class="step-number" aria-hidden="true">7</div>
-            <div class="step-body">
-              <h3>Updating a booking</h3>
-              <p>
-                Tap a booking on the schedule to open its detail panel, then
-                tap <strong>Edit</strong>. The booking form opens with all
-                current details pre-filled.
-              </p>
-              <p>You can update:</p>
-              <ul>
-                <li>Start and end date or time.</li>
-                <li>The assigned entity (room, table, etc.).</li>
-                <li>Customer details.</li>
-                <li>Any notes attached to the booking.</li>
-              </ul>
-              <p>
-                At9 checks availability again when you save, so you'll be warned
-                if your changes would create a conflict with another booking.
-              </p>
-            </div>
-          </div>
-
-          <!-- 8. Moving a booking -->
-          <div class="step" id="move-booking">
-            <div class="step-number" aria-hidden="true">8</div>
-            <div class="step-body">
-              <h3>Moving a booking</h3>
-              <p>
-                You can move a booking to a different time or entity directly on
-                the schedule without opening the edit form.
-              </p>
-              <ul>
-                <li>
-                  <strong>Press and hold</strong> a booking block until it
-                  lifts.
-                </li>
-                <li>
-                  <strong>Drag</strong> it to the new time slot or entity
-                  column.
-                </li>
-                <li>
-                  <strong>Release</strong> to drop it — At9 saves the change
-                  automatically.
-                </li>
-              </ul>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Tip:</strong> If a customer calls to switch rooms, you
-                  can drag the booking across to the new entity column in
-                  seconds — no need to open the edit form at all.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 9. Setting booking preferences -->
-          <div class="step" id="booking-prefs">
-            <div class="step-number" aria-hidden="true">9</div>
-            <div class="step-body">
-              <h3>Setting booking preferences</h3>
-              <p>
-                From <strong>Admin → Settings</strong>, you can configure how
-                bookings behave across your organisation:
-              </p>
-              <ul>
-                <li>
-                  <strong>Default duration</strong> — the pre-filled length of a
-                  new booking, so you don't have to set it every time.
-                </li>
-                <li>
-                  <strong>Buffer time</strong> — an automatic gap added between
-                  back-to-back bookings to allow for cleaning or turnaround.
-                </li>
-                <li>
-                  <strong>Double-booking</strong> — choose whether At9 blocks
-                  overlapping bookings on the same entity or allows them with a
-                  warning.
-                </li>
-              </ul>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Tip:</strong> Setting a sensible default duration
-                  saves time when creating bookings and helps keep your schedule
-                  consistent.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ===== MANAGING TEAMS ===== -->
-        <div class="section-heading">
-          <h2>Managing Teams</h2>
-          <span class="rule" aria-hidden="true"></span>
-        </div>
-
-        <div class="steps">
-
-          <!-- 10. Inviting users -->
-          <div class="step" id="invite-team">
-            <div class="step-number" aria-hidden="true">10</div>
-            <div class="step-body">
-              <h3>Inviting users to your organisation</h3>
-              <p>
-                Organisation admins can invite team members from
-                <strong>Admin → Team</strong>. Enter the email address of the
-                person you'd like to add, choose their role (Admin or Member),
-                and send the invite.
-              </p>
-              <p>
-                They'll receive an email with a link to create their account or
-                sign in to At9. Once they do, they'll be added to your
-                organisation automatically and can see the schedule straight
-                away.
-              </p>
-              <ul>
-                <li>
-                  <strong>Admins</strong> can manage entities, settings, and
-                  invite or remove team members.
-                </li>
-                <li>
-                  <strong>Members</strong> can view the schedule and create or
-                  update bookings, but cannot change organisation settings.
-                </li>
-              </ul>
-              <div class="tip">
-                <span class="tip-icon">💡</span>
-                <p>
-                  <strong>Tip:</strong> You can remove a team member or change
-                  their role at any time from the same Team screen.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 11. Joining an organisation (team perspective) -->
-          <div class="step" id="join-team">
-            <div class="step-number" aria-hidden="true">11</div>
-            <div class="step-body">
-              <h3>Joining an organisation</h3>
-              <p>
-                When an admin invites you, you'll receive an email from At9 with
-                a personal invitation link. Tap that link to open the app (or
-                download it first if needed), then create your account or sign
-                in with an existing one.
-              </p>
-              <p>
-                You'll join the organisation automatically with the role your
-                admin selected. Your subscription is managed by the organisation
-                — you won't need to set up billing separately as a team member.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Help callout -->
-        <div class="help-callout">
-          <h2>Still need help?</h2>
-          <p>
-            Our support team is happy to answer questions or walk you through
-            anything in the app.
-          </p>
-          <a class="btn-primary" href="mailto:contact@at9.app">
-            Contact support
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M5 12h14" />
-              <path d="m13 5 7 7-7 7" />
-            </svg>
+      <!-- ── SIDEBAR ── -->
+      <aside class="sidebar mobile-hidden" id="sidebar" aria-label="Guide navigation">
+        <div class="sidebar-inner">
+          <a href="../" class="sidebar-home">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back to At9
           </a>
-        </div>
-      </div>
-    </main>
 
-    <!-- ---------- FOOTER ---------- -->
+          <!-- Account -->
+          <div class="sidebar-section">
+            <button class="sidebar-group-btn" data-section="account">
+              Account
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <ul class="sidebar-guides" id="guides-account">
+              <li><a class="sidebar-link" data-guide="account-register">Register</a></li>
+              <li><a class="sidebar-link" data-guide="account-login">Login</a></li>
+              <li><a class="sidebar-link" data-guide="account-verify">Verify your account</a></li>
+              <li><a class="sidebar-link" data-guide="account-forgotten-password">Forgotten password</a></li>
+              <li><a class="sidebar-link" data-guide="account-change-password">Change password</a></li>
+              <li><a class="sidebar-link" data-guide="account-subscribe">Subscribe</a></li>
+              <li><a class="sidebar-link" data-guide="account-close">Close account</a></li>
+            </ul>
+          </div>
+
+          <!-- Organisation -->
+          <div class="sidebar-section">
+            <button class="sidebar-group-btn" data-section="org">
+              Organisation
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <ul class="sidebar-guides" id="guides-org">
+              <li><a class="sidebar-link" data-guide="org-create">Create an organisation</a></li>
+              <li><a class="sidebar-link" data-guide="org-join">Join an organisation</a></li>
+              <li><a class="sidebar-link" data-guide="org-edit">Change name and description</a></li>
+              <li><a class="sidebar-link" data-guide="org-slug">Add a web booking link</a></li>
+              <li><a class="sidebar-link" data-guide="org-search">Search visibility</a></li>
+              <li><a class="sidebar-link" data-guide="org-bookings">Enable public bookings</a></li>
+              <li><a class="sidebar-link" data-guide="org-team">Add a team member</a></li>
+            </ul>
+          </div>
+
+          <!-- Bookings -->
+          <div class="sidebar-section">
+            <button class="sidebar-group-btn" data-section="bookings">
+              Bookings
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <ul class="sidebar-guides" id="guides-bookings">
+              <li><a class="sidebar-link" data-guide="bookings-add">Add a booking</a></li>
+              <li><a class="sidebar-link" data-guide="bookings-update">Update a booking</a></li>
+              <li><a class="sidebar-link" data-guide="bookings-cancel">Cancel a booking</a></li>
+              <li><a class="sidebar-link" data-guide="bookings-view-tables">View table bookings</a></li>
+              <li><a class="sidebar-link" data-guide="bookings-view-rooms">View room bookings</a></li>
+            </ul>
+          </div>
+
+          <!-- Booking Availability -->
+          <div class="sidebar-section">
+            <button class="sidebar-group-btn" data-section="avail">
+              Booking Availability
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <ul class="sidebar-guides" id="guides-avail">
+              <li><a class="sidebar-link" data-guide="avail-operating">Set operating hours</a></li>
+              <li><a class="sidebar-link" data-guide="avail-bookable">Set bookable hours</a></li>
+              <li><a class="sidebar-link" data-guide="avail-blocked">Set blocked periods</a></li>
+              <li><a class="sidebar-link" data-guide="avail-closed">Set closed periods</a></li>
+            </ul>
+          </div>
+
+          <!-- Customers -->
+          <div class="sidebar-section">
+            <button class="sidebar-group-btn" data-section="customers">
+              Customers
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <ul class="sidebar-guides" id="guides-customers">
+              <li><a class="sidebar-link" data-guide="customers-add">Add a customer</a></li>
+              <li><a class="sidebar-link" data-guide="customers-search">Search customers</a></li>
+              <li><a class="sidebar-link" data-guide="customers-delete">Delete a customer</a></li>
+              <li><a class="sidebar-link" data-guide="customers-message">Message a customer</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- ── MAIN CONTENT ── -->
+      <main class="docs-main">
+
+        <!-- Mobile sidebar toggle -->
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-expanded="false" aria-controls="sidebar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span id="toggle-label">Browse topics</span>
+        </button>
+
+        <!-- ════ OVERVIEW ════ -->
+        <div class="guide-panel active" id="panel-overview">
+          <h1>Getting Started</h1>
+          <p>Welcome to the At9 help centre. Here you'll find step-by-step guides covering everything in the app — from setting up your account to managing bookings, availability, and your team.</p>
+          <p>Select a topic from the menu on the left to open its guides. You can then work through them in order using the Previous and Next links at the bottom of each page, or jump to any guide directly from the menu.</p>
+          <p>If you can't find what you're looking for, get in touch at <a href="mailto:contact@at9.app">contact@at9.app</a> and we'll help you out.</p>
+        </div>
+
+
+        <!-- ════ ACCOUNT ════ -->
+
+        <div class="guide-panel" id="panel-account-register">
+          <div class="guide-breadcrumb">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            Account
+          </div>
+          <h1>Register</h1>
+          <p>Open At9 and tap <strong>Register</strong> on the welcome screen.</p>
+          <ol>
+            <li>Enter your <strong>name</strong>, <strong>email address</strong>, and choose a <strong>password</strong> (at least 8 characters).</li>
+            <li>Tap <strong>Register</strong> — At9 creates your account and sends you a verification email.</li>
+            <li>Open the email and tap the verification link to confirm your address.</li>
+            <li>Return to the app and sign in from the Login screen.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/account/register1.png" alt="Registration form" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/account/register2.png" alt="Registration confirmation" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p><strong>Check your spam folder</strong> if the verification email doesn't arrive within a minute.</p>
+          </div>
+          <div class="guide-nav">
+            <div class="guide-nav-btn hidden"></div>
+            <a class="guide-nav-btn next" data-guide="account-login">
+              <span class="guide-nav-label">Next</span>
+              <span class="guide-nav-title">Login →</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-account-login">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Account</div>
+          <h1>Login</h1>
+          <p>Open At9 and you'll be taken straight to the Login screen.</p>
+          <ol>
+            <li>Enter your <strong>email address</strong> and <strong>password</strong>.</li>
+            <li>Tap <strong>Sign in</strong>.</li>
+          </ol>
+          <p>If your account hasn't been verified yet, you'll be prompted to check your email before you can sign in.</p>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/account/Login.png" alt="Login screen" loading="lazy" /></div>
+          </div>
+          <div class="note">
+            <p>Forgotten your password? Tap <strong>Forgotten password?</strong> below the sign-in button.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-register"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Register</span></a>
+            <a class="guide-nav-btn next" data-guide="account-verify"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Verify your account →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-account-verify">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Account</div>
+          <h1>Verify your account</h1>
+          <p>After registering, At9 sends a verification email to the address you provided. You need to verify before you can sign in.</p>
+          <ol>
+            <li>Check your inbox for an email from At9.</li>
+            <li>Tap the <strong>verify link</strong> inside the email.</li>
+            <li>Return to the app and sign in — your account is now active.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/account/verify.png" alt="Account verification screen" loading="lazy" /></div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>If you can't find the email, check your spam folder. You can also re-send verification from the login screen.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-login"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Login</span></a>
+            <a class="guide-nav-btn next" data-guide="account-forgotten-password"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Forgotten password →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-account-forgotten-password">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Account</div>
+          <h1>Forgotten password</h1>
+          <ol>
+            <li>From the Login screen, tap <strong>Forgotten password?</strong></li>
+            <li>Enter your <strong>email address</strong> and tap <strong>Send reset email</strong>.</li>
+            <li>Check your inbox for a password reset link — tap it to set a new password.</li>
+            <li>Return to the app and sign in with your new password.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/account/forgotten-password.png" alt="Forgotten password screen" loading="lazy" /></div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-verify"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Verify your account</span></a>
+            <a class="guide-nav-btn next" data-guide="account-change-password"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Change password →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-account-change-password">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Account</div>
+          <h1>Change password</h1>
+          <ol>
+            <li>Go to your <strong>Profile</strong> and tap <strong>Account</strong>.</li>
+            <li>Under <strong>Security</strong>, tap <strong>Change Password</strong>.</li>
+            <li>Enter your <strong>current password</strong>, then your new password twice to confirm.</li>
+            <li>Tap <strong>Update password</strong> to save.</li>
+          </ol>
+          <div class="note">
+            <p>You'll need to know your current password. If you've forgotten it, use <a data-guide="account-forgotten-password">Forgotten password</a> instead.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-forgotten-password"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Forgotten password</span></a>
+            <a class="guide-nav-btn next" data-guide="account-subscribe"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Subscribe →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-account-subscribe">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Account</div>
+          <h1>Subscribe to Solo or Team</h1>
+          <p>At9 offers two plans. You can try either free for 30 days — no credit card required.</p>
+          <ul>
+            <li><strong>Solo</strong> — for individuals managing bookings on their own. Full access to all booking and availability features.</li>
+            <li><strong>Team</strong> — everything in Solo, plus the ability to add multiple users to your organisation and assign admin roles.</li>
+          </ul>
+          <p>To subscribe or manage your plan:</p>
+          <ol>
+            <li>From the <strong>Admin</strong> screen, tap <strong>Manage Subscription</strong>.</li>
+            <li>Choose <strong>Solo</strong> or <strong>Team</strong> and follow the prompts to start your trial or activate a paid plan.</li>
+          </ol>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>If you need to add team members later, you can upgrade from Solo to Team at any time.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-change-password"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Change password</span></a>
+            <a class="guide-nav-btn next" data-guide="account-close"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Close account →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-account-close">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Account</div>
+          <h1>Close account</h1>
+          <ol>
+            <li>Go to your <strong>Profile</strong> and tap <strong>Account</strong>.</li>
+            <li>Under <strong>Close Account</strong>, tap <strong>Close Account</strong>.</li>
+            <li>Enter your <strong>password</strong> to confirm — this step prevents accidental deletion.</li>
+            <li>Your account and all associated data are permanently deleted and cannot be recovered.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/account/close-account.png" alt="Close account screen" loading="lazy" /></div>
+          </div>
+          <div class="note">
+            <p>Need a copy of your data first? Email <a href="mailto:contact@at9.app">contact@at9.app</a> and we'll send it to you within 24 hours.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-subscribe"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Subscribe</span></a>
+            <a class="guide-nav-btn next" data-guide="org-create"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Create an organisation →</span></a>
+          </div>
+        </div>
+
+
+        <!-- ════ ORGANISATION ════ -->
+
+        <div class="guide-panel" id="panel-org-create">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Create an organisation</h1>
+          <p>You need an organisation to start taking bookings. If you haven't created one yet, you'll see a <strong>+</strong> button on the Admin screen.</p>
+          <ol>
+            <li>From the <strong>Admin</strong> screen, tap the <strong>+</strong> button.</li>
+            <li>Enter your <strong>Organisation Name</strong> and a short <strong>Description</strong> (both required).</li>
+            <li>Optionally add a <strong>Short Name</strong> — this becomes the last part of your public booking link (e.g. <code>at9.app/book/your-name</code>).</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <p>Once saved you'll see your organisation on the Admin screen and can start configuring settings and adding entities.</p>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/create-organisation-1.png" alt="Create organisation step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/create-organisation-2.png" alt="Create organisation step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="account-close"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Close account</span></a>
+            <a class="guide-nav-btn next" data-guide="org-join"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Join an organisation →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-org-join">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Join an organisation</h1>
+          <p>To join an existing organisation, an admin needs to invite you. Before they do:</p>
+          <ul>
+            <li>Make sure you have At9 installed and have <a data-guide="account-register">registered an account</a>.</li>
+            <li>Let the admin know the email address you registered with.</li>
+          </ul>
+          <p>Once the admin sends an invite from <strong>Admin &rarr; Team</strong>, you'll be added to the organisation. Sign in to the app and you'll have access straight away.</p>
+          <div class="guide-image-block">
+            <div class="images-trio">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/join-organisation-1.png" alt="Join organisation step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/join-organisation-2.png" alt="Join organisation step 2" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/join-organisation-3.png" alt="Join organisation step 3" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>You won't need your own subscription — team members are covered by the organisation's Team plan.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-create"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Create an organisation</span></a>
+            <a class="guide-nav-btn next" data-guide="org-edit"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Change name and description →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-org-edit">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Change name and description</h1>
+          <ol>
+            <li>From the <strong>Admin</strong> screen, tap the <strong>pencil icon</strong> next to your organisation name.</li>
+            <li>Update the <strong>Name</strong> or <strong>Description</strong> fields as needed.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/change-name-and-description-1.png" alt="Change name and description step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/change-name-and-dsecription-2.png" alt="Change name and description step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="note"><p>Only organisation admins can change the name and description.</p></div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-join"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Join an organisation</span></a>
+            <a class="guide-nav-btn next" data-guide="org-slug"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Add a web booking link →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-org-slug">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Add a web booking link</h1>
+          <p>Your web booking link lets customers book directly from a link you share on Instagram, Facebook, or your website — no app required on their end.</p>
+          <ol>
+            <li>From the <strong>Admin</strong> screen, tap the <strong>pencil icon</strong> next to your organisation name.</li>
+            <li>In the <strong>Short Name</strong> field, enter a unique identifier (lowercase letters, numbers, and hyphens only).</li>
+            <li>At9 checks availability in real time — you'll see a confirmation or a "Short Name already taken" message as you type.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <p>Your booking link will be: <strong>https://www.at9.app/book/your-short-name</strong></p>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/add-web-booking-link-1.png" alt="Add web booking link step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/add-web-booking-link-2.png" alt="Add web booking link step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>Keep it short and memorable — something close to your business name works well (e.g. <code>at9.app/book/the-crown-inn</code>).</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-edit"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Change name and description</span></a>
+            <a class="guide-nav-btn next" data-guide="org-search"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Search visibility →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-org-search">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Search visibility</h1>
+          <p>Control whether customers using the At9 app can find your organisation through search.</p>
+          <ol>
+            <li>Go to <strong>Admin &rarr; Settings</strong>.</li>
+            <li>Under <strong>Visibility</strong>, toggle <strong>Visible in public search</strong> on or off.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <ul>
+            <li><strong>On</strong> — customers can find your organisation by searching in the At9 app.</li>
+            <li><strong>Off</strong> — your organisation is hidden from search; only people with your direct booking link can find you.</li>
+          </ul>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/search-visibility-1.png" alt="Search visibility step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/search-visibility-2.png" alt="Search visibility step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-slug"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Add a web booking link</span></a>
+            <a class="guide-nav-btn next" data-guide="org-bookings"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Enable public bookings →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-org-bookings">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Enable public bookings</h1>
+          <p>This controls whether customers can make bookings directly — through your web booking link or through the At9 app.</p>
+          <ol>
+            <li>Go to <strong>Admin &rarr; Settings</strong>.</li>
+            <li>Under <strong>Visibility</strong>, toggle <strong>Allow public bookings</strong> on or off.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <ul>
+            <li><strong>On</strong> — customers can book directly without needing your approval first.</li>
+            <li><strong>Off</strong> — public bookings are disabled; all bookings must be created by your team.</li>
+          </ul>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/enable-public-bookings-1.png" alt="Enable public bookings step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/enable-public-bookings-2.png" alt="Enable public bookings step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-search"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Search visibility</span></a>
+            <a class="guide-nav-btn next" data-guide="org-team"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Add a team member →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-org-team">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Organisation</div>
+          <h1>Add a team member</h1>
+          <p>Adding team members requires a <strong>Team subscription</strong> and admin access.</p>
+          <ol>
+            <li>Ask the new team member to install At9 and <a data-guide="account-register">register an account</a> first.</li>
+            <li>From the <strong>Admin</strong> screen, tap the <strong>Team</strong> tile.</li>
+            <li>Tap the <strong>+</strong> button to open the invite panel.</li>
+            <li>Enter the team member's <strong>email address</strong> (the one they registered with).</li>
+            <li>Tap <strong>Send Invite</strong> — they'll be added to your organisation immediately.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="images-trio">
+              <div class="guide-image"><img src="../assets/getting-started/organisation/add-a-team-member-1.png" alt="Add a team member step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/add-a-team-member-2.png" alt="Add a team member step 2" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/organisation/add-a-team-meber-3.png" alt="Add a team member step 3" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>You can view, disable, or remove team members from the Team screen at any time.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-bookings"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Enable public bookings</span></a>
+            <a class="guide-nav-btn next" data-guide="bookings-add"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Add a booking →</span></a>
+          </div>
+        </div>
+
+
+        <!-- ════ BOOKINGS ════ -->
+
+        <div class="guide-panel" id="panel-bookings-add">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Bookings</div>
+          <h1>Add a booking</h1>
+          <p>The booking form adapts automatically based on whether you're in <strong>Room</strong> or <strong>Table</strong> mode — switch between them using the selector in the schedule header.</p>
+          <p>Tap the <strong>+</strong> button at the top of the schedule, or use the floating add button.</p>
+
+          <p><strong>Room booking</strong></p>
+          <ol>
+            <li>Select a <strong>customer</strong> (search for an existing one or add new).</li>
+            <li>Choose a <strong>room</strong> from your entities.</li>
+            <li>Set the <strong>check-in</strong> and <strong>check-out</strong> date and time.</li>
+            <li>Tap <strong>Book</strong> to save.</li>
+          </ol>
+
+          <p><strong>Table booking</strong></p>
+          <ol>
+            <li>Select a <strong>customer</strong>.</li>
+            <li>Choose a <strong>table</strong> from your entities.</li>
+            <li>Pick the <strong>date and time</strong> for the booking.</li>
+            <li>Tap <strong>Book</strong> to save.</li>
+          </ol>
+
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/bookings/add-a-booking-1.png" alt="Add a booking step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/bookings/add-a-booking-2.png" alt="Add a booking step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>At9 checks availability as you fill in the details. If the slot is already taken, you'll see a warning before saving.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="org-team"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Add a team member</span></a>
+            <a class="guide-nav-btn next" data-guide="bookings-update"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Update a booking →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-bookings-update">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Bookings</div>
+          <h1>Update a booking</h1>
+          <ol>
+            <li>Tap a booking on the schedule to open its detail panel.</li>
+            <li>Tap <strong>Edit</strong> — the booking form opens with all existing details pre-filled.</li>
+            <li>Update any fields you need (customer, entity, dates, notes).</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <p>At9 checks availability again when you save, so you'll be warned if the updated times conflict with another booking.</p>
+          <div class="guide-image-block">
+            <div class="images-trio">
+              <div class="guide-image"><img src="../assets/getting-started/bookings/update-a-booking-1.png" alt="Update a booking step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/bookings/update-a-booking-2.png" alt="Update a booking step 2" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/bookings/update-a-booking-3.png" alt="Update a booking step 3" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="bookings-add"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Add a booking</span></a>
+            <a class="guide-nav-btn next" data-guide="bookings-cancel"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Cancel a booking →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-bookings-cancel">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Bookings</div>
+          <h1>Cancel a booking</h1>
+          <ol>
+            <li>Tap the booking on the schedule to open its detail panel.</li>
+            <li>Tap <strong>Delete</strong> to remove the booking.</li>
+            <li>Confirm the deletion when prompted.</li>
+          </ol>
+          <p>The slot is freed immediately and becomes available for new bookings.</p>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/bookings/cancel-a-booking-1.png" alt="Cancel a booking step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/bookings/cancel-a-booking-2.png" alt="Cancel a booking step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="bookings-update"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Update a booking</span></a>
+            <a class="guide-nav-btn next" data-guide="bookings-view-tables"><span class="guide-nav-label">Next</span><span class="guide-nav-title">View table bookings →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-bookings-view-tables">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Bookings</div>
+          <h1>View table bookings</h1>
+          <ol>
+            <li>From the main schedule view, tap the mode selector in the header.</li>
+            <li>Select <strong>Tables</strong>.</li>
+          </ol>
+          <p>The schedule updates to show your table entities as columns, with all table bookings displayed for the selected day or week.</p>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/bookings/view-table-bookings.png" alt="View table bookings" loading="lazy" /></div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="bookings-cancel"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Cancel a booking</span></a>
+            <a class="guide-nav-btn next" data-guide="bookings-view-rooms"><span class="guide-nav-label">Next</span><span class="guide-nav-title">View room bookings →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-bookings-view-rooms">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Bookings</div>
+          <h1>View room bookings</h1>
+          <ol>
+            <li>From the main schedule view, tap the mode selector in the header.</li>
+            <li>Select <strong>Rooms</strong>.</li>
+          </ol>
+          <p>The schedule shows your room entities as columns with all room bookings for the selected period.</p>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/bookings/view-room-bookings.png" alt="View room bookings" loading="lazy" /></div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="bookings-view-tables"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← View table bookings</span></a>
+            <a class="guide-nav-btn next" data-guide="avail-operating"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Set operating hours →</span></a>
+          </div>
+        </div>
+
+
+        <!-- ════ BOOKING AVAILABILITY ════ -->
+
+        <div class="guide-panel" id="panel-avail-operating">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Booking Availability</div>
+          <h1>Set operating hours</h1>
+          <p>Operating hours define the general hours your venue is open each week. Bookings cannot be made outside these hours.</p>
+          <ol>
+            <li>Go to <strong>Admin &rarr; Availability</strong> and select the <strong>Operating</strong> tab.</li>
+            <li>Toggle each day of the week on or off using the switch on the right.</li>
+            <li>For days that are open, tap the <strong>Opens</strong> and <strong>Closes</strong> time buttons to set specific hours.</li>
+            <li>Changes save automatically as you make them.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-operating-hours-1.png" alt="Set operating hours step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-operating-hours-2.png" alt="Set operating hours step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <p>Rooms and tables can have their own bookable hours that override these — useful if your kitchen closes earlier than the venue.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="bookings-view-rooms"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← View room bookings</span></a>
+            <a class="guide-nav-btn next" data-guide="avail-bookable"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Set bookable hours →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-avail-bookable">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Booking Availability</div>
+          <h1>Set bookable hours</h1>
+          <p>Bookable hours let you set different availability windows for rooms and tables, independent of your general operating hours. Days without a custom setting follow your operating hours.</p>
+          <ol>
+            <li>Go to <strong>Admin &rarr; Availability</strong> and select the <strong>Bookable</strong> tab.</li>
+            <li>Use the <strong>Rooms</strong> / <strong>Tables</strong> sub-tabs to select the entity type.</li>
+            <li>Toggle individual days on or off, and set opening and closing times for each.</li>
+            <li>Changes save automatically.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-bookable-hours-1.png" alt="Set bookable hours step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-bookable-hours-2.png" alt="Set bookable hours step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="avail-operating"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Set operating hours</span></a>
+            <a class="guide-nav-btn next" data-guide="avail-blocked"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Set blocked periods →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-avail-blocked">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Booking Availability</div>
+          <h1>Set blocked periods</h1>
+          <p>Blocked periods prevent bookings during specific time windows — useful for changeovers, lunch breaks, or cleaning slots.</p>
+          <ol>
+            <li>Go to <strong>Admin &rarr; Availability</strong> and select the <strong>Blocked</strong> tab.</li>
+            <li>Tap the <strong>+</strong> icon to add a new blocked period.</li>
+            <li>Optionally add a <strong>label</strong> (e.g. "Lunchtime", "Changeover") and choose which <strong>entity type</strong> it applies to, or leave blank for all.</li>
+            <li>Toggle <strong>Recurring weekly</strong> on to block the same time every week, then select the day. Toggle off to pick a specific date instead.</li>
+            <li>Set the <strong>start</strong> and <strong>end time</strong> for the block.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <p>To remove a blocked period, tap the trash icon next to it in the list.</p>
+          <div class="guide-image-block">
+            <div class="images-trio">
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-blocked-periods-1.png" alt="Set blocked periods step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-blocked-periods-2.png" alt="Set blocked periods step 2" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-blocked-periods-3.png" alt="Set blocked periods step 3" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="avail-bookable"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Set bookable hours</span></a>
+            <a class="guide-nav-btn next" data-guide="avail-closed"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Set closed periods →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-avail-closed">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Booking Availability</div>
+          <h1>Set closed periods</h1>
+          <p>Closed periods mark date ranges when your venue is completely unavailable — for holidays, refurbishments, or planned closure.</p>
+          <ol>
+            <li>Go to <strong>Admin &rarr; Availability</strong> and select the <strong>Closed</strong> tab.</li>
+            <li>Tap the <strong>+</strong> icon to add a new closed period.</li>
+            <li>Use the calendar to select the <strong>start</strong> and <strong>end date</strong> for the closure.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <p>No bookings can be made during a closed period. To remove one, tap the trash icon next to it in the list.</p>
+          <div class="guide-image-block">
+            <div class="images-trio">
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-closed-periods-1.png" alt="Set closed periods step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-closed-periods-2.png" alt="Set closed periods step 2" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/booking-availability/set-closed-periods-3.png" alt="Set closed periods step 3" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="avail-blocked"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Set blocked periods</span></a>
+            <a class="guide-nav-btn next" data-guide="customers-add"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Add a customer →</span></a>
+          </div>
+        </div>
+
+
+        <!-- ════ CUSTOMERS ════ -->
+
+        <div class="guide-panel" id="panel-customers-add">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Customers</div>
+          <h1>Add a customer</h1>
+          <ol>
+            <li>From the main menu, tap <strong>Customers</strong>.</li>
+            <li>Tap the <strong>+</strong> button to open the new customer form.</li>
+            <li>Enter the customer's <strong>name</strong> and <strong>contact details</strong>.</li>
+            <li>Tap <strong>Save</strong>.</li>
+          </ol>
+          <p>The customer is now available to select when creating or editing a booking. You can also add customers on the fly from within the booking form.</p>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/customers/add-a-customer-1.png" alt="Add a customer step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/customers/add-a-customer-2.png" alt="Add a customer step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="avail-closed"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Set closed periods</span></a>
+            <a class="guide-nav-btn next" data-guide="customers-search"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Search customers →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-customers-search">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Customers</div>
+          <h1>Search customers</h1>
+          <ol>
+            <li>From the main menu, tap <strong>Customers</strong>.</li>
+            <li>Type a name into the <strong>search bar</strong> at the top of the screen.</li>
+            <li>Tap the <strong>search</strong> button to filter the list.</li>
+          </ol>
+          <p>To clear the search and show all customers, tap the reset button.</p>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/customers/search-customers-1.png" alt="Search customers step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/customers/search-customers-2.png" alt="Search customers step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="customers-add"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Add a customer</span></a>
+            <a class="guide-nav-btn next" data-guide="customers-delete"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Delete a customer →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-customers-delete">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Customers</div>
+          <h1>Delete a customer</h1>
+          <ol>
+            <li>From the <strong>Customers</strong> list, tap the customer's name to open their profile.</li>
+            <li>Select the option to <strong>delete</strong> the customer.</li>
+            <li>Confirm the deletion when prompted.</li>
+          </ol>
+          <div class="guide-image-block">
+            <div class="images-pair">
+              <div class="guide-image"><img src="../assets/getting-started/customers/delete-a-customer-1.png" alt="Delete a customer step 1" loading="lazy" /></div>
+              <div class="guide-image"><img src="../assets/getting-started/customers/delete-a-customer-2.png" alt="Delete a customer step 2" loading="lazy" /></div>
+            </div>
+          </div>
+          <div class="note">
+            <p>Deleting a customer removes them from your customer list. It does not delete any booking records that reference them.</p>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="customers-search"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Search customers</span></a>
+            <a class="guide-nav-btn next" data-guide="customers-message"><span class="guide-nav-label">Next</span><span class="guide-nav-title">Message a customer →</span></a>
+          </div>
+        </div>
+
+        <div class="guide-panel" id="panel-customers-message">
+          <div class="guide-breadcrumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Customers</div>
+          <h1>Message a customer</h1>
+          <ol>
+            <li>From the <strong>Customers</strong> list, tap the customer's name to open their profile.</li>
+            <li>Tap <strong>Message</strong> to open the compose screen.</li>
+            <li>Type your message and tap <strong>Send</strong>.</li>
+          </ol>
+          <p>Messages are sent in-app and keep a conversation thread with each customer — useful for confirming bookings, sharing arrival details, or following up after a stay.</p>
+          <div class="guide-image-block">
+            <div class="guide-image"><img src="../assets/getting-started/customers/message-a-customer-1.png" alt="Message a customer" loading="lazy" /></div>
+          </div>
+          <div class="guide-nav">
+            <a class="guide-nav-btn" data-guide="customers-delete"><span class="guide-nav-label">Previous</span><span class="guide-nav-title">← Delete a customer</span></a>
+            <div class="guide-nav-btn hidden"></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- ── FOOTER ── -->
     <footer class="footer">
       <div class="footer-inner">
         <span>&copy; 2026 At9. All rights reserved.</span>
@@ -871,5 +1165,121 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      (function () {
+        // ── Navigate to a guide ──
+        function showGuide(guideId) {
+          // Hide all panels
+          document.querySelectorAll('.guide-panel').forEach(function (p) {
+            p.classList.remove('active');
+          });
+
+          // Show target panel
+          var target = document.getElementById('panel-' + guideId);
+          if (!target) {
+            document.getElementById('panel-overview').classList.add('active');
+            return;
+          }
+          target.classList.add('active');
+
+          // Update sidebar active state
+          document.querySelectorAll('.sidebar-link').forEach(function (l) {
+            l.classList.remove('active');
+          });
+          var activeLink = document.querySelector('.sidebar-link[data-guide="' + guideId + '"]');
+          if (activeLink) {
+            activeLink.classList.add('active');
+            // Expand the section this link belongs to
+            var guidesList = activeLink.closest('.sidebar-guides');
+            if (guidesList && guidesList.classList.contains('hidden')) {
+              guidesList.classList.remove('hidden');
+              var btn = document.querySelector('[data-section="' + guidesList.id.replace('guides-', '') + '"]');
+              if (btn) btn.classList.remove('collapsed');
+            }
+          }
+
+          // Scroll main content to top
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+          // Update URL hash without scrolling
+          history.replaceState(null, '', '#' + guideId);
+
+          // On mobile, hide sidebar after navigating
+          if (window.innerWidth <= 860) {
+            document.getElementById('sidebar').classList.add('mobile-hidden');
+            document.getElementById('toggle-label').textContent = 'Browse topics';
+            document.getElementById('sidebar-toggle').setAttribute('aria-expanded', 'false');
+          }
+        }
+
+        // ── Sidebar guide links ──
+        document.querySelectorAll('.sidebar-link').forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            showGuide(link.dataset.guide);
+          });
+        });
+
+        // ── Overview card clicks ──
+        document.querySelectorAll('.overview-card').forEach(function (card) {
+          card.addEventListener('click', function (e) {
+            e.preventDefault();
+            showGuide(card.dataset.guide);
+          });
+        });
+
+        // ── Guide nav buttons (prev/next) ──
+        document.querySelectorAll('.guide-nav-btn[data-guide]').forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            showGuide(btn.dataset.guide);
+          });
+        });
+
+        // ── Inline text links with data-guide ──
+        document.querySelectorAll('a[data-guide]').forEach(function (link) {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            showGuide(link.dataset.guide);
+          });
+        });
+
+        // ── Sidebar section toggles ──
+        document.querySelectorAll('.sidebar-group-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var section = btn.dataset.section;
+            var guides = document.getElementById('guides-' + section);
+            var isCollapsed = btn.classList.contains('collapsed');
+            btn.classList.toggle('collapsed', !isCollapsed);
+            guides.classList.toggle('hidden', !isCollapsed);
+          });
+        });
+
+        // ── Mobile sidebar toggle ──
+        document.getElementById('sidebar-toggle').addEventListener('click', function () {
+          var sidebar = document.getElementById('sidebar');
+          var hidden = sidebar.classList.toggle('mobile-hidden');
+          this.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+          document.getElementById('toggle-label').textContent = hidden ? 'Browse topics' : 'Hide topics';
+        });
+
+        // ── Deep link via hash ──
+        var hash = window.location.hash.slice(1);
+        if (hash && document.getElementById('panel-' + hash)) {
+          showGuide(hash);
+        }
+
+        // ── On mobile, collapse all sidebar sections by default ──
+        if (window.innerWidth <= 860) {
+          document.querySelectorAll('.sidebar-group-btn').forEach(function (btn) {
+            btn.classList.add('collapsed');
+            var section = btn.dataset.section;
+            var guides = document.getElementById('guides-' + section);
+            if (guides) guides.classList.add('hidden');
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
