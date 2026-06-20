@@ -497,6 +497,11 @@
     </style>
   </head>
   <body>
+    <noscript>
+      <div style="font-family:sans-serif;text-align:center;padding:2rem;">
+        <p>JavaScript is required to use the booking system. Please enable JavaScript in your browser settings and reload the page.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -521,6 +526,25 @@
         a.getUTCDate() === b.getUTCDate();
       const utcAfter  = (a, b) => utcMidnight(a) > utcMidnight(b);
       const utcBefore = (a, b) => utcMidnight(a) < utcMidnight(b);
+
+      // Classify fetch errors so users see a useful message:
+      //  - thrown TypeError -> network/offline
+      //  - 4xx with body.message -> use that (server-supplied validation/capacity hint)
+      //  - 409 -> slot/capacity gone
+      //  - other 4xx -> generic validation
+      //  - 5xx -> server problem
+      const friendlyError = async (resOrErr) => {
+        if (resOrErr instanceof Error) {
+          return "Couldn't reach the server. Check your connection and try again.";
+        }
+        const status = resOrErr.status;
+        const data = await resOrErr.json().catch(() => ({}));
+        if (data.message) return data.message;
+        if (status === 409) return "That slot was just taken. Please pick another.";
+        if (status >= 400 && status < 500) return "Some details look invalid. Please review and try again.";
+        if (status >= 500) return "The server is having trouble. Please try again in a moment.";
+        return "Something went wrong. Please try again.";
+      };
 
       const MONTH_NAMES = [
         "January","February","March","April","May","June",
@@ -557,13 +581,20 @@
       });
 
       // ── Icons ─────────────────────────────────────────────────────────────────
-      const IconCalendar = () => (
+      const IconMoon = () => (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8"  y1="2" x2="8"  y2="6"/>
-          <line x1="3"  y1="10" x2="21" y2="10"/>
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      );
+
+      const IconUtensils = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+          <line x1="7" y1="2" x2="7" y2="22"/>
+          <line x1="21" y1="15" x2="21" y2="22"/>
+          <path d="M21 2a5 5 0 0 0 0 10"/>
         </svg>
       );
 
@@ -572,6 +603,16 @@
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      );
+
+      const IconCalendar = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8"  y1="2" x2="8"  y2="6"/>
+          <line x1="3"  y1="10" x2="21" y2="10"/>
         </svg>
       );
 
@@ -616,15 +657,14 @@
         </svg>
       );
 
-      const IconScissors = () => (
+      const IconGraduationCap = () => (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
-          <line x1="20" y1="4" x2="8.12" y2="15.88"/>
-          <line x1="14.47" y1="14.48" x2="20" y2="20"/>
-          <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
         </svg>
       );
+
 
       // ── Calendar component ────────────────────────────────────────────────────
       const Calendar = ({ startDate, endDate, onChange, disablePast }) => {
@@ -693,10 +733,34 @@
       };
 
       // ── Contact form (shared) ─────────────────────────────────────────────────
+      // Permissive email regex — matches the server-side validator.
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isPhoneValid = (v) => {
+        if (!v) return true; // phone is optional
+        const digits = v.replace(/\D/g, "");
+        return digits.length >= 6 && digits.length <= 20;
+      };
+
       const ContactForm = ({ summary, onBack, onSubmit, loading, error }) => {
-        const [name,  setName]  = useState("");
-        const [email, setEmail] = useState("");
-        const [phone, setPhone] = useState("");
+        const [name,        setName]        = useState("");
+        const [email,       setEmail]       = useState("");
+        const [phone,       setPhone]       = useState("");
+        const [localError,  setLocalError]  = useState("");
+
+        const trimmedEmail = email.trim();
+        const emailValid   = EMAIL_RE.test(trimmedEmail);
+        const phoneValid   = isPhoneValid(phone.trim());
+        const canSubmit    = !loading && name.trim() && emailValid && phoneValid;
+
+        const handleSubmit = () => {
+          if (!name.trim()) return setLocalError("Please enter your name.");
+          if (!emailValid)  return setLocalError("Please enter a valid email address.");
+          if (!phoneValid)  return setLocalError("Please enter a valid phone number.");
+          setLocalError("");
+          onSubmit({ name: name.trim(), email: trimmedEmail, phone: phone.trim() });
+        };
+
+        const messageError = localError || error;
 
         return (
           <div>
@@ -721,12 +785,12 @@
                 <input className="form-input" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
                   placeholder="+44 7700 900000" maxLength={30} autoComplete="tel" />
               </div>
-              {error && (
-                <p style={{ color: "var(--error)", fontSize: 13, marginBottom: 12 }}>{error}</p>
+              {messageError && (
+                <p style={{ color: "var(--error)", fontSize: 13, marginBottom: 12 }}>{messageError}</p>
               )}
               <button className="btn btn-primary"
-                disabled={loading || !name.trim() || !email.trim()}
-                onClick={() => onSubmit({ name, email, phone })}>
+                disabled={!canSubmit}
+                onClick={handleSubmit}>
                 {loading ? "Sending…" : "Request Booking"}
               </button>
             </div>
@@ -778,12 +842,14 @@
           setLoading(true);
           setError("");
           try {
+            // Use a room confirmed available, not just the first one defined.
+            const firstAvailable = (availability ?? []).find(e => !e.booked);
             const res = await fetch(`${WS_URI}/bookings/public`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 organisationId: org.id,
-                entityId: rooms[0]?.id,
+                entityId: firstAvailable?.id ?? rooms[0]?.id,
                 startDate: fmtIso(checkIn),
                 endDate:   fmtIso(checkOut),
                 guests,
@@ -793,13 +859,12 @@
               }),
             });
             if (!res.ok) {
-              const data = await res.json().catch(() => ({}));
-              setError(data.message || "Something went wrong. Please try again.");
+              setError(await friendlyError(res));
               return;
             }
             onDone({ checkIn, checkOut, nights, guests, name, type: "room" });
-          } catch {
-            setError("Something went wrong. Please try again.");
+          } catch (err) {
+            setError(await friendlyError(err));
           } finally {
             setLoading(false);
           }
@@ -1023,13 +1088,12 @@
               }),
             });
             if (!res.ok) {
-              const data = await res.json().catch(() => ({}));
-              setError(data.message || "Something went wrong. Please try again.");
+              setError(await friendlyError(res));
               return;
             }
             onDone({ date: selectedDate, time: selectedTime, name, type: "table" });
-          } catch {
-            setError("Something went wrong. Please try again.");
+          } catch (err) {
+            setError(await friendlyError(err));
           } finally {
             setLoading(false);
           }
@@ -1230,13 +1294,12 @@
               }),
             });
             if (!res.ok) {
-              const data = await res.json().catch(() => ({}));
-              setError(data.message || "Something went wrong. Please try again.");
+              setError(await friendlyError(res));
               return;
             }
             onDone({ date: selectedDate, time: selectedTime, name, service: selectedService.title, type: "appointment" });
-          } catch {
-            setError("Something went wrong. Please try again.");
+          } catch (err) {
+            setError(await friendlyError(err));
           } finally {
             setLoading(false);
           }
@@ -1372,6 +1435,290 @@
         );
       };
 
+      // ── Event booking ─────────────────────────────────────────────────────────
+      const EventBooking = ({ org, events, onBack, onDone }) => {
+        const [selectedEvent, setSelectedEvent] = useState(null);
+        const [step,          setStep]          = useState("list"); // 'list' | 'contact'
+        const [loading,       setLoading]       = useState(false);
+        const [error,         setError]         = useState("");
+
+        const handleSelectEvent = (evt) => {
+          setSelectedEvent(evt);
+          setStep("contact");
+        };
+
+        const handleSubmit = async ({ name, email, phone }) => {
+          setLoading(true);
+          setError("");
+          try {
+            const res = await fetch(`${WS_URI}/events/bookings/public`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                eventId:        selectedEvent.id,
+                organisationId: org.id,
+                customerName:   name,
+                customerEmail:  email,
+                customerPhone:  phone,
+              }),
+            });
+            if (!res.ok) {
+              setError(await friendlyError(res));
+              return;
+            }
+            const dateObj = selectedEvent.start_date
+              ? new Date(selectedEvent.start_date + "T00:00:00Z")
+              : null;
+            onDone({ type: "event", name, event: selectedEvent.title, date: dateObj, time: selectedEvent.start_time });
+          } catch (err) {
+            setError(await friendlyError(err));
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        const summary = selectedEvent
+          ? selectedEvent.title +
+            (selectedEvent.start_date ? ` · ${selectedEvent.start_date}${selectedEvent.end_date ? ` – ${selectedEvent.end_date}` : ""}` : "") +
+            (selectedEvent.start_time ? ` · ${selectedEvent.start_time}` : "")
+          : "";
+
+        if (step === "contact") {
+          return (
+            <ContactForm
+              summary={summary}
+              onBack={() => setStep("list")}
+              onSubmit={handleSubmit}
+              loading={loading}
+              error={error}
+            />
+          );
+        }
+
+        return (
+          <div>
+            <button className="back-btn" onClick={onBack}><IconArrowLeft /> Back</button>
+            {events.map(evt => {
+              const spotsLeft = evt.capacity != null ? evt.capacity - evt.booking_count : null;
+              const isFull = spotsLeft != null && spotsLeft <= 0;
+              const dateLabel = evt.end_date
+                ? `${evt.start_date} – ${evt.end_date}`
+                : evt.start_date ?? "";
+              const timeLabel = [evt.start_time, evt.end_time].filter(Boolean).join("–");
+              return (
+                <div key={evt.id} className="card" style={{ marginBottom: 10 }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{evt.title}</div>
+                  {evt.description && (
+                    <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 6 }}>{evt.description}</div>
+                  )}
+                  {(dateLabel || timeLabel) && (
+                    <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
+                      {[dateLabel, timeLabel].filter(Boolean).join(" · ")}
+                    </div>
+                  )}
+                  {evt.cost != null && (
+                    <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
+                      £{Number(evt.cost).toFixed(2)}
+                    </div>
+                  )}
+                  {spotsLeft != null && (
+                    <div style={{ fontSize: 12, color: isFull ? "var(--error)" : "var(--text-2)", marginBottom: 8 }}>
+                      {isFull ? "Fully booked" : `${spotsLeft} place${spotsLeft !== 1 ? "s" : ""} remaining`}
+                    </div>
+                  )}
+                  <button
+                    className="btn btn-primary"
+                    disabled={isFull}
+                    style={{ opacity: isFull ? 0.4 : 1, cursor: isFull ? "default" : "pointer" }}
+                    onClick={() => !isFull && handleSelectEvent(evt)}>
+                    {isFull ? "Fully booked" : "Select"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
+
+      // ── Class booking ─────────────────────────────────────────────────────────
+      const WEEKDAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+      const ClassBooking = ({ org, classes, onBack, onDone }) => {
+        const [selectedClass, setSelectedClass] = useState(null);
+        const [selectedDate,  setSelectedDate]  = useState(null);
+        const [step,          setStep]          = useState("list"); // 'list' | 'date' | 'contact'
+        const [loading,       setLoading]       = useState(false);
+        const [error,         setError]         = useState("");
+        const [count,         setCount]         = useState(14);
+
+        // Safety cap scales with `count` so "Show more" can extend the horizon
+        // past the initial 90 days without unbounded iteration.
+        const getClassOccurrences = (cls, count = 14) => {
+          const today = utcMidnight(new Date());
+          const endLimit = cls.end_date ? new Date(cls.end_date + "T00:00:00Z") : null;
+          const horizonDays = Math.max(90, count * 7 + 7);
+          const result = [];
+          let d = today;
+          while (result.length < count) {
+            if (d.getUTCDay() === cls.weekday) {
+              if (!endLimit || d <= endLimit) result.push(d);
+              else break;
+            }
+            d = new Date(d.getTime() + 86400000);
+            if (d.getTime() - today.getTime() > horizonDays * 86400000) break;
+          }
+          return result;
+        };
+
+        const handleSelectClass = (cls) => {
+          setSelectedClass(cls);
+          setCount(14);
+          const occurrences = getClassOccurrences(cls, 14);
+          setSelectedDate(occurrences[0] ?? null);
+          setStep("date");
+        };
+
+        const handleSubmit = async ({ name, email, phone }) => {
+          setLoading(true);
+          setError("");
+          try {
+            const res = await fetch(`${WS_URI}/classes/bookings/public`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                classId:        selectedClass.id,
+                organisationId: org.id,
+                occurrenceDate: fmtIso(selectedDate),
+                customerName:   name,
+                customerEmail:  email,
+                customerPhone:  phone,
+              }),
+            });
+            if (!res.ok) {
+              setError(await friendlyError(res));
+              return;
+            }
+            onDone({ type: "class", name, cls: selectedClass.title, date: selectedDate, time: selectedClass.start_time });
+          } catch (err) {
+            setError(await friendlyError(err));
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        const summary = selectedClass && selectedDate
+          ? `${selectedClass.title} · ${fmtDow(selectedDate)} ${selectedDate.getUTCDate()} ${MONTH_NAMES[selectedDate.getUTCMonth()].slice(0,3)}`
+            + (selectedClass.start_time ? ` · ${selectedClass.start_time}` : "")
+          : "";
+
+        if (step === "contact") {
+          return (
+            <ContactForm
+              summary={summary}
+              onBack={() => setStep("date")}
+              onSubmit={handleSubmit}
+              loading={loading}
+              error={error}
+            />
+          );
+        }
+
+        if (step === "date" && selectedClass) {
+          const occurrences = getClassOccurrences(selectedClass, count);
+          const canLoadMore = occurrences.length === count;
+          return (
+            <div>
+              <button className="back-btn" onClick={() => setStep("list")}><IconArrowLeft /> Back</button>
+              <div style={{ marginBottom: 12, padding: "10px 14px",
+                background: "var(--accent-bg)", borderRadius: "var(--r-sm)",
+                border: "1px solid var(--accent-mid)", fontSize: 13, fontWeight: 600 }}>
+                {selectedClass.title}
+                {selectedClass.start_time && (
+                  <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>
+                    {selectedClass.start_time}{selectedClass.end_time ? `–${selectedClass.end_time}` : ""}
+                  </span>
+                )}
+              </div>
+              <div className="card">
+                <p className="section-label">Choose a session date</p>
+                {occurrences.length > 0 ? (
+                  <div className="date-strip-wrap">
+                    <div className="date-strip">
+                      {occurrences.map((d, i) => {
+                        const sel = selectedDate && utcIsSameDay(d, selectedDate);
+                        return (
+                          <div key={i}
+                            className={`date-chip${sel ? " selected" : ""}`}
+                            onClick={() => setSelectedDate(d)}>
+                            <div className="date-chip-day">{fmtDow(d)}</div>
+                            <div className="date-chip-num">{d.getUTCDate()}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <p style={{ color: "var(--text-3)", fontSize: 14 }}>No upcoming sessions available.</p>
+                )}
+                {canLoadMore && (
+                  <button type="button"
+                    onClick={() => setCount(count + 14)}
+                    style={{ marginTop: 10, background: "none", border: 0,
+                      color: "var(--accent)", fontSize: 13, fontWeight: 600,
+                      cursor: "pointer", padding: 4 }}>
+                    Show more dates
+                  </button>
+                )}
+              </div>
+              <button className="btn btn-primary"
+                disabled={!selectedDate || occurrences.length === 0}
+                onClick={() => setStep("contact")}>
+                Continue
+              </button>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <button className="back-btn" onClick={onBack}><IconArrowLeft /> Back</button>
+            {classes.map(cls => {
+              const spotsLeft = cls.capacity != null ? cls.capacity - (cls.booking_count ?? 0) : null;
+              const isFull = spotsLeft != null && spotsLeft <= 0;
+              const timeLabel = [cls.start_time, cls.end_time].filter(Boolean).join("–");
+              return (
+                <div key={cls.id} className="card" style={{ marginBottom: 10 }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{cls.title}</div>
+                  {cls.description && (
+                    <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 6 }}>{cls.description}</div>
+                  )}
+                  <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
+                    Every {WEEKDAY_FULL[cls.weekday]}{timeLabel ? ` · ${timeLabel}` : ""}
+                  </div>
+                  {cls.cost != null && (
+                    <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
+                      £{Number(cls.cost).toFixed(2)}
+                    </div>
+                  )}
+                  {spotsLeft != null && (
+                    <div style={{ fontSize: 12, color: isFull ? "var(--error)" : "var(--text-2)", marginBottom: 8 }}>
+                      {isFull ? "Fully booked" : `${spotsLeft} place${spotsLeft !== 1 ? "s" : ""} remaining`}
+                    </div>
+                  )}
+                  <button
+                    className="btn btn-primary"
+                    disabled={isFull}
+                    style={{ opacity: isFull ? 0.4 : 1, cursor: isFull ? "default" : "pointer" }}
+                    onClick={() => !isFull && handleSelectClass(cls)}>
+                    {isFull ? "Fully booked" : "Select"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
+
       // ── Confirmation ──────────────────────────────────────────────────────────
       const Confirmation = ({ booking, orgName, onReset }) => (
         <div className="card" style={{ padding: "32px 24px", textAlign: "center" }}>
@@ -1428,6 +1775,18 @@
                 <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)} · {booking.time}</div>
               </>
             )}
+            {booking.type === "event" && (
+              <>
+                <div>{booking.event}</div>
+                {booking.date && <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)}{booking.time ? ` · ${booking.time}` : ""}</div>}
+              </>
+            )}
+            {booking.type === "class" && (
+              <>
+                <div>{booking.cls}</div>
+                {booking.date && <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)}{booking.time ? ` · ${booking.time}` : ""}</div>}
+              </>
+            )}
           </div>
           <button className="btn btn-ghost" onClick={onReset}>Make another booking</button>
         </div>
@@ -1439,6 +1798,8 @@
         const [loadState,   setLoadState]   = useState("loading");
         const [org,         setOrg]         = useState(null);
         const [services,    setServices]    = useState([]);
+        const [events,      setEvents]      = useState([]);
+        const [classes,     setClasses]     = useState([]);
         const [bookingType, setBookingType] = useState(null);
         const [confirmed,   setConfirmed]   = useState(null);
 
@@ -1448,11 +1809,16 @@
             .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
             .then((data) => {
               setOrg(data);
-              // Load services for this org
-              return fetch(`${WS_URI}/services/public/${data.id}`)
-                .then(r => r.ok ? r.json() : [])
-                .then(s => { setServices(s ?? []); setLoadState("ready"); })
-                .catch(() => { setLoadState("ready"); });
+              return Promise.all([
+                fetch(`${WS_URI}/services/public/${data.id}`).then(r => r.ok ? r.json() : []).catch(() => []),
+                fetch(`${WS_URI}/events/public/organisation/${data.id}`).then(r => r.ok ? r.json() : []).catch(() => []),
+                fetch(`${WS_URI}/classes/public/organisation/${data.id}`).then(r => r.ok ? r.json() : []).catch(() => []),
+              ]).then(([svcData, evtData, clsData]) => {
+                setServices(svcData ?? []);
+                setEvents(evtData ?? []);
+                setClasses(clsData ?? []);
+                setLoadState("ready");
+              });
             })
             .catch(() => setLoadState("error"));
         }, [slug]);
@@ -1460,7 +1826,9 @@
         const hasRooms        = org?.entities?.some((e) => e.type === "room");
         const hasTables       = org?.entities?.some((e) => e.type === "table");
         const hasAppointments = services.length > 0;
-        const optionCount     = [hasRooms, hasTables, hasAppointments].filter(Boolean).length;
+        const hasEvents       = events.length > 0;
+        const hasClasses      = classes.length > 0;
+        const optionCount     = [hasRooms, hasTables, hasAppointments, hasEvents, hasClasses].filter(Boolean).length;
 
         return (
           <div className="page">
@@ -1498,34 +1866,48 @@
 
               {loadState === "ready" && !confirmed && !bookingType && (
                 <>
-                  {hasRooms || hasTables || hasAppointments ? (
+                  {hasRooms || hasTables || hasAppointments || hasEvents || hasClasses ? (
                     <>
                       {optionCount > 1 && (
                         <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-2)", marginBottom: 16 }}>
                           What would you like to book?
                         </p>
                       )}
-                      <div className={`type-grid${optionCount === 1 ? "" : ""}`}
+                      <div className="type-grid"
                         style={optionCount === 1 ? { gridTemplateColumns: "1fr" } : undefined}>
                         {hasRooms && (
                           <div className="type-card" onClick={() => setBookingType("room")}>
-                            <div className="type-card-icon"><IconCalendar /></div>
+                            <div className="type-card-icon"><IconMoon /></div>
                             <div className="type-card-label">Book Room</div>
                             <div className="type-card-sub">Select dates</div>
                           </div>
                         )}
                         {hasTables && (
                           <div className="type-card" onClick={() => setBookingType("table")}>
-                            <div className="type-card-icon"><IconClock /></div>
+                            <div className="type-card-icon"><IconUtensils /></div>
                             <div className="type-card-label">Book Table</div>
                             <div className="type-card-sub">Select a time</div>
                           </div>
                         )}
                         {hasAppointments && (
                           <div className="type-card" onClick={() => setBookingType("appointment")}>
-                            <div className="type-card-icon"><IconScissors /></div>
+                            <div className="type-card-icon"><IconClock /></div>
                             <div className="type-card-label">Book Appointment</div>
                             <div className="type-card-sub">Select a service</div>
+                          </div>
+                        )}
+                        {hasEvents && (
+                          <div className="type-card" onClick={() => setBookingType("event")}>
+                            <div className="type-card-icon"><IconCalendar /></div>
+                            <div className="type-card-label">Book Event</div>
+                            <div className="type-card-sub">Browse events</div>
+                          </div>
+                        )}
+                        {hasClasses && (
+                          <div className="type-card" onClick={() => setBookingType("class")}>
+                            <div className="type-card-icon"><IconGraduationCap /></div>
+                            <div className="type-card-label">Book a Class</div>
+                            <div className="type-card-sub">Weekly sessions</div>
                           </div>
                         )}
                       </div>
@@ -1557,6 +1939,18 @@
 
               {loadState === "ready" && !confirmed && bookingType === "appointment" && (
                 <AppointmentBooking org={org} services={services}
+                  onBack={() => setBookingType(null)}
+                  onDone={(b) => setConfirmed(b)} />
+              )}
+
+              {loadState === "ready" && !confirmed && bookingType === "event" && (
+                <EventBooking org={org} events={events}
+                  onBack={() => setBookingType(null)}
+                  onDone={(b) => setConfirmed(b)} />
+              )}
+
+              {loadState === "ready" && !confirmed && bookingType === "class" && (
+                <ClassBooking org={org} classes={classes}
                   onBack={() => setBookingType(null)}
                   onDone={(b) => setConfirmed(b)} />
               )}

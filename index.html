@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Room &amp; Table Booking App for Small Businesses | At9</title>
+    <title>Booking Management App for Small Businesses | At9</title>
     <meta
       name="description"
-      content="Manage room and table bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, catteries, kennels and hospitality businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#907CFF" />
@@ -30,11 +30,11 @@
     <meta property="og:url" content="https://www.at9.app" />
     <meta
       property="og:title"
-      content="Room &amp; Table Booking App for Small Businesses | At9"
+      content="Booking Management App for Small Businesses | At9"
     />
     <meta
       property="og:description"
-      content="Manage room and table bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, catteries, kennels and hospitality businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <link
       rel="preload"
@@ -50,14 +50,14 @@
           "@id": "https://www.at9.app/#website",
           "url": "https://www.at9.app",
           "name": "At9",
-          "description": "Room and table booking management app for small businesses."
+          "description": "Booking management app for small businesses - rooms, tables, appointments, classes and events."
         },
         {
           "@type": "SoftwareApplication",
           "name": "At9",
           "operatingSystem": "iOS, Android",
           "applicationCategory": "BusinessApplication",
-          "description": "Manage room and table bookings from your phone. Built for restaurants, hotels, pubs, catteries, kennels and hospitality businesses.",
+          "description": "Manage room, table, appointment, class and event bookings from your phone. Built for restaurants, hotels, pubs, yoga studios, catteries, kennels and service businesses.",
           "offers": [
             {
               "@type": "Offer",
@@ -205,7 +205,9 @@
       }
 
       /* Prevent decorative line art from causing horizontal scroll */
+      html,
       body {
+        overflow-x: hidden;
         overflow-x: clip;
       }
 
@@ -649,55 +651,118 @@
         }
       }
 
-      /* ---------- Spacer band (sits between hero and features) ---------- */
-      .growth-band-wrap {
-        padding: 36px 0 20px;
+      /* ---------- Booking types (between hero and features) ---------- */
+      .booking-types .features-head {
+        margin-bottom: 44px;
       }
-      .growth-band {
+
+      .bt-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+      @media (max-width: 860px) {
+        .bt-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 460px) {
+        .bt-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .bt-card {
+        --dot: var(--primary);
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        overflow: hidden;
         display: flex;
-        align-items: center;
-        gap: 28px;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+          border-color 0.2s ease;
       }
-      .growth-band .line {
+      .bt-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--line-2);
+      }
+
+      /* Per-card accent dot — keeps the row disciplined */
+      .bt-card.is-rooms { --dot: #907cff; }
+      .bt-card.is-appointments { --dot: #e58fd8; }
+      .bt-card.is-classes { --dot: #76d98c; }
+      .bt-card.is-events { --dot: #edb76a; }
+
+      /* Mini At9 schedule — the pill layout tells the story of each type */
+      .bt-panel {
+        background: #1a1825;
+        border-bottom: 1px solid var(--line);
+        padding: 16px;
+        height: 130px;
+      }
+      .bt-panel svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .bt-cell {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.07);
+        stroke-width: 1;
+      }
+      .bt-pill {
+        fill: var(--yellow);
+        stroke: rgba(0, 0, 0, 0.06);
+        stroke-width: 1;
+      }
+
+      .bt-body {
+        padding: 18px 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
         flex: 1;
-        height: 1px;
-        background: linear-gradient(
-          to right,
-          transparent,
-          var(--line-2),
-          transparent
-        );
       }
-      .growth-band .growth-text {
+      .bt-role {
         display: inline-flex;
         align-items: center;
-        gap: 12px;
-        color: var(--ink-2);
-        font-family: "Caveat", cursive;
-        font-size: 26px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        margin: 0;
-        line-height: 1.1;
-        white-space: nowrap;
-        transform: rotate(-1deg);
-      }
-      .growth-band .device-icon {
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
         color: var(--primary-dark);
+      }
+      .bt-role::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--dot);
         flex: none;
       }
-      @media (max-width: 800px) {
-        .growth-band {
-          flex-direction: column;
-          gap: 14px;
+      .bt-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin: 2px 0 0;
+        color: var(--ink);
+      }
+      .bt-card p {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--ink-2);
+        margin: 2px 0 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .bt-card {
+          transition: border-color 0.2s ease;
         }
-        .growth-band .growth-text {
-          white-space: normal;
-          text-align: center;
-          font-size: 22px;
-        }
-        .growth-band .line {
-          width: 60%;
+        .bt-card:hover {
+          transform: none;
+          box-shadow: none;
         }
       }
 
@@ -1412,18 +1477,21 @@
         position: absolute;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 7px 14px;
+        gap: 9px;
+        padding: 11px 20px;
         border-radius: 999px;
-        font-size: 12px;
+        font-size: 15px;
         font-weight: 600;
-        box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.13);
+        box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.16);
         white-space: nowrap;
         user-select: none;
         pointer-events: none;
+        z-index: 3;
       }
       .share-badge svg {
         flex-shrink: 0;
+        width: 18px;
+        height: 18px;
       }
       .share-badge--instagram {
         background: #fdf2f8;
@@ -1456,12 +1524,15 @@
       .share-badge--website {
         background: var(--bg-mute);
         color: var(--ink-2);
-        bottom: 16px;
+        top: -22px;
         left: 50%;
         transform: translateX(-50%) rotate(-1deg);
       }
       @media (max-width: 780px) {
         .share-badge {
+          display: none;
+        }
+        .book-url-annotation {
           display: none;
         }
       }
@@ -1503,17 +1574,58 @@
         border-radius: 10px;
         white-space: nowrap;
         border: 1px solid rgba(144, 124, 255, 0.2);
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+      }
+      .book-url-slug-stack {
+        display: inline-grid;
+      }
+      .book-url-slug-stack > * {
+        grid-column: 1;
+        grid-row: 1;
+        white-space: nowrap;
+      }
+      .book-url-slug-ghost {
+        visibility: hidden;
+      }
+      .book-url-slug-type {
+        overflow: hidden;
+        border-right: 2px solid currentColor;
+        width: 0;
+        animation:
+          type-slug 8s infinite,
+          blink-caret 0.7s step-end infinite;
+      }
+      @keyframes type-slug {
+        0% { width: 0; animation-timing-function: steps(17, end); }
+        35% { width: 100%; animation-timing-function: linear; }
+        85% { width: 100%; animation-timing-function: steps(17, end); }
+        100% { width: 0; }
+      }
+      @keyframes blink-caret {
+        from, to { border-color: transparent; }
+        50% { border-color: currentColor; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .book-url-slug-type {
+          width: 100%;
+          border-right: none;
+          animation: none;
+        }
       }
       .book-url-annotation {
         font-family: "Caveat", cursive;
         font-size: 26px;
         font-weight: 500;
         color: var(--ink-3);
-        transform: rotate(-1.5deg);
-        margin: 8px 0 0;
-        padding-right: 56px;
-        text-align: right;
-        display: block;
+        white-space: nowrap;
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        margin-left: 12px;
+        transform: translateY(-50%) rotate(-1.5deg);
+        transform-origin: left center;
       }
 
       /* Screenshots fan */
@@ -1626,7 +1738,7 @@
         </nav>
 
         <div class="nav-cta">
-          <a class="btn btn-primary" href="#download">
+          <a class="btn btn-primary" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">
             Get the app
             <svg
               width="14"
@@ -1654,9 +1766,9 @@
             >Designed for <span class="cycle-word">Restaurants</span></span
           >
           <h1>
-            Room &amp; table bookings,<br />
+            Every booking.<br />
             <span class="squiggle-wrap"
-              >made simple<svg
+              >One place<svg
                 class="squiggle"
                 viewBox="0 0 300 18"
                 preserveAspectRatio="none"
@@ -1669,15 +1781,17 @@
             >.
           </h1>
           <p class="lead">
-            Ditch the paper diary and the spreadsheet. At9 gives restaurants,
-            pubs, hotels, catteries and kennels a faster, simpler way to manage
-            room and table bookings, right from your phone.
+            Booking management software for tables, rooms, appointments, events
+            and classes. Prevent double bookings, cut admin time, and keep your
+            business running smoothly.
           </p>
           <div class="ctas store-row">
             <!-- App Store -->
             <a
               class="store-badge"
-              href="#download"
+              href="https://apps.apple.com/app/id6742573363"
+              target="_blank"
+              rel="noopener"
               aria-label="Download At9 on the App Store"
             >
               <svg
@@ -1699,7 +1813,7 @@
             <!-- Google Play -->
             <a
               class="store-badge"
-              href="#download"
+              href="https://play.google.com/store/apps/details?id=com.at9"
               aria-label="Get At9 on Google Play"
             >
               <svg
@@ -1758,45 +1872,154 @@
           </div>
         </div>
 
-        <!-- Hero phones: room booking + table bookings -->
+        <!-- Hero phones: room booking schedule (front) + room booking availability (back) -->
         <div class="hero-phones-wrap">
           <div class="hero-phone hero-phone--left">
             <img
-              src="assets/screenshots/app-room-booking-view.png"
-              alt="At9 room booking calendar view"
+              src="assets/screenshots/room%20bookings/Room%20booking%20availability.png"
+              alt="At9 room booking availability view"
             />
           </div>
           <div class="hero-phone hero-phone--right">
             <img
-              src="assets/screenshots/app-table-bookings.png"
-              alt="At9 table bookings view"
+              src="assets/screenshots/room%20bookings/Room%20bookings%20schedule.png"
+              alt="At9 room bookings schedule view"
             />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ---------- DIVIDER BAND ---------- -->
-    <div class="growth-band-wrap">
-      <div class="container growth-band">
-        <span class="line" aria-hidden="true"></span>
-        <p class="growth-text">
-          <svg
-            class="device-icon"
-            width="26"
-            height="22"
-            viewBox="0 0 28 22"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <rect x="2" y="4" width="7" height="14" rx="3.5" />
-            <rect x="12" y="1" width="14" height="20" rx="3.5" />
-          </svg>
-          Works on Mobile &amp; Tablet
-        </p>
-        <span class="line" aria-hidden="true"></span>
+    <!-- ---------- BOOKING TYPES — full-bleed lavender ---------- -->
+    <section id="booking-types" class="section-lavender booking-types">
+      <div class="container">
+        <div class="features-head">
+          <span class="eyebrow">One app, every booking type</span>
+          <h2>
+            Whatever you take bookings for, it lives on
+            <span class="squiggle-wrap"
+              >one grid<svg
+                class="squiggle"
+                viewBox="0 0 300 18"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9"
+                  vector-effect="non-scaling-stroke"
+                /></svg
+            ></span>.
+          </h2>
+          <p class="lead">
+            Rooms, tables, appointments, classes or a whole-venue event. At9
+            handles each one the same simple way, so you can drop the diary,
+            the spreadsheet and the back-and-forth.
+          </p>
+        </div>
+
+        <div class="bt-grid">
+          <!-- Rooms & Tables — a wide stay + a sitting, side by side -->
+          <article class="bt-card is-rooms">
+            <div class="bt-panel">
+              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
+                <line class="bt-cell" x1="0" y1="33" x2="232" y2="33" />
+                <line class="bt-cell" x1="0" y1="66" x2="232" y2="66" />
+                <line class="bt-cell" x1="58" y1="0" x2="58" y2="100" />
+                <line class="bt-cell" x1="116" y1="0" x2="116" y2="100" />
+                <line class="bt-cell" x1="174" y1="0" x2="174" y2="100" />
+                <rect class="bt-pill" x="8" y="8" width="150" height="18" rx="6" />
+                <rect class="bt-pill" x="64" y="41" width="120" height="18" rx="6" />
+                <rect class="bt-pill" x="8" y="74" width="86" height="18" rx="6" />
+              </svg>
+            </div>
+            <div class="bt-body">
+              <span class="bt-role">Stays &amp; sittings</span>
+              <h3>Rooms &amp; Tables</h3>
+              <p>
+                Fill more rooms and turn more tables. Overnight stays and
+                same-day sittings on one shared schedule. See every gap
+                before it costs you.
+              </p>
+            </div>
+          </article>
+
+          <!-- Appointments — precise single slots dotted across the grid -->
+          <article class="bt-card is-appointments">
+            <div class="bt-panel">
+              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
+                <line class="bt-cell" x1="0" y1="33" x2="232" y2="33" />
+                <line class="bt-cell" x1="0" y1="66" x2="232" y2="66" />
+                <line class="bt-cell" x1="58" y1="0" x2="58" y2="100" />
+                <line class="bt-cell" x1="116" y1="0" x2="116" y2="100" />
+                <line class="bt-cell" x1="174" y1="0" x2="174" y2="100" />
+                <rect class="bt-pill" x="8" y="8" width="42" height="18" rx="6" />
+                <rect class="bt-pill" x="124" y="8" width="42" height="18" rx="6" />
+                <rect class="bt-pill" x="66" y="41" width="42" height="18" rx="6" />
+                <rect class="bt-pill" x="182" y="41" width="42" height="18" rx="6" />
+                <rect class="bt-pill" x="8" y="74" width="42" height="18" rx="6" />
+              </svg>
+            </div>
+            <div class="bt-body">
+              <span class="bt-role">Slot bookings</span>
+              <h3>Appointments</h3>
+              <p>
+                End the back-and-forth. Treatments, consultations and
+                viewings. Clients self-book the slots you offer, your day
+                shapes itself.
+              </p>
+            </div>
+          </article>
+
+          <!-- Classes — stacked bookings sharing one time slot -->
+          <article class="bt-card is-classes">
+            <div class="bt-panel">
+              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
+                <line class="bt-cell" x1="0" y1="25" x2="232" y2="25" />
+                <line class="bt-cell" x1="0" y1="50" x2="232" y2="50" />
+                <line class="bt-cell" x1="0" y1="75" x2="232" y2="75" />
+                <line class="bt-cell" x1="92" y1="0" x2="92" y2="100" />
+                <line class="bt-cell" x1="150" y1="0" x2="150" y2="100" />
+                <rect class="bt-pill" x="100" y="6" width="120" height="13" rx="5" />
+                <rect class="bt-pill" x="100" y="31" width="120" height="13" rx="5" />
+                <rect class="bt-pill" x="100" y="56" width="120" height="13" rx="5" />
+                <rect class="bt-pill" x="100" y="81" width="120" height="13" rx="5" />
+              </svg>
+            </div>
+            <div class="bt-body">
+              <span class="bt-role">Group sessions</span>
+              <h3>Classes</h3>
+              <p>
+                Run yoga, fitness or any recurring class. Set capacity, take
+                group bookings into one time slot, and stop chasing places
+                by text.
+              </p>
+            </div>
+          </article>
+
+          <!-- Events — one block taking the whole venue across the day -->
+          <article class="bt-card is-events">
+            <div class="bt-panel">
+              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
+                <line class="bt-cell" x1="58" y1="0" x2="58" y2="100" />
+                <line class="bt-cell" x1="116" y1="0" x2="116" y2="100" />
+                <line class="bt-cell" x1="174" y1="0" x2="174" y2="100" />
+                <rect class="bt-pill" x="8" y="8" width="216" height="13" rx="5" />
+                <rect class="bt-pill" x="8" y="30" width="216" height="62" rx="8" />
+              </svg>
+            </div>
+            <div class="bt-body">
+              <span class="bt-role">Private hire</span>
+              <h3>Events</h3>
+              <p>
+                Block the venue for parties, weddings and one-off
+                occasions. Set the date, take the deposit, lock it in and
+                the whole team knows it's off-limits.
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
-    </div>
+    </section>
 
     <!-- ---------- FEATURES ---------- -->
     <section id="features">
@@ -1818,7 +2041,7 @@
               <h3>Bookings in seconds.</h3>
               <p>
                 From an empty diary to a confirmed booking in just a few taps.
-                Pick the date, pick the room or table, save. Done.
+                Pick the date, pick the room, table, class or slot, save. Done.
               </p>
             </div>
             <div class="card-art">
@@ -1889,8 +2112,8 @@
             <div class="card-copy">
               <h3>Your week, at a glance.</h3>
               <p>
-                Every room, every customer, every booking, laid out in one clear
-                view. Check availability instantly and never double-book again.
+                Rooms, tables, classes and events, laid out in one clear view.
+                Check availability instantly and never double-book again.
               </p>
             </div>
             <div class="card-art">
@@ -2059,9 +2282,14 @@
                 />
               </svg>
               <span class="book-url-base">at9.app/book/</span>
-              <span class="book-url-slug">the-crown-pub</span>
+              <span class="book-url-slug">
+                <span class="book-url-slug-stack">
+                  <span class="book-url-slug-ghost">riverside-fitness</span>
+                  <span class="book-url-slug-type" aria-hidden="true">riverside-fitness</span>
+                </span>
+                <span class="book-url-annotation">← your name, your link</span>
+              </span>
             </div>
-            <p class="book-url-annotation">← your name, your link</p>
           </div>
         </div>
 
@@ -2100,7 +2328,9 @@
           <div class="store-row">
             <a
               class="store-badge"
-              href="#download"
+              href="https://apps.apple.com/app/id6742573363"
+              target="_blank"
+              rel="noopener"
               aria-label="Download on the App Store"
             >
               <svg
@@ -2121,8 +2351,8 @@
             </a>
             <a
               class="store-badge"
-              href="#download"
-              aria-label="Get it on Google Play"
+              href="https://play.google.com/store/apps/details?id=com.at9"
+              aria-label="Get At9 on Google Play"
             >
               <svg
                 width="22"
@@ -2183,8 +2413,8 @@
               I've spent 20 years building tools that help businesses work
               better. The ones I love most are the small ones, run by people who
               are brilliant at what they do but stuck managing bookings on a bit
-              of paper or a spreadsheet that was never really up to the job. At9
-              is my attempt to fix that.
+              of paper or a spreadsheet that was never really up to the job.
+              I built At9 to change that.
             </p>
 
             <div class="beliefs-list">
@@ -2287,7 +2517,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Single-user login
+                Stay organised with simple booking management
               </li>
               <li>
                 <span class="check"
@@ -2303,7 +2533,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Unlimited room &amp; table bookings
+                Instantly check availability for rooms and tables
               </li>
               <li>
                 <span class="check"
@@ -2319,7 +2549,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Shareable booking link, perfect for Instagram &amp; Facebook
+                Your whole schedule, in your pocket
               </li>
               <li>
                 <span class="check"
@@ -2335,7 +2565,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Customer app so they can find you and book themselves
+                Manage customers and stay in touch
               </li>
               <li>
                 <span class="check"
@@ -2351,42 +2581,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                In-app messaging with customers
-              </li>
-              <li>
-                <span class="check"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                Block dates, set opening hours &amp; bookable times
-              </li>
-              <li>
-                <span class="check"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                iOS &amp; Android
+                Your own booking link - book/your-company
               </li>
             </ul>
-            <a class="btn btn-ghost" href="#download">Start with Solo</a>
+            <a class="btn btn-ghost" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">Start with Solo</a>
           </div>
 
           <div class="plan featured">
@@ -2417,7 +2615,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Everything in Solo
+                Everything in Solo, built for teams
               </li>
               <li>
                 <span class="check"
@@ -2433,7 +2631,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Multiple users to manage bookings together
+                Your team stays organised and aligned
               </li>
               <li>
                 <span class="check"
@@ -2449,26 +2647,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Role-based access (admin &amp; staff)
-              </li>
-              <li>
-                <span class="check"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                Priority support
+                Admin roles to control user access
               </li>
             </ul>
-            <a class="btn btn-primary" href="#download">Start with Team</a>
+            <a class="btn btn-primary" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">Start with Team</a>
           </div>
         </div>
       </div>
@@ -2486,9 +2668,10 @@
           <details class="faq-item">
             <summary>What is At9? <span class="toggle">+</span></summary>
             <div class="answer">
-              At9 is a booking management app for businesses with rooms or
-              tables to fill. Create and manage bookings, track customers, and
-              see your availability at a glance, all from your phone or tablet.
+              At9 is a booking management app for small businesses. Whether you
+              take room bookings, table reservations, appointments, classes or
+              events, you can create and manage everything, track customers,
+              and see your availability at a glance, all from your phone or tablet.
             </div>
           </details>
           <details class="faq-item">
@@ -2496,10 +2679,11 @@
               Which businesses is At9 built for? <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              At9 is built for any business that takes room or table bookings:
-              restaurants, pubs, hotels, catteries, kennels, and any other
-              service with a bookable space. If you're still managing a paper
-              diary or a spreadsheet, At9 can replace it.
+              At9 is built for any business that manages bookings: restaurants,
+              pubs, hotels, catteries, kennels, salons, yoga studios, tutors
+              and more. Whether you're filling rooms, seating tables, scheduling
+              appointments, running classes or hosting events. If you're still
+              on paper or a spreadsheet, At9 can replace it.
             </div>
           </details>
           <details class="faq-item">
@@ -2509,8 +2693,8 @@
             <div class="answer">
               Yes, most businesses are up and running in under 10 minutes. You
               don't need any technical knowledge. Just download the app, add
-              your rooms or tables, set your availability, and you're ready to
-              take bookings.
+              your bookable items (rooms, tables, appointment slots or classes), set
+              your availability, and you're ready to take bookings.
             </div>
           </details>
           <details class="faq-item">
@@ -2569,7 +2753,9 @@
           <div class="store-row">
             <a
               class="store-badge"
-              href="#"
+              href="https://apps.apple.com/app/id6742573363"
+              target="_blank"
+              rel="noopener"
               aria-label="Download on the App Store"
             >
               <svg
@@ -2588,7 +2774,11 @@
                 <span class="big">App Store</span>
               </span>
             </a>
-            <a class="store-badge" href="#" aria-label="Get it on Google Play">
+            <a
+              class="store-badge"
+              href="https://play.google.com/store/apps/details?id=com.at9"
+              aria-label="Get At9 on Google Play"
+            >
               <svg
                 width="22"
                 height="26"
@@ -2749,6 +2939,7 @@
       </div>
     </footer>
 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script>
       // Add a frosted backdrop to the nav once the user scrolls past the hero,
       // so links stay legible over white and dark sections below.
@@ -2778,6 +2969,9 @@
           { word: "Hotels", key: "hotels" },
           { word: "Catteries", key: "catteries" },
           { word: "Kennels", key: "kennels" },
+          { word: "Salons", key: "restaurants" },
+          { word: "Studios", key: "pubs" },
+          { word: "Tutors", key: "hotels" },
         ];
         var i = 0;
 
@@ -2800,6 +2994,8 @@
 
         setInterval(next, 2600);
       })();
+
+      lucide.createIcons();
     </script>
   </body>
 </html>
