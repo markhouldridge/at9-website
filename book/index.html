@@ -26,7 +26,7 @@
       crossorigin
       src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
     ></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -745,6 +745,7 @@
         const [name,        setName]        = useState("");
         const [email,       setEmail]       = useState("");
         const [phone,       setPhone]       = useState("");
+        const [note,        setNote]        = useState("");
         const [localError,  setLocalError]  = useState("");
 
         const trimmedEmail = email.trim();
@@ -757,7 +758,12 @@
           if (!emailValid)  return setLocalError("Please enter a valid email address.");
           if (!phoneValid)  return setLocalError("Please enter a valid phone number.");
           setLocalError("");
-          onSubmit({ name: name.trim(), email: trimmedEmail, phone: phone.trim() });
+          onSubmit({
+            name: name.trim(),
+            email: trimmedEmail,
+            phone: phone.trim(),
+            note: note.trim() || undefined,
+          });
         };
 
         const messageError = localError || error;
@@ -784,6 +790,18 @@
                 <label className="form-label">Phone</label>
                 <input className="form-input" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
                   placeholder="+44 7700 900000" maxLength={30} autoComplete="tel" />
+              </div>
+              <div className="form-field">
+                <label className="form-label">Note for provider</label>
+                <textarea
+                  className="form-input"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="Allergies, accessibility, special requests…"
+                  maxLength={1000}
+                  rows={3}
+                  style={{ resize: "vertical", minHeight: 72, fontFamily: "inherit" }}
+                />
               </div>
               {messageError && (
                 <p style={{ color: "var(--error)", fontSize: 13, marginBottom: 12 }}>{messageError}</p>
@@ -838,7 +856,7 @@
           return () => { cancelled = true; };
         }, [checkIn, checkOut, guests]);
 
-        const handleSubmit = async ({ name, email, phone }) => {
+        const handleSubmit = async ({ name, email, phone, note }) => {
           setLoading(true);
           setError("");
           try {
@@ -856,13 +874,15 @@
                 customerName:  name,
                 customerEmail: email,
                 customerPhone: phone,
+                customerNote:  note,
               }),
             });
             if (!res.ok) {
               setError(await friendlyError(res));
               return;
             }
-            onDone({ checkIn, checkOut, nights, guests, name, type: "room" });
+            const data = await res.json().catch(() => ({}));
+            onDone({ checkIn, checkOut, nights, guests, name, type: "room", reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -921,31 +941,52 @@
                 <span className="guests-count">{guests}</span>
                 <button className="guests-btn" onClick={() => setGuests((g) => g + 1)}>+</button>
               </div>
-              {hasRange && (
-                <div className={`avail-box ${availChecking ? "avail-checking" : availability && availability.length > 0 ? "avail-ok" : "avail-none"}`}>
-                  {availChecking
-                    ? <div className="avail-spinner" />
-                    : availability && availability.length > 0
-                      ? <IconCheckCircle color="var(--success)" />
-                      : <IconXCircle color="var(--error)" />
-                  }
-                  <div>
-                    <div className="avail-main">
-                      {availChecking
-                        ? "Checking availability…"
-                        : availability && availability.length > 0
-                          ? "Available"
-                          : "No rooms available for these dates"
-                      }
-                    </div>
-                    {!availChecking && availability && availability.length > 0 && (
-                      <div className="avail-sub">
-                        {nights} {nights === 1 ? "night" : "nights"} · {guests} {guests === 1 ? "guest" : "guests"}
+              {hasRange && (() => {
+                const isAvailable = availability && availability.length > 0;
+                // Pricing: cheapest nightly rate among non-booked rooms.
+                const rates = (availability ?? [])
+                  .filter(e => !e.booked && e.cost != null && e.cost !== "")
+                  .map(e => Number(e.cost))
+                  .filter(c => Number.isFinite(c));
+                const nightly = rates.length ? Math.min(...rates) : null;
+                const total = nightly != null && nights > 0 ? nightly * nights : null;
+                const fmtGBP = (n) =>
+                  `£${n.toLocaleString("en-GB", {
+                    minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
+                    maximumFractionDigits: 2,
+                  })}`;
+                const priceLabel = nightly != null
+                  ? (total != null
+                      ? `from ${fmtGBP(nightly)}/night · ${fmtGBP(total)} total`
+                      : `from ${fmtGBP(nightly)}/night`)
+                  : null;
+                return (
+                  <div className={`avail-box ${availChecking ? "avail-checking" : isAvailable ? "avail-ok" : "avail-none"}`}>
+                    {availChecking
+                      ? <div className="avail-spinner" />
+                      : isAvailable
+                        ? <IconCheckCircle color="var(--success)" />
+                        : <IconXCircle color="var(--error)" />
+                    }
+                    <div>
+                      <div className="avail-main">
+                        {availChecking
+                          ? "Checking availability…"
+                          : isAvailable
+                            ? "Available"
+                            : "No rooms available for these dates"
+                        }
                       </div>
-                    )}
+                      {!availChecking && isAvailable && (
+                        <div className="avail-sub">
+                          {nights} {nights === 1 ? "night" : "nights"} · {guests} {guests === 1 ? "guest" : "guests"}
+                          {priceLabel ? ` · ${priceLabel}` : ""}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
             <button className="btn btn-primary" disabled={!canContinue} onClick={() => setStep("contact")}>
               Continue
@@ -1067,7 +1108,7 @@
           return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), h, m));
         };
 
-        const handleSubmit = async ({ name, email, phone }) => {
+        const handleSubmit = async ({ name, email, phone, note }) => {
           setLoading(true);
           setError("");
           const intervalMin = Math.max(15, slotDuration);
@@ -1085,13 +1126,15 @@
                 customerName:   name,
                 customerEmail:  email,
                 customerPhone:  phone,
+                customerNote:   note,
               }),
             });
             if (!res.ok) {
               setError(await friendlyError(res));
               return;
             }
-            onDone({ date: selectedDate, time: selectedTime, name, type: "table" });
+            const data = await res.json().catch(() => ({}));
+            onDone({ date: selectedDate, time: selectedTime, name, type: "table", reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -1276,7 +1319,7 @@
           return out;
         })();
 
-        const handleSubmit = async ({ name, email, phone }) => {
+        const handleSubmit = async ({ name, email, phone, note }) => {
           setLoading(true);
           setError("");
           try {
@@ -1291,13 +1334,15 @@
                 customerName:   name,
                 customerEmail:  email,
                 customerPhone:  phone,
+                customerNote:   note,
               }),
             });
             if (!res.ok) {
               setError(await friendlyError(res));
               return;
             }
-            onDone({ date: selectedDate, time: selectedTime, name, service: selectedService.title, type: "appointment" });
+            const data = await res.json().catch(() => ({}));
+            onDone({ date: selectedDate, time: selectedTime, name, service: selectedService.title, type: "appointment", reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -1438,19 +1483,91 @@
       // ── Event booking ─────────────────────────────────────────────────────────
       const EventBooking = ({ org, events, onBack, onDone }) => {
         const [selectedEvent, setSelectedEvent] = useState(null);
-        const [step,          setStep]          = useState("list"); // 'list' | 'contact'
+        // Per-event selected days for multi-day events (multi-select).
+        const [eventDays, setEventDays] = useState({});
+        // Per-event picked ticket type id. Empty when an event has no
+        // ticket types configured.
+        const [eventTicketType, setEventTicketType] = useState({});
+        // Carries whether the contact form is finishing a booking or a
+        // waitlist join — set when the user taps Select/Join on the
+        // event card.
+        const [waitlistMode, setWaitlistMode] = useState(false);
+        const [step,          setStep]          = useState("list");
         const [loading,       setLoading]       = useState(false);
         const [error,         setError]         = useState("");
 
-        const handleSelectEvent = (evt) => {
+        const enumDates = (start, end) => {
+          if (!start || !end || start > end) return [];
+          const out = [];
+          let d = new Date(start + "T00:00:00Z");
+          const last = new Date(end + "T00:00:00Z").getTime();
+          while (d.getTime() <= last) {
+            out.push(d.toISOString().slice(0, 10));
+            d = new Date(d.getTime() + 86400000);
+          }
+          return out;
+        };
+        const fmtDayChip = (iso) => {
+          const dt = new Date(iso + "T00:00:00Z");
+          const dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dt.getUTCDay()];
+          return { dow, day: dt.getUTCDate() };
+        };
+        const toggleDay = (evtId, iso) => {
+          setEventDays(prev => {
+            const cur = prev[evtId] ?? [];
+            const next = cur.includes(iso) ? cur.filter(d => d !== iso) : [...cur, iso];
+            return { ...prev, [evtId]: next };
+          });
+        };
+
+        const handleSelectEvent = (evt, mode = "book") => {
           setSelectedEvent(evt);
+          setWaitlistMode(mode === "waitlist");
           setStep("contact");
         };
 
-        const handleSubmit = async ({ name, email, phone }) => {
+        const isSelectedMultiDay = !!(
+          selectedEvent?.end_date &&
+          selectedEvent.end_date > selectedEvent.start_date
+        );
+        const selectedDays = selectedEvent ? (eventDays[selectedEvent.id] ?? []) : [];
+
+        const handleSubmit = async ({ name, email, phone, note }) => {
           setLoading(true);
           setError("");
           try {
+            const hasTicketTypes = (selectedEvent?.ticket_types?.length ?? 0) > 0;
+            const pickedTicketType = selectedEvent ? eventTicketType[selectedEvent.id] : null;
+            if (waitlistMode) {
+              // Waitlist endpoint takes one date per call — fire sequentially
+              // for multi-day so we surface the first failure as the error.
+              const dates = isSelectedMultiDay
+                ? (selectedDays.length ? selectedDays : [undefined])
+                : [undefined];
+              for (const day of dates) {
+                const res = await fetch(`${WS_URI}/events/waitlist/public`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    eventId:        selectedEvent.id,
+                    organisationId: org.id,
+                    customerName:   name,
+                    customerEmail:  email,
+                    customerPhone:  phone,
+                    customerNote:   note,
+                    bookingDate:    day,
+                  }),
+                });
+                if (!res.ok) {
+                  setError(await friendlyError(res));
+                  return;
+                }
+              }
+              const firstDate = isSelectedMultiDay ? selectedDays[0] : selectedEvent.start_date;
+              const dateObj = firstDate ? new Date(firstDate + "T00:00:00Z") : null;
+              onDone({ type: "event-waitlist", name, event: selectedEvent.title, date: dateObj, time: selectedEvent.start_time });
+              return;
+            }
             const res = await fetch(`${WS_URI}/events/bookings/public`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -1460,16 +1577,32 @@
                 customerName:   name,
                 customerEmail:  email,
                 customerPhone:  phone,
+                customerNote:   note,
+                bookingDates:   isSelectedMultiDay ? selectedDays : undefined,
+                // Same tier for every picked day in v1.
+                ticketTypeIds:  hasTicketTypes
+                  ? (isSelectedMultiDay ? selectedDays : [null]).map(() => pickedTicketType)
+                  : undefined,
               }),
             });
             if (!res.ok) {
               setError(await friendlyError(res));
               return;
             }
-            const dateObj = selectedEvent.start_date
-              ? new Date(selectedEvent.start_date + "T00:00:00Z")
-              : null;
-            onDone({ type: "event", name, event: selectedEvent.title, date: dateObj, time: selectedEvent.start_time });
+            const data = await res.json().catch(() => ({}));
+            const firstDate = isSelectedMultiDay ? selectedDays[0] : selectedEvent.start_date;
+            const dateObj = firstDate ? new Date(firstDate + "T00:00:00Z") : null;
+            onDone({
+              type: "event",
+              name,
+              event: selectedEvent.title,
+              date: dateObj,
+              time: selectedEvent.start_time,
+              // For multi-day events the backend returns one reference per
+              // day in `references`; we surface the first to keep the
+              // confirmation card succinct.
+              reference: data?.reference ?? data?.references?.[0],
+            });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -1479,7 +1612,11 @@
 
         const summary = selectedEvent
           ? selectedEvent.title +
-            (selectedEvent.start_date ? ` · ${selectedEvent.start_date}${selectedEvent.end_date ? ` – ${selectedEvent.end_date}` : ""}` : "") +
+            (isSelectedMultiDay && selectedDays.length > 0
+              ? ` · ${selectedDays.join(", ")}`
+              : selectedEvent.start_date
+              ? ` · ${selectedEvent.start_date}${selectedEvent.end_date ? ` – ${selectedEvent.end_date}` : ""}`
+              : "") +
             (selectedEvent.start_time ? ` · ${selectedEvent.start_time}` : "")
           : "";
 
@@ -1499,12 +1636,29 @@
           <div>
             <button className="back-btn" onClick={onBack}><IconArrowLeft /> Back</button>
             {events.map(evt => {
-              const spotsLeft = evt.capacity != null ? evt.capacity - evt.booking_count : null;
-              const isFull = spotsLeft != null && spotsLeft <= 0;
+              const isMultiDay = !!(evt.end_date && evt.end_date > evt.start_date);
+              const pickedDays = eventDays[evt.id] ?? [];
+              const isFull = !isMultiDay && evt.capacity != null && evt.booking_count >= evt.capacity;
               const dateLabel = evt.end_date
                 ? `${evt.start_date} – ${evt.end_date}`
                 : evt.start_date ?? "";
               const timeLabel = [evt.start_time, evt.end_time].filter(Boolean).join("–");
+              const days = isMultiDay ? enumDates(evt.start_date, evt.end_date) : [];
+              // Multi-day: count picked days that are at capacity; when
+              // they're all full the Select button flips to "Join waitlist".
+              const pickedFullCount = isMultiDay
+                ? pickedDays.filter(d => {
+                    const c = evt.bookings_by_date?.[d] ?? 0;
+                    return evt.capacity != null && c >= evt.capacity;
+                  }).length
+                : 0;
+              const allPickedFull =
+                isMultiDay && pickedDays.length > 0 && pickedFullCount === pickedDays.length;
+              const cardWaitlistMode = isFull || allPickedFull;
+              const hasTypes = (evt.ticket_types?.length ?? 0) > 0;
+              const hasTypePicked = !hasTypes || !!eventTicketType[evt.id];
+              const canSelect =
+                (!isMultiDay || pickedDays.length > 0) && hasTypePicked;
               return (
                 <div key={evt.id} className="card" style={{ marginBottom: 10 }}>
                   <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{evt.title}</div>
@@ -1516,22 +1670,114 @@
                       {[dateLabel, timeLabel].filter(Boolean).join(" · ")}
                     </div>
                   )}
-                  {evt.cost != null && (
+                  {(evt.ticket_types?.length ?? 0) > 0 && (
+                    <div style={{ marginTop: 6, marginBottom: 8 }}>
+                      <div style={{ fontSize: 12, color: "var(--text-2)", marginBottom: 4 }}>
+                        Ticket type
+                      </div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                        {(evt.ticket_types ?? []).map(t => {
+                          const isSelected = eventTicketType[evt.id] === t.id;
+                          const sold = (evt.ticket_bookings ?? [])
+                            .filter(tb => tb.ticket_type_id === t.id)
+                            .reduce((a, tb) => a + tb.count, 0);
+                          const typeFull = t.capacity != null && sold >= t.capacity;
+                          return (
+                            <button
+                              key={t.id}
+                              type="button"
+                              onClick={() =>
+                                setEventTicketType(prev => ({ ...prev, [evt.id]: t.id }))
+                              }
+                              style={{
+                                padding: "4px 10px",
+                                borderRadius: 6,
+                                border: `1px solid ${isSelected ? "var(--accent)" : "var(--border)"}`,
+                                background: isSelected ? "var(--accent-bg)" : "var(--surface)",
+                                color: isSelected ? "var(--accent)" : "var(--text)",
+                                cursor: "pointer",
+                                fontSize: 13,
+                                textAlign: "left",
+                                lineHeight: 1.2,
+                              }}>
+                              <div>{t.title}{t.cost != null ? ` · £${Number(t.cost).toFixed(2)}` : ""}</div>
+                              {typeFull && (
+                                <div style={{ fontSize: 10, color: "var(--error)" }}>Sold out</div>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {isMultiDay && (
+                    <div style={{ marginTop: 6, marginBottom: 8 }}>
+                      <div style={{ fontSize: 12, color: "var(--text-2)", marginBottom: 4 }}>
+                        Pick days
+                      </div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                        {days.map(iso => {
+                          const chip = fmtDayChip(iso);
+                          const isSelected = pickedDays.includes(iso);
+                          const dayBooked = evt.bookings_by_date?.[iso] ?? 0;
+                          const dayFull = evt.capacity != null && dayBooked >= evt.capacity;
+                          return (
+                            <button
+                              key={iso}
+                              type="button"
+                              onClick={() => toggleDay(evt.id, iso)}
+                              style={{
+                                minWidth: 48,
+                                padding: "4px 10px",
+                                borderRadius: 6,
+                                border: `1px solid ${isSelected ? "var(--accent)" : "var(--border)"}`,
+                                background: isSelected ? "var(--accent-bg)" : "var(--surface)",
+                                color: isSelected ? "var(--accent)" : "var(--text)",
+                                cursor: "pointer",
+                                fontSize: 13,
+                                textAlign: "center",
+                                lineHeight: 1.2,
+                              }}>
+                              <div style={{ fontSize: 11, color: "var(--text-2)" }}>{chip.dow}</div>
+                              <div style={{ fontWeight: 600 }}>{chip.day}</div>
+                              {dayFull && (
+                                <div style={{ fontSize: 10, color: "var(--error)" }}>Full</div>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {evt.cost != null && (evt.ticket_types?.length ?? 0) === 0 && (
                     <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
                       £{Number(evt.cost).toFixed(2)}
                     </div>
                   )}
-                  {spotsLeft != null && (
+                  {!isMultiDay && evt.capacity != null && (
                     <div style={{ fontSize: 12, color: isFull ? "var(--error)" : "var(--text-2)", marginBottom: 8 }}>
-                      {isFull ? "Fully booked" : `${spotsLeft} place${spotsLeft !== 1 ? "s" : ""} remaining`}
+                      {isFull
+                        ? "Fully booked"
+                        : `${evt.capacity - evt.booking_count} place${evt.capacity - evt.booking_count !== 1 ? "s" : ""} remaining`}
                     </div>
                   )}
                   <button
                     className="btn btn-primary"
-                    disabled={isFull}
-                    style={{ opacity: isFull ? 0.4 : 1, cursor: isFull ? "default" : "pointer" }}
-                    onClick={() => !isFull && handleSelectEvent(evt)}>
-                    {isFull ? "Fully booked" : "Select"}
+                    disabled={!canSelect}
+                    style={{ opacity: !canSelect ? 0.4 : 1, cursor: !canSelect ? "default" : "pointer" }}
+                    onClick={() =>
+                      canSelect &&
+                      handleSelectEvent(evt, cardWaitlistMode ? "waitlist" : "book")
+                    }>
+                    {isMultiDay && pickedDays.length === 0
+                      ? "Pick a day"
+                      : cardWaitlistMode
+                      ? isMultiDay && pickedDays.length > 1
+                        ? `Join waitlist (${pickedDays.length} days)`
+                        : "Join waitlist"
+                      : isMultiDay && pickedDays.length > 1
+                      ? `Select (${pickedDays.length} days)`
+                      : "Select"}
                   </button>
                 </div>
               );
@@ -1546,39 +1792,47 @@
       const ClassBooking = ({ org, classes, onBack, onDone }) => {
         const [selectedClass, setSelectedClass] = useState(null);
         const [selectedDate,  setSelectedDate]  = useState(null);
-        const [step,          setStep]          = useState("list"); // 'list' | 'date' | 'contact'
+        const [classDay,      setClassDay]      = useState({}); // { [classId]: occurrenceDate }
+        const [step,          setStep]          = useState("list"); // 'list' | 'contact'
         const [loading,       setLoading]       = useState(false);
         const [error,         setError]         = useState("");
-        const [count,         setCount]         = useState(14);
 
-        // Safety cap scales with `count` so "Show more" can extend the horizon
-        // past the initial 90 days without unbounded iteration.
-        const getClassOccurrences = (cls, count = 14) => {
-          const today = utcMidnight(new Date());
-          const endLimit = cls.end_date ? new Date(cls.end_date + "T00:00:00Z") : null;
-          const horizonDays = Math.max(90, count * 7 + 7);
-          const result = [];
-          let d = today;
-          while (result.length < count) {
-            if (d.getUTCDay() === cls.weekday) {
-              if (!endLimit || d <= endLimit) result.push(d);
-              else break;
+        const fmtChip = (iso) => {
+          const dt = new Date(iso + "T00:00:00Z");
+          const dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dt.getUTCDay()];
+          return { dow, day: dt.getUTCDate() };
+        };
+
+        // Next 8 dates on or after today that fall on one of the class's
+        // weekdays, inside the class window, and aren't cancelled.
+        const upcomingDates = (cls, limit = 8) => {
+          const weekdays = Array.isArray(cls?.weekdays) ? cls.weekdays : [];
+          if (weekdays.length === 0) return [];
+          const today = new Date();
+          const todayMs = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+          const startMs = cls.start_date ? new Date(cls.start_date + "T00:00:00Z").getTime() : 0;
+          const fromMs = Math.max(todayMs, startMs);
+          const toMs = cls.end_date ? new Date(cls.end_date + "T00:00:00Z").getTime() : Infinity;
+          const skip = new Set(cls.cancellations ?? []);
+          const out = [];
+          const cursor = new Date(fromMs);
+          while (out.length < limit && cursor.getTime() <= toMs) {
+            if (weekdays.includes(cursor.getUTCDay())) {
+              const iso = cursor.toISOString().slice(0, 10);
+              if (!skip.has(iso)) out.push(iso);
             }
-            d = new Date(d.getTime() + 86400000);
-            if (d.getTime() - today.getTime() > horizonDays * 86400000) break;
+            cursor.setUTCDate(cursor.getUTCDate() + 1);
           }
-          return result;
+          return out;
         };
 
-        const handleSelectClass = (cls) => {
+        const handleSelectClass = (cls, occurrenceDate) => {
           setSelectedClass(cls);
-          setCount(14);
-          const occurrences = getClassOccurrences(cls, 14);
-          setSelectedDate(occurrences[0] ?? null);
-          setStep("date");
+          setSelectedDate(occurrenceDate);
+          setStep("contact");
         };
 
-        const handleSubmit = async ({ name, email, phone }) => {
+        const handleSubmit = async ({ name, email, phone, note }) => {
           setLoading(true);
           setError("");
           try {
@@ -1588,17 +1842,24 @@
               body: JSON.stringify({
                 classId:        selectedClass.id,
                 organisationId: org.id,
-                occurrenceDate: fmtIso(selectedDate),
+                occurrenceDate: selectedDate,
                 customerName:   name,
                 customerEmail:  email,
                 customerPhone:  phone,
+                customerNote:   note,
               }),
             });
             if (!res.ok) {
               setError(await friendlyError(res));
               return;
             }
-            onDone({ type: "class", name, cls: selectedClass.title, date: selectedDate, time: selectedClass.start_time });
+            const data = await res.json().catch(() => ({}));
+            const timeLabel = [selectedClass.start_time, selectedClass.end_time].filter(Boolean).join("–");
+            const dateLabel = selectedDate
+              ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })
+              : "";
+            const schedule = [dateLabel, timeLabel].filter(Boolean).join(" · ");
+            onDone({ type: "class", name, cls: selectedClass.title, schedule, reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -1606,16 +1867,21 @@
           }
         };
 
-        const summary = selectedClass && selectedDate
-          ? `${selectedClass.title} · ${fmtDow(selectedDate)} ${selectedDate.getUTCDate()} ${MONTH_NAMES[selectedDate.getUTCMonth()].slice(0,3)}`
-            + (selectedClass.start_time ? ` · ${selectedClass.start_time}` : "")
+        const summary = selectedClass
+          ? (() => {
+              const timeLabel = [selectedClass.start_time, selectedClass.end_time].filter(Boolean).join("–");
+              const dateLabel = selectedDate
+                ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })
+                : "";
+              return `${selectedClass.title}${dateLabel ? ` · ${dateLabel}` : ""}${timeLabel ? ` · ${timeLabel}` : ""}`;
+            })()
           : "";
 
         if (step === "contact") {
           return (
             <ContactForm
               summary={summary}
-              onBack={() => setStep("date")}
+              onBack={() => setStep("list")}
               onSubmit={handleSubmit}
               loading={loading}
               error={error}
@@ -1623,69 +1889,24 @@
           );
         }
 
-        if (step === "date" && selectedClass) {
-          const occurrences = getClassOccurrences(selectedClass, count);
-          const canLoadMore = occurrences.length === count;
-          return (
-            <div>
-              <button className="back-btn" onClick={() => setStep("list")}><IconArrowLeft /> Back</button>
-              <div style={{ marginBottom: 12, padding: "10px 14px",
-                background: "var(--accent-bg)", borderRadius: "var(--r-sm)",
-                border: "1px solid var(--accent-mid)", fontSize: 13, fontWeight: 600 }}>
-                {selectedClass.title}
-                {selectedClass.start_time && (
-                  <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>
-                    {selectedClass.start_time}{selectedClass.end_time ? `–${selectedClass.end_time}` : ""}
-                  </span>
-                )}
-              </div>
-              <div className="card">
-                <p className="section-label">Choose a session date</p>
-                {occurrences.length > 0 ? (
-                  <div className="date-strip-wrap">
-                    <div className="date-strip">
-                      {occurrences.map((d, i) => {
-                        const sel = selectedDate && utcIsSameDay(d, selectedDate);
-                        return (
-                          <div key={i}
-                            className={`date-chip${sel ? " selected" : ""}`}
-                            onClick={() => setSelectedDate(d)}>
-                            <div className="date-chip-day">{fmtDow(d)}</div>
-                            <div className="date-chip-num">{d.getUTCDate()}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  <p style={{ color: "var(--text-3)", fontSize: 14 }}>No upcoming sessions available.</p>
-                )}
-                {canLoadMore && (
-                  <button type="button"
-                    onClick={() => setCount(count + 14)}
-                    style={{ marginTop: 10, background: "none", border: 0,
-                      color: "var(--accent)", fontSize: 13, fontWeight: 600,
-                      cursor: "pointer", padding: 4 }}>
-                    Show more dates
-                  </button>
-                )}
-              </div>
-              <button className="btn btn-primary"
-                disabled={!selectedDate || occurrences.length === 0}
-                onClick={() => setStep("contact")}>
-                Continue
-              </button>
-            </div>
-          );
-        }
-
         return (
           <div>
             <button className="back-btn" onClick={onBack}><IconArrowLeft /> Back</button>
             {classes.map(cls => {
-              const spotsLeft = cls.capacity != null ? cls.capacity - (cls.booking_count ?? 0) : null;
-              const isFull = spotsLeft != null && spotsLeft <= 0;
+              const occurrences = upcomingDates(cls);
+              const pickedDay = classDay[cls.id] ?? null;
+              const pickedBooked = pickedDay ? (cls.bookings_by_date?.[pickedDay] ?? 0) : 0;
+              const spotsLeft = cls.capacity != null && pickedDay
+                ? cls.capacity - pickedBooked
+                : null;
+              const isFull = spotsLeft != null && spotsLeft <= 0 && !!pickedDay;
               const timeLabel = [cls.start_time, cls.end_time].filter(Boolean).join("–");
+              const weekdayLabel = (cls.weekdays ?? [])
+                .slice()
+                .sort((a, b) => a - b)
+                .map(w => WEEKDAY_FULL[w])
+                .filter(Boolean)
+                .join(", ");
               return (
                 <div key={cls.id} className="card" style={{ marginBottom: 10 }}>
                   <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{cls.title}</div>
@@ -1693,24 +1914,63 @@
                     <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 6 }}>{cls.description}</div>
                   )}
                   <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
-                    Every {WEEKDAY_FULL[cls.weekday]}{timeLabel ? ` · ${timeLabel}` : ""}
+                    Every {weekdayLabel}{timeLabel ? ` · ${timeLabel}` : ""}
                   </div>
                   {cls.cost != null && (
                     <div style={{ fontSize: 13, color: "var(--text-2)", marginBottom: 4 }}>
                       £{Number(cls.cost).toFixed(2)}
                     </div>
                   )}
-                  {spotsLeft != null && (
+                  {occurrences.length === 0 ? (
+                    <div style={{ fontSize: 12, color: "var(--text-2)", marginBottom: 8 }}>
+                      No upcoming dates
+                    </div>
+                  ) : (
+                    <div style={{ marginTop: 6, marginBottom: 8 }}>
+                      <div style={{ fontSize: 12, color: "var(--text-2)", marginBottom: 4 }}>Pick a date</div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                        {occurrences.map(iso => {
+                          const chip = fmtChip(iso);
+                          const isSelected = pickedDay === iso;
+                          const dayBooked = cls.bookings_by_date?.[iso] ?? 0;
+                          const dayFull = cls.capacity != null && dayBooked >= cls.capacity;
+                          return (
+                            <button
+                              key={iso}
+                              disabled={dayFull}
+                              onClick={() => setClassDay(prev => ({ ...prev, [cls.id]: iso }))}
+                              style={{
+                                minWidth: 48,
+                                padding: "6px 10px",
+                                borderRadius: 6,
+                                border: `1px solid ${isSelected ? "var(--secondary)" : "var(--border)"}`,
+                                background: isSelected ? "var(--secondary)" : "var(--surface)",
+                                color: isSelected ? "var(--on-secondary)" : "var(--text)",
+                                opacity: dayFull ? 0.4 : 1,
+                                cursor: dayFull ? "default" : "pointer",
+                                fontSize: 12,
+                              }}>
+                              {chip.dow} {chip.day}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {pickedDay && spotsLeft != null && (
                     <div style={{ fontSize: 12, color: isFull ? "var(--error)" : "var(--text-2)", marginBottom: 8 }}>
                       {isFull ? "Fully booked" : `${spotsLeft} place${spotsLeft !== 1 ? "s" : ""} remaining`}
                     </div>
                   )}
                   <button
                     className="btn btn-primary"
-                    disabled={isFull}
-                    style={{ opacity: isFull ? 0.4 : 1, cursor: isFull ? "default" : "pointer" }}
-                    onClick={() => !isFull && handleSelectClass(cls)}>
-                    {isFull ? "Fully booked" : "Select"}
+                    disabled={isFull || !pickedDay || occurrences.length === 0}
+                    style={{
+                      opacity: (isFull || !pickedDay) ? 0.4 : 1,
+                      cursor:  (isFull || !pickedDay) ? "default" : "pointer",
+                    }}
+                    onClick={() => !isFull && pickedDay && handleSelectClass(cls, pickedDay)}>
+                    {isFull ? "Fully booked" : pickedDay ? "Select" : "Pick a date"}
                   </button>
                 </div>
               );
@@ -1723,11 +1983,49 @@
       const Confirmation = ({ booking, orgName, onReset }) => (
         <div className="card" style={{ padding: "32px 24px", textAlign: "center" }}>
           <div className="confirm-icon"><IconCheck /></div>
-          <div className="confirm-title">Booking requested</div>
-          <div className="confirm-sub">
-            Thanks, {booking.name}. {orgName} has received your request and will
-            be in touch to confirm.
+          <div className="confirm-title">
+            {booking.type === "event-waitlist" ? "Added to waitlist" : "Booking requested"}
           </div>
+          <div className="confirm-sub">
+            {booking.type === "event-waitlist"
+              ? `Thanks, ${booking.name}. ${orgName} will be in touch if a place opens up.`
+              : `Thanks, ${booking.name}. ${orgName} has received your request and will be in touch to confirm.`}
+          </div>
+          {/* Booking reference — auto-generated server-side, the customer
+              uses this to identify their booking when chasing the provider
+              or finding it in the At9 app. Surfaced prominently so it's
+              easy to screenshot. Hidden for waitlist (no booking yet). */}
+          {booking.reference && booking.type !== "event-waitlist" && (
+            <div style={{
+              display: "inline-block",
+              padding: "10px 16px",
+              marginBottom: 20,
+              borderRadius: "var(--r-sm)",
+              background: "var(--accent-bg)",
+              border: "1px solid var(--accent-mid)",
+              textAlign: "left",
+            }}>
+              <div style={{
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                color: "var(--text-2)",
+                marginBottom: 2,
+              }}>
+                Booking reference
+              </div>
+              <div style={{
+                fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                fontSize: 18,
+                fontWeight: 600,
+                color: "var(--accent)",
+                letterSpacing: "0.04em",
+              }}>
+                {booking.reference}
+              </div>
+            </div>
+          )}
           <div style={{ marginBottom: 24, background: "var(--accent-bg)", borderRadius: "var(--r-md)",
             padding: "16px 18px", textAlign: "left", border: "1px solid var(--accent-mid)" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", marginBottom: 6 }}>
@@ -1775,7 +2073,7 @@
                 <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)} · {booking.time}</div>
               </>
             )}
-            {booking.type === "event" && (
+            {(booking.type === "event" || booking.type === "event-waitlist") && (
               <>
                 <div>{booking.event}</div>
                 {booking.date && <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)}{booking.time ? ` · ${booking.time}` : ""}</div>}
@@ -1784,7 +2082,7 @@
             {booking.type === "class" && (
               <>
                 <div>{booking.cls}</div>
-                {booking.date && <div>{fmtDow(booking.date)} {booking.date.getUTCDate()} {MONTH_NAMES[booking.date.getUTCMonth()].slice(0,3)}{booking.time ? ` · ${booking.time}` : ""}</div>}
+                {booking.schedule && <div>{booking.schedule}</div>}
               </>
             )}
           </div>
