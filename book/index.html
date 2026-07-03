@@ -848,7 +848,7 @@
             endDate:      fmtIso(checkOut),
             minOccupancy: guests,
           });
-          fetch(`${WS_URI}/entities/public/room-availability/${org.id}?${params}`)
+          fetch(`${WS_URI}/rooms/public/availability/${org.id}?${params}`)
             .then(r => r.ok ? r.json() : Promise.reject())
             .then(data => { if (!cancelled) setAvailability(Array.isArray(data) ? data.filter(e => !e.booked) : []); })
             .catch(() => { if (!cancelled) setAvailability([]); })
@@ -1088,7 +1088,7 @@
           setLoadingSlots(true);
           setSelectedTime(null);
           const dateStr = `${selectedDate.getUTCFullYear()}-${pad(selectedDate.getUTCMonth()+1)}-${pad(selectedDate.getUTCDate())}`;
-          fetch(`${WS_URI}/entities/public/table-availability/${org.id}?date=${dateStr}&guests=${guests}`)
+          fetch(`${WS_URI}/tables/public/availability/${org.id}?date=${dateStr}&guests=${guests}`)
             .then(r => r.ok ? r.json() : Promise.reject())
             .then(data => {
               if (!cancelled) {
