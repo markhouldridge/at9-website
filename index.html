@@ -6,10 +6,10 @@
     <title>Booking Management App for Small Businesses | At9</title>
     <meta
       name="description"
-      content="Manage room, table, appointment, class and event bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Start with a 30-day free trial, then Solo (£9.99) or Team (£29.99). Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#907CFF" />
+    <meta name="theme-color" content="#554aca" />
     <link rel="canonical" href="https://www.at9.app" />
     <link rel="sitemap" type="application/xml" href="https://www.at9.app/sitemap.xml" />
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
@@ -34,7 +34,7 @@
     />
     <meta
       property="og:description"
-      content="Manage room, table, appointment, class and event bookings from your phone. Free 30-day trial, no card required. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Start with a 30-day free trial, then Solo (£9.99) or Team (£29.99). Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <link
       rel="preload"
@@ -62,7 +62,7 @@
             {
               "@type": "Offer",
               "name": "Solo",
-              "price": "19.99",
+              "price": "9.99",
               "priceCurrency": "GBP",
               "priceSpecification": {
                 "@type": "UnitPriceSpecification",
@@ -74,7 +74,7 @@
             {
               "@type": "Offer",
               "name": "Team",
-              "price": "39.99",
+              "price": "29.99",
               "priceCurrency": "GBP",
               "priceSpecification": {
                 "@type": "UnitPriceSpecification",
@@ -87,6 +87,16 @@
         }
       ]
     }
+    </script>
+    <script>
+      // Enable the highlighter draw-in before first paint (avoids a flash of
+      // fully-inked markers). Honours reduced motion / no IntersectionObserver.
+      if (
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+        "IntersectionObserver" in window
+      ) {
+        document.documentElement.classList.add("ink-animate");
+      }
     </script>
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
@@ -103,43 +113,47 @@
     <style>
       /* -----------------------------------------------------------
    At9 — landing page
-   Brand palette (from app):
-     primary       #907CFF
-     primaryLight  #B5A6FF
-     primaryDark   #705AC2
-     secondary     #F0A9FF   (pink)
-     accentGreen   #A2F9B0
-     accentYellow  #FADAA4
+   Duotone brand palette:
+     primary    #554aca   (brand — bold elements, dark grounds)
+     accent     #a3f6c0   (mint — the spark, on dark grounds / highlight fill)
+     accents    #7860d8 / #40b3f6 / #18a390 (feature highlights)
+   Everything else is cool neutral (white / ink / faint primary tint).
    ----------------------------------------------------------- */
 
       :root {
-        /* Warm, flatter palette — service-industry friendly, less gradient-heavy */
-        --bg: #fbfaf6; /* warm off-white page background */
-        --bg-soft: #f5f1e9; /* cream — full-bleed section bg */
-        --bg-lavender: #efeafb; /* soft purple — full-bleed section bg */
-        --bg-mint: #e9f3ec; /* soft green — full-bleed section bg */
-        --bg-mute: #f1ede3; /* tag/chip background */
+        /* Brand palette — primary #554aca + mint #a3f6c0, on cool neutrals.
+           Bold elements use primary and mint; everything else is white/ink/tint.
+           Extended accents (#7860d8 / #40b3f6 / #18a390) for feature highlights. */
+        --bg: #fafbff; /* cool near-white page background */
+        --bg-soft: #edebfa; /* faint primary tint — full-bleed section bg */
+        --bg-lavender: #edebfa; /* same faint primary tint (unified) */
+        --bg-mint: #eefbf3; /* faint mint tint — secondary section bg */
+        --bg-mute: #e5e2f7; /* tag/chip background — faint primary tint */
 
         --ink: #1a1825;
-        --ink-2: #4a4658;
-        --ink-3: #7c7889;
-        --line: #ece7dd;
-        --line-2: #ddd6cb;
+        --ink-2: #4a4864;
+        --ink-3: #7b788f;
+        --line: #e7e4f3;
+        --line-2: #d8d4ea;
 
-        --primary: #907cff;
-        --primary-light: #b5a6ff;
-        --primary-dark: #705ac2;
-        --secondary: #f0a9ff;
-        --green: #a2f9b0;
-        --yellow: #fadaa4;
+        --primary: #554aca; /* brand */
+        --primary-light: #ada5f2;
+        --primary-dark: #352e7d;
+        --secondary: #a3f6c0; /* mint accent — on dark grounds / as a highlight fill */
+        --green: #a3f6c0; /* legacy alias → mint (pricing check) */
+        --yellow: #a3f6c0; /* legacy alias → mint */
+
+        /* Extended brand accents — feature icons, highlights, chart series */
+        --brand-violet: #7860d8;
+        --brand-blue: #40b3f6;
+        --brand-teal: #18a390;
 
         /* Kept for footer/founder sign-off avatar only */
         --grad: linear-gradient(
           120deg,
-          #907cff 0%,
-          #b07cff 35%,
-          #f0a9ff 65%,
-          #a2f9b0 100%
+          #554aca 0%,
+          #7860d8 40%,
+          #a3f6c0 100%
         );
 
         --radius: 18px;
@@ -283,27 +297,8 @@
         opacity: 0;
         transform: translateY(-4px);
       }
-      /* Per-industry palette — soft pastel background + readable matching text */
-      .eyebrow-cycle[data-type="restaurants"] {
-        background: #fbe3cd;
-        color: #874810;
-      }
-      .eyebrow-cycle[data-type="pubs"] {
-        background: #fbf0d0;
-        color: #7a5812;
-      }
-      .eyebrow-cycle[data-type="hotels"] {
-        background: #dde4ef;
-        color: #2a3f6a;
-      }
-      .eyebrow-cycle[data-type="catteries"] {
-        background: #fbddeb;
-        color: #8e2f60;
-      }
-      .eyebrow-cycle[data-type="kennels"] {
-        background: #efe4d2;
-        color: #69472a;
-      }
+      /* Duotone: the word cycles, the chip colour does not — it inherits the
+         hero's translucent-white eyebrow treatment. */
 
       .gradient-text {
         background: var(--grad);
@@ -312,43 +307,44 @@
         color: transparent;
       }
 
-      /* Hand-drawn squiggle under highlighted hero words */
+      /* Highlighter effect — a mint marker band sits low over the words (like a
+         real highlighter pen) and "draws in" left→right when it scrolls into
+         view. Because it covers only the lower portion, the word stays legible
+         on both the light sections and the dark hero (text keeps its own colour).
+         `--ink-h` is the band height per context; the width is what animates. */
       .squiggle-wrap {
-        position: relative;
-        display: inline-block;
-        white-space: nowrap;
+        --ink-h: 46%;
+        background-image: linear-gradient(
+          120deg,
+          rgba(163, 246, 192, 0.88) 0%,
+          rgba(163, 246, 192, 1) 100%
+        );
+        background-repeat: no-repeat;
+        background-size: 100% var(--ink-h);
+        background-position: 0 86%;
+        padding: 0 0.08em;
+        border-radius: 0.14em;
+        transition: background-size 0.75s cubic-bezier(0.65, 0, 0.35, 1);
       }
-      .squiggle-wrap .squiggle {
-        position: absolute;
-        left: -2%;
-        right: -2%;
-        bottom: -0.18em;
-        width: 104%;
-        height: 0.34em;
-        pointer-events: none;
-        color: var(--primary);
-        overflow: visible;
+      /* Dark hero: no marker — the highlighted word is simply mint text, which
+         reads cleanly on the primary ground (the signature accent-on-primary). */
+      .hero .squiggle-wrap {
+        background-image: none;
+        color: var(--secondary);
+        padding: 0;
       }
-      .squiggle-wrap .squiggle path {
-        stroke: currentColor;
-        stroke-width: 4;
-        stroke-linecap: round;
-        fill: none;
-        /* Subtle draw-on animation, runs once on load */
-        stroke-dasharray: 600;
-        stroke-dashoffset: 600;
-        animation: squiggle-draw 1.1s ease-out 0.3s forwards;
+      /* JS adds `.ink-animate` to start the markers empty; the observer then adds
+         `.is-inked` as each scrolls in. Without JS / reduced motion they stay
+         shown (full width) — progressive enhancement. */
+      .ink-animate .squiggle-wrap {
+        background-size: 0% var(--ink-h);
       }
-      @keyframes squiggle-draw {
-        to {
-          stroke-dashoffset: 0;
-        }
+      .squiggle-wrap.is-inked {
+        background-size: 100% var(--ink-h);
       }
       @media (prefers-reduced-motion: reduce) {
-        .squiggle-wrap .squiggle path {
-          stroke-dasharray: none;
-          stroke-dashoffset: 0;
-          animation: none;
+        .squiggle-wrap {
+          transition: none;
         }
       }
 
@@ -411,6 +407,11 @@
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
       }
+      /* On the primary hero / CTA grounds, delineate the dark badges. */
+      .hero .store-badge,
+      .cta-banner .store-badge {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
       .store-badge svg {
         flex: none;
       }
@@ -438,7 +439,7 @@
         right: 0;
         height: 760px;
         z-index: -1;
-        background: linear-gradient(180deg, #f4ecdd 0%, var(--bg) 100%);
+        background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
         pointer-events: none;
       }
 
@@ -447,14 +448,17 @@
         position: sticky;
         top: 0;
         z-index: 50;
-        background: transparent;
+        background: var(--primary);
       }
-      /* When the user scrolls, give the nav a soft frosted backdrop so links stay legible */
+      /* Solid primary bar throughout; scrolling just adds depth. */
       .nav.is-scrolled {
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: saturate(180%) blur(14px);
-        -webkit-backdrop-filter: saturate(180%) blur(14px);
-        border-bottom: 1px solid var(--line);
+        background: var(--primary);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 6px 24px rgba(22, 23, 46, 0.28);
+      }
+      /* White wordmark on the primary bar */
+      .nav .wordmark img {
+        filter: brightness(0) invert(1);
       }
       .nav-row {
         display: flex;
@@ -470,11 +474,19 @@
       .nav-links a {
         font-weight: 500;
         font-size: 15px;
-        color: var(--ink-2);
+        color: rgba(255, 255, 255, 0.82);
         transition: color 0.15s ease;
       }
       .nav-links a:hover {
-        color: var(--ink);
+        color: #fff;
+      }
+      /* White CTA button on the primary bar */
+      .nav .btn-primary {
+        background: #fff;
+        color: var(--primary);
+      }
+      .nav .btn-primary:hover {
+        background: rgba(255, 255, 255, 0.88);
       }
       .nav-cta {
         display: flex;
@@ -507,6 +519,36 @@
         position: relative;
         padding-top: 40px;
         padding-bottom: 80px;
+        isolation: isolate;
+        /* Simple brand hero: a subtle top-to-bottom primary gradient —
+           primary #554aca easing to a slightly darker #473da8. White copy holds
+           ≥ 6.5:1 throughout. A fine grain overlay (::before) keeps it matte. */
+        background: linear-gradient(180deg, #554aca 0%, #473da8 100%);
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.06;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      .hero > .container {
+        position: relative;
+        z-index: 1;
+      }
+      /* Hero sits on the primary ground — text goes white/light. */
+      .hero h1 {
+        color: #fff;
+      }
+      .hero p.lead {
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .hero .eyebrow {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
       }
       .hero-grid {
         display: grid;
@@ -533,7 +575,7 @@
       .hero .meta {
         margin-top: 20px;
         font-size: 14px;
-        color: var(--ink-3);
+        color: rgba(255, 255, 255, 0.68);
         display: flex;
         align-items: center;
         gap: 14px;
@@ -546,62 +588,70 @@
         background: var(--ink-3);
         display: inline-block;
       }
+      .hero .meta .dot {
+        background: rgba(255, 255, 255, 0.5);
+      }
 
-      /* Hero visual — two phone frames with soft glow + decorative accents */
-      .hero-phones-wrap {
+      /* Hero visual — a single landscape tablet showing the Schedule view */
+      .hero-tablet-wrap {
         position: relative;
         width: 100%;
-        max-width: 560px;
-        margin: 0 auto;
-        height: 560px;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: visible;
+        perspective: 1800px;
       }
-      .hero-phones-bg {
+      /* soft brand-tinted glow so the device lifts off the primary ground */
+      .hero-tablet-glow {
         position: absolute;
-        width: 460px;
+        width: 560px;
         height: 460px;
-        background: radial-gradient(
-          ellipse at 50% 50%,
-          #e8e0ff 0%,
-          transparent 68%
-        );
-        border-radius: 50%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          rgba(230, 224, 255, 0.42) 0%,
+          rgba(120, 96, 216, 0.14) 46%,
+          transparent 72%
+        );
         pointer-events: none;
       }
-      .hero-phone {
-        position: absolute;
-        background: #1a1825;
-        padding: 8px;
-        border-radius: 44px;
+      .hero-tablet {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        background: #14121c; /* dark bezel */
+        padding: 11px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow:
-          0 32px 64px -16px rgba(0, 0, 0, 0.42),
-          0 12px 24px -8px rgba(0, 0, 0, 0.24);
+          0 44px 88px -26px rgba(0, 0, 0, 0.55),
+          0 18px 36px -14px rgba(0, 0, 0, 0.32);
+        /* gentle depth — subtle enough to keep the schedule readable */
+        transform: rotateY(-8deg) rotateX(2deg) rotate(-1.2deg);
+        transform-style: preserve-3d;
       }
-      .hero-phone img {
+      .hero-tablet img {
         display: block;
-        border-radius: 37px;
-        width: 240px;
+        width: 100%;
         height: auto;
+        border-radius: 14px;
+        /* faint rim so a dark screenshot separates from the bezel */
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
       }
-      .hero-phone--left {
-        transform: rotate(-8deg) translate(-84px, -22px);
-        z-index: 1;
-      }
-      .hero-phone--right {
-        transform: rotate(6deg) translate(84px, 28px);
-        z-index: 2;
-      }
-      .hero-deco {
+      /* front camera dot on the (landscape) left bezel edge */
+      .hero-tablet::before {
+        content: "";
         position: absolute;
-        pointer-events: none;
-        color: var(--primary-dark);
-        z-index: 3;
+        top: 50%;
+        left: 5px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        transform: translateY(-50%);
       }
 
       /* "Designed for Tablet & Mobile" badge in hero */
@@ -622,32 +672,224 @@
       }
 
       @media (max-width: 960px) {
-        .hero-phones-wrap {
-          height: 460px;
-          max-width: 460px;
+        .hero-tablet {
+          max-width: 620px;
+          /* drop the 3D tilt once the tablet is centred under the copy */
+          transform: rotate(-1deg);
         }
-        .hero-phone img {
-          width: 190px;
-        }
-        .hero-phone--left {
-          transform: rotate(-6deg) translate(-66px, -16px);
-        }
-        .hero-phone--right {
-          transform: rotate(5deg) translate(66px, 22px);
+        .hero-tablet-glow {
+          width: 520px;
+          height: 420px;
         }
       }
       @media (max-width: 520px) {
-        .hero-phones-wrap {
-          height: 360px;
+        .hero-tablet {
+          border-radius: 18px;
+          padding: 8px;
         }
-        .hero-phone img {
-          width: 148px;
+        .hero-tablet img {
+          border-radius: 11px;
         }
-        .hero-phone--left {
-          transform: rotate(-5deg) translate(-52px, -12px);
+      }
+
+      /* ===== Centered hero ===== */
+      .hero-centered {
+        display: block;
+        text-align: center;
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      .hero-centered .hero-copy {
+        max-width: 860px;
+        margin: 0 auto;
+      }
+      .hero-centered h1 {
+        margin-left: auto;
+        margin-right: auto;
+        /* a little larger + wider than the default hero heading */
+        font-size: clamp(46px, 7.2vw, 86px);
+        line-height: 1.04;
+      }
+      .hero-centered p.lead {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 800px;
+      }
+      /* Trust items as semi-transparent pills */
+      .meta-pills {
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .meta-pills span {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 6px 14px;
+        border-radius: 999px;
+      }
+      .hero-centered .meta {
+        justify-content: center;
+        margin-top: 24px;
+      }
+      /* Decorative scattered business-type tags around the hero content */
+      .hero {
+        position: relative;
+        overflow: hidden;
+      }
+      .hero .container {
+        position: relative;
+        z-index: 2;
+      }
+      .hero-tags {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .hero-tags span {
+        position: absolute;
+        font-family: "Caveat", cursive;
+        font-weight: 600;
+        font-size: 30px;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.16);
+        white-space: nowrap;
+        user-select: none;
+      }
+      .hero-tags .t1 {
+        top: 16%;
+        left: 7%;
+        transform: rotate(-8deg);
+      }
+      .hero-tags .t2 {
+        top: 40%;
+        left: 3%;
+        font-size: 26px;
+        transform: rotate(6deg);
+      }
+      .hero-tags .t3 {
+        top: 63%;
+        left: 9%;
+        font-size: 28px;
+        transform: rotate(-5deg);
+      }
+      .hero-tags .t4 {
+        top: 83%;
+        left: 5%;
+        font-size: 25px;
+        transform: rotate(8deg);
+      }
+      .hero-tags .t5 {
+        top: 17%;
+        right: 8%;
+        transform: rotate(7deg);
+      }
+      .hero-tags .t6 {
+        top: 41%;
+        right: 4%;
+        font-size: 26px;
+        transform: rotate(-6deg);
+      }
+      .hero-tags .t7 {
+        top: 64%;
+        right: 10%;
+        font-size: 27px;
+        transform: rotate(5deg);
+      }
+      .hero-tags .t8 {
+        top: 84%;
+        right: 6%;
+        font-size: 25px;
+        transform: rotate(-9deg);
+      }
+      /* decorative only — hide once the gutters get tight */
+      @media (max-width: 1120px) {
+        .hero-tags {
+          display: none;
         }
-        .hero-phone--right {
-          transform: rotate(4deg) translate(52px, 16px);
+      }
+      /* centred store badges in the text-only hero */
+      .hero-ctas-centered {
+        justify-content: center;
+        margin-top: 26px;
+      }
+      /* 5-star social proof */
+      .hero-rating {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        margin-top: 22px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .hero-rating .stars {
+        display: inline-flex;
+        gap: 2px;
+        color: #f2b45a; /* warm amber rating (in-system amber, §2.7) */
+      }
+      .hero-rating .stars svg {
+        width: 17px;
+        height: 17px;
+        fill: currentColor;
+        stroke: currentColor;
+        stroke-width: 1;
+      }
+      /* The stage holds the tablet and the store badges overlaid near its base */
+      .hero-stage {
+        position: relative;
+        max-width: 780px;
+        margin: 44px auto 0;
+      }
+      .hero-stage .hero-tablet-wrap,
+      .hero-stage {
+        perspective: none;
+      }
+      /* flat, centred, fully visible — never cut off */
+      .hero-stage .hero-tablet {
+        transform: none;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .hero-stage .hero-tablet-glow {
+        width: 100%;
+        max-width: 760px;
+        height: 82%;
+      }
+      /* store badges float on a frosted panel over the lower part of the tablet */
+      .hero-stage-ctas {
+        position: absolute;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%);
+        margin: 0;
+        justify-content: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 22px;
+        background: rgba(18, 16, 26, 0.5);
+        backdrop-filter: blur(12px) saturate(1.2);
+        -webkit-backdrop-filter: blur(12px) saturate(1.2);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 18px 44px -14px rgba(0, 0, 0, 0.55);
+        z-index: 4;
+      }
+      @media (max-width: 560px) {
+        .hero-stage-ctas {
+          bottom: 12px;
+          padding: 8px;
+          gap: 8px;
+          flex-wrap: nowrap;
+        }
+        .hero-stage-ctas .store-badge {
+          min-width: 0;
+          padding: 8px 12px;
+        }
+        .hero-stage-ctas .store-badge .small {
+          display: none;
         }
       }
 
@@ -689,60 +931,6 @@
         border-color: var(--line-2);
       }
 
-      /* Per-card accent dot — keeps the row disciplined */
-      .bt-card.is-rooms { --dot: #907cff; }
-      .bt-card.is-appointments { --dot: #e58fd8; }
-      .bt-card.is-classes { --dot: #76d98c; }
-      .bt-card.is-events { --dot: #edb76a; }
-
-      /* Mini At9 schedule — the pill layout tells the story of each type */
-      .bt-panel {
-        background: #1a1825;
-        border-bottom: 1px solid var(--line);
-        padding: 16px;
-        height: 130px;
-      }
-      .bt-panel svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-      .bt-cell {
-        fill: none;
-        stroke: rgba(255, 255, 255, 0.07);
-        stroke-width: 1;
-      }
-      .bt-pill {
-        fill: var(--yellow);
-        stroke: rgba(0, 0, 0, 0.06);
-        stroke-width: 1;
-      }
-
-      .bt-body {
-        padding: 18px 20px 22px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        flex: 1;
-      }
-      .bt-role {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--primary-dark);
-      }
-      .bt-role::before {
-        content: "";
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--dot);
-        flex: none;
-      }
       .bt-card h3 {
         font-size: 18px;
         font-weight: 600;
@@ -763,6 +951,89 @@
         .bt-card:hover {
           transform: none;
           box-shadow: none;
+        }
+      }
+
+      /* ---------- Free features grid ---------- */
+      .free-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+      .free-card {
+        padding: 22px 22px 24px;
+        gap: 8px;
+      }
+      .free-card--wide {
+        grid-column: span 2;
+        flex-direction: row;
+        align-items: stretch;
+        padding: 0;
+        gap: 0;
+      }
+      .free-card--wide .free-copy {
+        flex: 1 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 24px 10px 24px 24px;
+        align-self: center;
+      }
+      /* Phone-screenshot extract on the right — bleeds to the card edge */
+      .free-card--wide .free-shot {
+        flex: 0 0 42%;
+        align-self: stretch;
+        min-height: 262px;
+        border-left: 1px solid var(--line);
+        background-color: #f7f6fb;
+        /* Replace assets/screenshots/app-schedule.png with the current shot */
+        background-image: url("assets/screenshots/app-schedule.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 3%;
+      }
+      @media (max-width: 560px) {
+        .free-card--wide {
+          flex-direction: column;
+        }
+        .free-card--wide .free-copy {
+          padding: 22px 22px 8px;
+        }
+        .free-card--wide .free-shot {
+          flex: none;
+          width: 100%;
+          min-height: 220px;
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+      }
+      .free-ico {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-lavender);
+        color: var(--primary-dark);
+        margin-bottom: 8px;
+      }
+      .free-ico svg {
+        width: 23px;
+        height: 23px;
+      }
+      @media (max-width: 900px) {
+        .free-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 460px) {
+        .free-grid {
+          grid-template-columns: 1fr;
+        }
+        .free-card--wide {
+          grid-column: span 1;
         }
       }
 
@@ -799,12 +1070,12 @@
         isolation: isolate;
       }
       .feature-card--lavender {
-        background: #ece4fa;
-        --accent: var(--primary-dark);
+        background: #e8e8f4;
+        --accent: var(--primary);
       }
       .feature-card--mint {
-        background: #ddeee2;
-        --accent: #3f9c5a;
+        background: #e8e8f4;
+        --accent: var(--primary);
       }
 
       .feature-card .card-copy {
@@ -901,12 +1172,15 @@
 
       /* ---------- Full-bleed section colors ---------- */
       .section-dark {
-        background: #1a1825;
+        background: var(--primary);
         color: #fff;
         position: relative;
       }
-      .section-cream {
-        background: var(--bg-soft);
+      /* Clean white canvas — separates Pricing from the tinted section above
+         and, with the hairline, from the page-tinted section below. */
+      .section-white {
+        background: #fff;
+        border-bottom: 1px solid var(--line);
       }
       .section-lavender {
         background: var(--bg-lavender);
@@ -914,126 +1188,6 @@
       .section-mint {
         background: var(--bg-mint);
       }
-      .beliefs {
-        position: relative;
-      }
-      .beliefs .eyebrow {
-        background: rgba(255, 255, 255, 0.08);
-        color: #d3cdfa;
-      }
-
-      /* Two-column founder layout: polaroid left, beliefs right */
-      .founder-grid {
-        display: grid;
-        grid-template-columns: 360px 1fr;
-        gap: 72px;
-        align-items: start;
-      }
-      @media (max-width: 900px) {
-        .founder-grid {
-          grid-template-columns: 1fr;
-          gap: 48px;
-        }
-      }
-
-      /* Polaroid frame */
-      .polaroid {
-        background: #fbfaf6;
-        padding: 18px 18px 22px;
-        border-radius: 4px;
-        box-shadow:
-          0 30px 50px -20px rgba(0, 0, 0, 0.55),
-          0 8px 16px -8px rgba(0, 0, 0, 0.35);
-        transform: rotate(-2.5deg);
-        transition: transform 0.3s ease;
-        max-width: 340px;
-        margin: 8px auto 0;
-      }
-      .polaroid:hover {
-        transform: rotate(-1deg);
-      }
-      .polaroid .photo {
-        width: 100%;
-        aspect-ratio: 4 / 5;
-        background: #f2d4b0;
-        overflow: hidden;
-        display: block;
-        margin-bottom: 18px;
-        border-radius: 1px;
-      }
-      .polaroid .photo img,
-      .polaroid .photo svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .polaroid .caption {
-        text-align: center;
-        font-family: "Caveat", "Switzer", cursive;
-        color: #1a1825;
-        font-size: 26px;
-        line-height: 1.05;
-        letter-spacing: 0;
-        padding: 4px 6px 0;
-      }
-      .polaroid .caption small {
-        display: block;
-        font-size: 16px;
-        color: #4a4658;
-        margin-top: 4px;
-      }
-
-      /* Beliefs — three inline cards spanning full width below the polaroid row */
-      .beliefs-list {
-        margin-top: 24px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-      }
-      .beliefs-list .belief {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-top: 2px solid var(--primary-light);
-        border-radius: 16px;
-        padding: 26px 24px 24px;
-        background: rgba(255, 255, 255, 0.04);
-      }
-      .beliefs-list .belief .num {
-        font-weight: 700;
-        font-size: 11px;
-        letter-spacing: 0.12em;
-        color: var(--primary-light);
-        display: block;
-        margin-bottom: 14px;
-      }
-      .beliefs-list .belief h3 {
-        color: #fff;
-        font-size: 16px;
-        margin: 0 0 8px;
-        font-weight: 600;
-        line-height: 1.3;
-      }
-      .beliefs-list .belief p {
-        color: rgba(255, 255, 255, 0.65);
-        font-size: 14px;
-        margin: 0;
-        line-height: 1.6;
-      }
-      @media (max-width: 700px) {
-        .beliefs-list {
-          grid-template-columns: 1fr;
-          gap: 12px;
-        }
-      }
-      .beliefs h2 {
-        color: #fff;
-        max-width: 720px;
-      }
-      .beliefs .lead {
-        color: rgba(255, 255, 255, 0.78);
-        max-width: 640px;
-      }
-
       /* ---------- Pricing ---------- */
       .pricing-head {
         max-width: 720px;
@@ -1051,14 +1205,14 @@
         letter-spacing: 0.01em;
         padding: 8px 16px;
         border-radius: 999px;
-        background: #dbf0e0;
-        color: #2a7a45;
+        background: var(--secondary);
+        color: #16172e;
         margin-bottom: 22px;
-        border: 1px solid rgba(63, 156, 90, 0.2);
+        border: 1px solid rgba(22, 23, 46, 0.12);
       }
       .trial-badge svg {
         flex: none;
-        color: #3f9c5a;
+        color: #16172e;
       }
       .trial-badge .sep {
         width: 3px;
@@ -1083,27 +1237,52 @@
         max-width: 880px;
         margin: 0 auto;
       }
-      @media (max-width: 700px) {
+      /* Stack early: below this the columns get too narrow to hold a feature
+         on one line, and the cards start to feel cramped side by side. */
+      @media (max-width: 900px) {
         .pricing-grid {
           grid-template-columns: 1fr;
+          max-width: 460px;
         }
       }
 
+      /* Closing reassurance under the two plans */
+      .pricing-foot {
+        max-width: 560px;
+        margin: 32px auto 0;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--ink-3);
+      }
+
+      /* On a white section the two cards are ranked by surface: Solo sits back
+         in a faint primary tint, Team lifts forward in pure white on a shadow. */
       .plan {
-        background: #fff;
+        background: #f7f6fd;
         border: 1px solid var(--line);
         border-radius: var(--radius-lg);
         padding: 32px;
         display: flex;
         flex-direction: column;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .plan:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
       }
       .plan.featured {
         border: 1.5px solid transparent;
         background:
           linear-gradient(#fff, #fff) padding-box,
           var(--grad) border-box;
-        box-shadow: var(--shadow-md);
+        box-shadow: var(--shadow-lg);
         position: relative;
+      }
+      .plan.featured:hover {
+        box-shadow: var(--shadow-lg);
       }
       .plan .plan-head {
         display: flex;
@@ -1122,8 +1301,14 @@
         text-transform: uppercase;
         padding: 4px 10px;
         border-radius: 999px;
-        background: var(--grad);
-        color: #15131c;
+        /* Primary → violet, white text (the shared --grad ends in mint, which
+           white type can't sit on). */
+        background: linear-gradient(
+          120deg,
+          var(--primary) 0%,
+          var(--brand-violet) 100%
+        );
+        color: #fff;
       }
       .plan .price {
         display: flex;
@@ -1148,7 +1333,19 @@
       .plan .summary {
         color: var(--ink-2);
         margin-bottom: 24px;
-        min-height: 1.5em;
+        /* Two lines reserved so both cards' prices sit on the same line */
+        min-height: 3.1em;
+      }
+      /* Micro-label opening each feature list, keeping the two lists in step */
+      .plan .list-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 16px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line-2);
       }
       .plan ul {
         list-style: none;
@@ -1179,9 +1376,15 @@
       .plan .btn {
         width: 100%;
         justify-content: center;
+        /* Pin both CTAs to the card floor, whatever the list length */
+        margin-top: auto;
       }
+      /* Brand fill on the featured CTA — the section's one dominant action */
       .plan.featured .btn-primary {
-        background: var(--ink);
+        background: var(--primary);
+      }
+      .plan.featured .btn-primary:hover {
+        background: var(--primary-dark);
       }
 
       .plan .placeholder-note {
@@ -1256,6 +1459,14 @@
       }
       .cta-banner h2 {
         margin-bottom: 14px;
+        color: #fff;
+      }
+      .cta-banner .lead {
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .cta-banner .eyebrow {
+        background: rgba(255, 255, 255, 0.1);
+        color: #d3cdfa;
       }
       .cta-banner .store-row {
         justify-content: center;
@@ -1464,7 +1675,7 @@
       .book-share-scene {
         position: relative;
         max-width: 760px;
-        margin: 0 auto 60px;
+        margin: 0 auto;
         padding: 38px 20px 42px;
         display: flex;
         flex-direction: column;
@@ -1628,88 +1839,10 @@
         transform-origin: left center;
       }
 
-      /* Screenshots fan */
-      .book-screens {
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        margin-bottom: 56px;
-      }
-      .book-screen {
-        background: #1a1825;
-        padding: 8px;
-        border-radius: 38px;
-        box-shadow:
-          0 24px 48px -12px rgba(0, 0, 0, 0.32),
-          0 8px 16px -4px rgba(0, 0, 0, 0.16);
-        flex-shrink: 0;
-      }
-      .book-screen img {
-        display: block;
-        border-radius: 31px;
-        width: 210px;
-        height: auto;
-      }
-      .book-screen:first-child {
-        transform: rotate(-6deg) translateX(36px);
-        z-index: 1;
-      }
-      .book-screen:nth-child(2) {
-        transform: translateY(-24px);
-        z-index: 3;
-      }
-      .book-screen:last-child {
-        transform: rotate(6deg) translateX(-36px);
-        z-index: 2;
-      }
-
-      /* App nudge card */
-      .book-app-nudge {
-        max-width: 600px;
-        margin: 0 auto;
-        text-align: center;
-        padding: 36px 36px 32px;
-        background: rgba(255, 255, 255, 0.8);
-        border: 1px solid var(--line);
-        border-radius: 28px;
-      }
-      .book-app-nudge p {
-        font-size: 16px;
-        line-height: 1.65;
-        color: var(--ink-2);
-        margin: 0 0 26px;
-      }
-      .book-app-nudge .store-row {
-        justify-content: center;
-      }
-
-      @media (max-width: 700px) {
-        .book-screen img {
-          width: 165px;
-        }
-        .book-screen:first-child {
-          transform: rotate(-4deg) translateX(24px);
-        }
-        .book-screen:last-child {
-          transform: rotate(4deg) translateX(-24px);
-        }
-      }
       @media (max-width: 480px) {
-        .book-screen img {
-          width: 128px;
-        }
-        .book-screen:first-child {
-          transform: rotate(-3deg) translateX(16px);
-        }
-        .book-screen:last-child {
-          transform: rotate(3deg) translateX(-16px);
-        }
         .book-url-base,
         .book-url-slug {
           font-size: 13px;
-        }
-        .book-app-nudge {
-          padding: 24px 20px;
         }
       }
 
@@ -1733,7 +1866,6 @@
         <nav class="nav-links" aria-label="Primary">
           <a href="#pricing">Pricing</a>
           <a href="#faqs">FAQs</a>
-          <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
 
@@ -1760,32 +1892,29 @@
 
     <!-- ---------- HERO ---------- -->
     <section class="hero" id="top">
-      <div class="container hero-grid">
+      <div class="hero-tags" aria-hidden="true">
+        <span class="t1">Restaurants</span>
+        <span class="t2">Catteries</span>
+        <span class="t3">Salons</span>
+        <span class="t4">Studios</span>
+        <span class="t5">Hotels</span>
+        <span class="t6">Kennels</span>
+        <span class="t7">Pubs</span>
+        <span class="t8">Tutors</span>
+      </div>
+      <div class="container hero-centered">
         <div class="hero-copy">
-          <span class="eyebrow eyebrow-cycle" data-type="restaurants"
-            >Designed for <span class="cycle-word">Restaurants</span></span
-          >
           <h1>
-            Every booking.<br />
-            <span class="squiggle-wrap"
-              >One place<svg
-                class="squiggle"
-                viewBox="0 0 300 18"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9"
-                  vector-effect="non-scaling-stroke"
-                /></svg></span
-            >.
+            The Smarter Way to<br />
+            <span class="squiggle-wrap">Manage Bookings</span
+            >
           </h1>
           <p class="lead">
-            Booking management software for tables, rooms, appointments, events
-            and classes. Prevent double bookings, cut admin time, and keep your
-            business running smoothly.
+            Online booking, automatic confirmations, no double-bookings, and
+            customers who manage everything themselves. It's booking management,
+            without the headaches.
           </p>
-          <div class="ctas store-row">
+          <div class="ctas store-row hero-ctas-centered">
             <!-- App Store -->
             <a
               class="store-badge"
@@ -1863,29 +1992,21 @@
               </span>
             </a>
           </div>
-          <div class="meta">
-            <span>Free to try</span>
-            <span class="dot"></span>
-            <span>No card required</span>
-            <span class="dot"></span>
-            <span>Set up in minutes</span>
-          </div>
         </div>
-
-        <!-- Hero phones: room booking schedule (front) + room booking availability (back) -->
-        <div class="hero-phones-wrap">
-          <div class="hero-phone hero-phone--left">
-            <img
-              src="assets/screenshots/room%20bookings/Room%20booking%20availability.png"
-              alt="At9 room booking availability view"
-            />
-          </div>
-          <div class="hero-phone hero-phone--right">
-            <img
-              src="assets/screenshots/room%20bookings/Room%20bookings%20schedule.png"
-              alt="At9 room bookings schedule view"
-            />
-          </div>
+        <div class="hero-rating">
+          <span class="stars" aria-hidden="true">
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+          </span>
+          <span>Trusted by businesses like yours</span>
+        </div>
+        <div class="meta meta-pills">
+          <span>30-day free trial</span>
+          <span>No credit card required</span>
+          <span>Set up in minutes</span>
         </div>
       </div>
     </section>
@@ -1894,128 +2015,89 @@
     <section id="booking-types" class="section-lavender booking-types">
       <div class="container">
         <div class="features-head">
-          <span class="eyebrow">One app, every booking type</span>
+          <span class="eyebrow">Everything you need to take bookings</span>
           <h2>
-            Whatever you take bookings for, it lives on
-            <span class="squiggle-wrap"
-              >one grid<svg
-                class="squiggle"
-                viewBox="0 0 300 18"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9"
-                  vector-effect="non-scaling-stroke"
-                /></svg
-            ></span>.
+            Whatever you take bookings for, it's all in
+            <span class="squiggle-wrap">one place</span>.
           </h2>
           <p class="lead">
-            Rooms, tables, appointments, classes or a whole-venue event. At9
-            handles each one the same simple way, so you can drop the diary,
-            the spreadsheet and the back-and-forth.
+            Every booking you take, on one schedule that lives in your pocket —
+            no double-bookings, no missed messages, no paper diary to decipher.
+            Set it up in minutes and take your first booking today.
           </p>
         </div>
 
-        <div class="bt-grid">
-          <!-- Rooms & Tables — a wide stay + a sitting, side by side -->
-          <article class="bt-card is-rooms">
-            <div class="bt-panel">
-              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
-                <line class="bt-cell" x1="0" y1="33" x2="232" y2="33" />
-                <line class="bt-cell" x1="0" y1="66" x2="232" y2="66" />
-                <line class="bt-cell" x1="58" y1="0" x2="58" y2="100" />
-                <line class="bt-cell" x1="116" y1="0" x2="116" y2="100" />
-                <line class="bt-cell" x1="174" y1="0" x2="174" y2="100" />
-                <rect class="bt-pill" x="8" y="8" width="150" height="18" rx="6" />
-                <rect class="bt-pill" x="64" y="41" width="120" height="18" rx="6" />
-                <rect class="bt-pill" x="8" y="74" width="86" height="18" rx="6" />
-              </svg>
-            </div>
-            <div class="bt-body">
-              <span class="bt-role">Stays &amp; sittings</span>
-              <h3>Rooms &amp; Tables</h3>
+        <div class="free-grid">
+          <!-- Flagship: the whole diary in one view (spans two columns) -->
+          <article class="bt-card free-card free-card--wide">
+            <div class="free-copy">
+              <span class="free-ico"><i data-lucide="layout-grid"></i></span>
+              <h3>Your bookings in one view</h3>
               <p>
-                Fill more rooms and turn more tables. Overnight stays and
-                same-day sittings on one shared schedule. See every gap
-                before it costs you.
+                Every room, table, class and appointment on one clear schedule —
+                your whole day, week or month at a glance, and nothing slipping
+                through.
               </p>
             </div>
+            <div
+              class="free-shot"
+              role="img"
+              aria-label="The At9 schedule — room bookings laid out across the month"
+            ></div>
           </article>
 
-          <!-- Appointments — precise single slots dotted across the grid -->
-          <article class="bt-card is-appointments">
-            <div class="bt-panel">
-              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
-                <line class="bt-cell" x1="0" y1="33" x2="232" y2="33" />
-                <line class="bt-cell" x1="0" y1="66" x2="232" y2="66" />
-                <line class="bt-cell" x1="58" y1="0" x2="58" y2="100" />
-                <line class="bt-cell" x1="116" y1="0" x2="116" y2="100" />
-                <line class="bt-cell" x1="174" y1="0" x2="174" y2="100" />
-                <rect class="bt-pill" x="8" y="8" width="42" height="18" rx="6" />
-                <rect class="bt-pill" x="124" y="8" width="42" height="18" rx="6" />
-                <rect class="bt-pill" x="66" y="41" width="42" height="18" rx="6" />
-                <rect class="bt-pill" x="182" y="41" width="42" height="18" rx="6" />
-                <rect class="bt-pill" x="8" y="74" width="42" height="18" rx="6" />
-              </svg>
-            </div>
-            <div class="bt-body">
-              <span class="bt-role">Slot bookings</span>
-              <h3>Appointments</h3>
-              <p>
-                End the back-and-forth. Treatments, consultations and
-                viewings. Clients self-book the slots you offer, your day
-                shapes itself.
-              </p>
-            </div>
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="users"></i></span>
+            <h3>Customers, all in one place</h3>
+            <p>
+              Keep every customer and their bookings together, so you always
+              know who's coming and when.
+            </p>
           </article>
 
-          <!-- Classes — stacked bookings sharing one time slot -->
-          <article class="bt-card is-classes">
-            <div class="bt-panel">
-              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
-                <line class="bt-cell" x1="0" y1="25" x2="232" y2="25" />
-                <line class="bt-cell" x1="0" y1="50" x2="232" y2="50" />
-                <line class="bt-cell" x1="0" y1="75" x2="232" y2="75" />
-                <line class="bt-cell" x1="92" y1="0" x2="92" y2="100" />
-                <line class="bt-cell" x1="150" y1="0" x2="150" y2="100" />
-                <rect class="bt-pill" x="100" y="6" width="120" height="13" rx="5" />
-                <rect class="bt-pill" x="100" y="31" width="120" height="13" rx="5" />
-                <rect class="bt-pill" x="100" y="56" width="120" height="13" rx="5" />
-                <rect class="bt-pill" x="100" y="81" width="120" height="13" rx="5" />
-              </svg>
-            </div>
-            <div class="bt-body">
-              <span class="bt-role">Group sessions</span>
-              <h3>Classes</h3>
-              <p>
-                Run yoga, fitness or any recurring class. Set capacity, take
-                group bookings into one time slot, and stop chasing places
-                by text.
-              </p>
-            </div>
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="search-check"></i></span>
+            <h3>Instant availability</h3>
+            <p>
+              See what's free the moment you look — no scrolling, no guesswork,
+              no double-bookings.
+            </p>
           </article>
 
-          <!-- Events — one block taking the whole venue across the day -->
-          <article class="bt-card is-events">
-            <div class="bt-panel">
-              <svg viewBox="0 0 232 100" preserveAspectRatio="none" aria-hidden="true">
-                <line class="bt-cell" x1="58" y1="0" x2="58" y2="100" />
-                <line class="bt-cell" x1="116" y1="0" x2="116" y2="100" />
-                <line class="bt-cell" x1="174" y1="0" x2="174" y2="100" />
-                <rect class="bt-pill" x="8" y="8" width="216" height="13" rx="5" />
-                <rect class="bt-pill" x="8" y="30" width="216" height="62" rx="8" />
-              </svg>
-            </div>
-            <div class="bt-body">
-              <span class="bt-role">Private hire</span>
-              <h3>Events</h3>
-              <p>
-                Block the venue for parties, weddings and one-off
-                occasions. Set the date, take the deposit, lock it in and
-                the whole team knows it's off-limits.
-              </p>
-            </div>
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="mail"></i></span>
+            <h3>Email notifications</h3>
+            <p>
+              Confirmations land in inboxes automatically, so everyone knows
+              exactly where they stand.
+            </p>
+          </article>
+
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="link"></i></span>
+            <h3>Your own booking link</h3>
+            <p>
+              Share at9.app/book/your-name on Instagram, Facebook or your site
+              and take bookings around the clock.
+            </p>
+          </article>
+
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="message-circle"></i></span>
+            <h3>Message customers</h3>
+            <p>
+              Reach a customer about their booking in a tap — right from At9, no
+              switching apps.
+            </p>
+          </article>
+
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="smartphone"></i></span>
+            <h3>Customers self-serve</h3>
+            <p>
+              They view and manage their own bookings online, so your phone
+              rings a whole lot less.
+            </p>
           </article>
         </div>
       </div>
@@ -2292,164 +2374,11 @@
             </div>
           </div>
         </div>
-
-        <!-- Web screenshots — three phones fanned -->
-        <div class="book-screens">
-          <div class="book-screen">
-            <img
-              src="assets/screenshots/web-book-room.png"
-              alt="Booking a room via the At9 web link"
-              loading="lazy"
-            />
-          </div>
-          <div class="book-screen">
-            <img
-              src="assets/screenshots/web-book-room-or-table.png"
-              alt="Customer choosing to book a room or table"
-              loading="lazy"
-            />
-          </div>
-          <div class="book-screen">
-            <img
-              src="assets/screenshots/web-book-table.png"
-              alt="Booking a table via the At9 web link"
-              loading="lazy"
-            />
-          </div>
-        </div>
-
-        <!-- App download nudge -->
-        <div class="book-app-nudge">
-          <p>
-            Every booking lands straight in your At9 app. No manual entry, no
-            missed reservations.<br />Customers get a link to download At9, so
-            they can manage their booking and message you directly.
-          </p>
-          <div class="store-row">
-            <a
-              class="store-badge"
-              href="https://apps.apple.com/app/id6742573363"
-              target="_blank"
-              rel="noopener"
-              aria-label="Download on the App Store"
-            >
-              <svg
-                width="22"
-                height="26"
-                viewBox="0 0 24 28"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M17.6 14.7c0-2.7 2.2-4 2.3-4.1-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4.1 1-.9 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.4 2.7-1.9 3.3-.5 8.1 1.3 10.7.9 1.3 2 2.7 3.4 2.7 1.4-.1 1.9-.9 3.5-.9s2.1.9 3.5.9c1.5 0 2.4-1.3 3.3-2.6 1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.2zM15 6.4c.8-1 1.3-2.3 1.2-3.6-1.1.1-2.5.8-3.3 1.7-.7.8-1.4 2.1-1.2 3.4 1.3.1 2.5-.6 3.3-1.5z"
-                />
-              </svg>
-              <span class="label"
-                ><span class="small">Download on the</span
-                ><span class="big">App Store</span></span
-              >
-            </a>
-            <a
-              class="store-badge"
-              href="https://play.google.com/store/apps/details?id=com.at9"
-              aria-label="Get At9 on Google Play"
-            >
-              <svg
-                width="22"
-                height="26"
-                viewBox="0 0 24 28"
-                aria-hidden="true"
-              >
-                <path
-                  d="M3.6 2.4c-.4.4-.6.9-.6 1.6v20c0 .7.2 1.2.6 1.6l11-11.6L3.6 2.4z"
-                  fill="url(#gp1)"
-                />
-                <path
-                  d="M14.6 14l3.7-3.9-12-6.9c-.4-.2-.8-.3-1.2-.2l9.5 11z"
-                  fill="url(#gp4)"
-                />
-                <path
-                  d="M14.6 14l-9.5 11c.4.1.8 0 1.2-.2l12-6.9-3.7-3.9z"
-                  fill="url(#gp3)"
-                />
-                <path
-                  d="M21.4 12.4l-3.1-1.8L14.6 14l3.7 3.4 3.1-1.8c1.1-.6 1.1-2.5 0-3.2z"
-                  fill="url(#gp2)"
-                />
-              </svg>
-              <span class="label"
-                ><span class="small">Get it on</span
-                ><span class="big">Google Play</span></span
-              >
-            </a>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- ---------- BELIEFS (Founder section) — full-bleed dark, polaroid + beliefs ---------- -->
-    <section id="about" class="section-dark">
-      <div class="container">
-        <div class="beliefs founder-grid">
-          <div class="polaroid">
-            <div class="photo">
-              <img
-                src="Profile.png"
-                alt="Mark Houldridge, founder of At9"
-                loading="lazy"
-              />
-            </div>
-            <div class="caption">
-              Mark Houldridge
-              <small>Founder, At9</small>
-            </div>
-          </div>
-
-          <!-- Beliefs content on the right -->
-          <div class="founder-copy">
-            <span class="eyebrow">From the founder</span>
-            <h2>Why I built At9...</h2>
-            <p class="lead">
-              I've spent 20 years building tools that help businesses work
-              better. The ones I love most are the small ones, run by people who
-              are brilliant at what they do but stuck managing bookings on a bit
-              of paper or a spreadsheet that was never really up to the job.
-              I built At9 to change that.
-            </p>
-
-            <div class="beliefs-list">
-              <div class="belief">
-                <span class="num">01</span>
-                <h3>Simple tools get used.</h3>
-                <p>
-                  At9 is built to feel obvious from the first tap, no training
-                  required.
-                </p>
-              </div>
-              <div class="belief">
-                <span class="num">02</span>
-                <h3>Listen first. Build second.</h3>
-                <p>
-                  Every good idea in At9 came from a customer conversation. That
-                  never stops.
-                </p>
-              </div>
-              <div class="belief">
-                <span class="num">03</span>
-                <h3>Support is part of the product.</h3>
-                <p>
-                  When something is not working, you get a real answer quickly,
-                  every time.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ---------- PRICING — full-bleed cream ---------- -->
-    <section id="pricing" class="section-cream">
+    <!-- ---------- PRICING — full-bleed white ---------- -->
+    <section id="pricing" class="section-white">
       <div class="container">
         <div class="pricing-head">
           <span class="trial-badge">
@@ -2464,28 +2393,20 @@
                 d="M8 0 L 9.2 5.2 L 14.4 6.4 L 9.2 7.6 L 8 12.8 L 6.8 7.6 L 1.6 6.4 L 6.8 5.2 Z"
               />
             </svg>
-            Try free for 30 days
+            Full access from day one
             <span class="sep"></span>
             No credit card required
           </span>
           <h2>
-            One price,
-            <span class="squiggle-wrap"
-              >no surprises<svg
-                class="squiggle"
-                viewBox="0 0 300 18"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M4 13 C 60 -2, 130 18, 195 8 S 270 16, 296 9"
-                  vector-effect="non-scaling-stroke"
-                /></svg></span
+            Try At9
+            <span class="squiggle-wrap">free for 30 days</span
             >.
           </h2>
           <p class="lead">
-            Start your 30-day trial today. Upgrade when you're ready, cancel any
-            time. Your data is always yours to take with you.
+            Set up in minutes and start taking real bookings today — every
+            feature unlocked, nothing to pay and no card to enter. When the 30
+            days are up, pick the plan that fits. Cancel any time, and your data
+            always comes with you.
           </p>
         </div>
 
@@ -2495,16 +2416,18 @@
               <h3>Solo</h3>
             </div>
             <p class="summary">
-              Perfect for owner-operators who run the show themselves.
+              Everything you need to take and manage bookings on your own —
+              nothing you don't.
             </p>
             <div class="price">
-              <span class="amount">£19.99</span>
+              <span class="amount">£9.99</span>
               <span class="per">/ month</span>
             </div>
-            <p class="price-note">Prices shown exclude local taxes. Your App Store or Google Play price may differ.</p>
+            <p class="price-note">Free for the first 30 days — cancel before it ends and you pay nothing. Prices exclude local taxes; your App Store or Google Play price may differ.</p>
+            <p class="list-label">Everything you get</p>
             <ul>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2517,10 +2440,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Stay organised with simple booking management
+                Your bookings in one view
               </li>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2533,10 +2456,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Instantly check availability for rooms and tables
+                Manage customers and their bookings
               </li>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2549,10 +2472,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Your whole schedule, in your pocket
+                Instant availability checking
               </li>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2565,10 +2488,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Manage customers and stay in touch
+                Email notifications
               </li>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2581,10 +2504,42 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Your own booking link - book/your-company
+                Your own web and social booking link
+              </li>
+              <li>
+                <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Message customers
+              </li>
+              <li>
+                <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Customers can access their bookings
               </li>
             </ul>
-            <a class="btn btn-ghost" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">Start with Solo</a>
+            <a class="btn btn-ghost" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">Try Solo free</a>
           </div>
 
           <div class="plan featured">
@@ -2593,16 +2548,18 @@
               <span class="tag">Most popular</span>
             </div>
             <p class="summary">
-              For teams who share the diary and want everyone on the same page.
+              For growing businesses sharing one diary — with the tools to keep
+              customers coming back.
             </p>
             <div class="price">
-              <span class="amount">£39.99</span>
+              <span class="amount">£29.99</span>
               <span class="per">/ month</span>
             </div>
-            <p class="price-note">Prices shown exclude local taxes. Your App Store or Google Play price may differ.</p>
+            <p class="price-note">Free for the first 30 days — cancel before it ends and you pay nothing. Prices exclude local taxes; your App Store or Google Play price may differ.</p>
+            <p class="list-label">Everything in Solo, plus</p>
             <ul>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2615,10 +2572,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Everything in Solo, built for teams
+                Auto reminders that cut no-shows
               </li>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2631,10 +2588,10 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Your team stays organised and aligned
+                Files &amp; photos on any booking
               </li>
               <li>
-                <span class="check"
+                <span class="check" aria-hidden="true"
                   ><svg
                     width="10"
                     height="10"
@@ -2647,12 +2604,65 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Admin roles to control user access
+                Team access — one shared diary
+              </li>
+              <li>
+                <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Staff calendars at a glance
+              </li>
+              <li>
+                <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Customer notes on every regular
+              </li>
+              <li>
+                <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+                Full history of every booking
               </li>
             </ul>
-            <a class="btn btn-primary" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">Start with Team</a>
+            <a class="btn btn-primary" href="https://apps.apple.com/app/id6742573363" target="_blank" rel="noopener">Try Team free</a>
           </div>
         </div>
+
+        <p class="pricing-foot">
+          Not sure which one? Your trial includes every Team feature, so you can
+          try the lot and decide before it ends.
+        </p>
       </div>
     </section>
 
@@ -2712,7 +2722,7 @@
               Can my whole team use it? <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              Yes. The Team plan supports multiple staff with role-based
+              Yes. The Team plan adds team access with role-based
               permissions, so front-of-house, managers and owners each see what
               they need.
             </div>
@@ -2722,8 +2732,10 @@
               Is there a free trial? <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              Yes, you can try At9 free for 30-days with no credit card
-              required. Upgrade only when it's working for you.
+              Yes — every organisation gets a 30-day free trial from the day you
+              register, with no card required. After that, choose Solo (£9.99/month)
+              for the essentials, or Team (£29.99/month) to add team access,
+              reminders, files, notes and customer history.
             </div>
           </details>
           <details class="faq-item">
@@ -2741,13 +2753,13 @@
     </section>
 
     <!-- ---------- DOWNLOAD CTA — full-bleed mint ---------- -->
-    <section id="download" class="section-mint">
+    <section id="download" class="section-dark">
       <div class="container">
         <div class="cta-banner">
           <span class="eyebrow">Get the app</span>
-          <h2>Your bookings, sorted by tonight.</h2>
+          <h2>Your bookings, sorted today.</h2>
           <p class="lead" style="margin: 0 auto; max-width: 560px">
-            Download At9 for iOS or Android. Free to try, no card required.
+            Download At9 for iOS or Android. Start your 30-day free trial — no card required.
           </p>
 
           <div class="store-row">
@@ -2913,7 +2925,6 @@
             </div>
             <div class="link-col">
               <h4>Company</h4>
-              <a href="#about">About</a>
               <a href="#faqs">FAQs</a>
               <a href="mailto:hello@at9.app">Contact</a>
             </div>
@@ -2953,6 +2964,33 @@
         }
         window.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
+      })();
+
+      // Highlighter "draw-in": start the mint markers empty, then reveal each
+      // (left→right) as it scrolls into view. Skipped for reduced motion / no
+      // IntersectionObserver — the markers just stay shown.
+      (function () {
+        var marks = document.querySelectorAll(".squiggle-wrap");
+        if (!marks.length) return;
+        var reduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        if (reduce || !("IntersectionObserver" in window)) return;
+        document.documentElement.classList.add("ink-animate");
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-inked");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.6 },
+        );
+        marks.forEach(function (m) {
+          io.observe(m);
+        });
       })();
 
       // Cycle the hero industry chip through business types.

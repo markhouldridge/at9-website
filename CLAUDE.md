@@ -8,15 +8,22 @@ devices.
 The app is used by organisations for managing bookings for rooms
 and tables.
 
-It provides two subscription types, Solo and Team:
-Solo is suitable for individuals who require an inutitive and
-straightforward tool for registering and managing bookings, ideal
-for people using traditional paper-based methods, or other apps; apps
-that may not be suitable for volume of bookings, or ones that
-are expensive.
-Team subscription is useful for organisations where shared access
-is necessary and supports group management of bookings. Additionally
-users may be assigned as Administrators, who can control user access.
+It provides two subscription tiers, Solo and Team, after a 30-day free trial:
+Solo (£9.99/month) is suitable for individuals who require an intuitive and
+straightforward tool for registering and managing bookings, ideal for people
+using traditional paper-based methods, or other apps; apps that may not be
+suitable for volume of bookings, or ones that are expensive. Solo includes your
+bookings in one view, managing customers and their bookings, instant
+availability checking, email notifications, your own web and social booking
+link, messaging customers, and letting customers access their own bookings.
+Team (£29.99/month) is useful for growing businesses and organisations
+where shared access is necessary and supports group management of bookings.
+It adds team access (invite one or more organisation members, with users
+assignable as Administrators who control user access), booking email reminders,
+storing customer and booking files, staff calendars, customer notes and
+customer history. Every new organisation gets a 30-day free trial from
+registration (full access, no card required); after it ends, an active Solo or
+Team subscription is required to keep taking bookings.
 
 What type of companies use At9?
 At9 is used by restaurants, bars, hotels, catteries and kennels - any
@@ -42,7 +49,10 @@ What are the features of At9?
 
 Is there a trial period?
 
-Yes, you can test At9 free for 30 days, no credit card required.
+Yes — every new organisation gets a 30-day free trial from registration, with
+no credit card required. After it ends, choose Solo (£9.99/month) for the
+essentials or Team (£29.99/month) for team access, reminders, files, notes and
+history.
 
 Comments from me, the founder, Mark Houldridge
 
