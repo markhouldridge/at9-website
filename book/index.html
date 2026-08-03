@@ -27,6 +27,10 @@
       src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
     ></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
+    <!-- Stripe.js must be loaded from Stripe's own domain, never bundled or
+         self-hosted — that is what keeps card details out of this page and off
+         At9's servers, and what keeps the business inside PCI scope SAQ-A. -->
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -817,7 +821,147 @@
       };
 
       // ── Room booking ──────────────────────────────────────────────────────────
+      // ---------------------------------------------------------------------
+      // Paying for a booking.
+      //
+      // The booking already exists and is holding its slot for fifteen minutes
+      // with payment_status = 'pending'. It is NOT confirmed: no confirmation
+      // email has been sent, and if this step is abandoned the server's sweep
+      // releases the slot. What makes it real is Stripe telling the webservice
+      // the money arrived.
+      //
+      // Card details are entered inside Stripe's own iframe and never touch
+      // this page or At9's servers.
+      //
+      // `stripeAccount` is what makes this a **direct charge** on the
+      // business's account — without it the payment would be attempted on the
+      // platform account and fail.
+      // ---------------------------------------------------------------------
+      const money = (minor) =>
+        new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" })
+          .format((minor || 0) / 100);
+
+      // Sits between "booking created" and "show the confirmation". If the
+      // server says money is due, the confirmation waits until it is paid;
+      // otherwise nothing changes and the flow is exactly as it was.
+      const usePaymentGate = (onDone) => {
+        const [pending, setPending] = React.useState(null);
+        return {
+          pending,
+          // Returns true when it has taken over the flow.
+          handle: (data, doneArgs) => {
+            const pay = data && data.payment;
+            if (pay && pay.requiresPayment && pay.clientSecret) {
+              setPending({ payment: pay, doneArgs });
+              return true;
+            }
+            onDone(doneArgs);
+            return false;
+          },
+          // Abandoning leaves the booking held until the server's sweep frees
+          // it — no client-side cleanup to get wrong.
+          cancel: () => setPending(null),
+          complete: () => {
+            const args = pending ? pending.doneArgs : {};
+            setPending(null);
+            onDone({ ...args, paid: true });
+          },
+        };
+      };
+
+      const PaymentStep = ({ payment, orgName, onPaid, onCancel }) => {
+        const hostRef = React.useRef(null);
+        const [stripe, setStripe] = React.useState(null);
+        const [elements, setElements] = React.useState(null);
+        const [ready, setReady] = React.useState(false);
+        const [busy, setBusy] = React.useState(false);
+        const [error, setError] = React.useState("");
+
+        React.useEffect(() => {
+          if (!payment?.clientSecret || !payment?.publishableKey) {
+            setError("Payment isn't available right now. Please contact the business.");
+            return;
+          }
+          if (typeof Stripe !== "function") {
+            setError("Couldn't load the payment form. Please refresh and try again.");
+            return;
+          }
+          const s = Stripe(payment.publishableKey, {
+            stripeAccount: payment.stripeAccountId,
+          });
+          const e = s.elements({
+            clientSecret: payment.clientSecret,
+            appearance: { theme: "stripe", variables: { colorPrimary: "#554aca" } },
+          });
+          e.create("payment", { layout: "tabs" }).mount(hostRef.current);
+          setStripe(s);
+          setElements(e);
+          setReady(true);
+        }, [payment]);
+
+        const pay = async () => {
+          if (!stripe || !elements) return;
+          setBusy(true);
+          setError("");
+          // `redirect: "if_required"` keeps the customer here for a normal card
+          // and only leaves the page when the bank demands it (3-D Secure).
+          const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
+            elements,
+            redirect: "if_required",
+          });
+          setBusy(false);
+
+          if (stripeError) {
+            setError(stripeError.message || "Your payment couldn't be completed.");
+            return;
+          }
+          // 'processing' covers slower methods (bank debits) — the booking is
+          // confirmed by the webhook either way, so the customer is done.
+          if (paymentIntent && ["succeeded", "processing"].includes(paymentIntent.status)) {
+            onPaid();
+            return;
+          }
+          setError("Your payment couldn't be completed. Please try another card.");
+        };
+
+        return (
+          <div className="card">
+            <p className="section-label">Payment</p>
+            <div className="summary">
+              {payment.summary || `Pay ${money(payment.amountDueNowMinor)} now.`}
+              {" "}Your booking with {orgName} is held for 15 minutes while you pay.
+            </div>
+
+            <div ref={hostRef} style={{ marginBottom: 16, minHeight: 60 }} />
+
+            {error && (
+              <p style={{ color: "var(--error)", fontSize: 13, marginBottom: 12 }}>{error}</p>
+            )}
+
+            <button
+              className="btn btn-primary"
+              style={{ width: "100%" }}
+              onClick={pay}
+              disabled={!ready || busy}>
+              {busy ? "Paying…" : `Pay ${money(payment.amountDueNowMinor)}`}
+            </button>
+            <button
+              className="btn btn-ghost"
+              style={{ width: "100%", marginTop: 8 }}
+              onClick={onCancel}
+              disabled={busy}>
+              Cancel
+            </button>
+
+            <div style={{ marginTop: 12, fontSize: 12, color: "var(--text-2)", textAlign: "center" }}>
+              Payments are processed securely by Stripe. {orgName} receives the money directly.
+            </div>
+          </div>
+        );
+      };
+
       const RoomBooking = ({ org, entities, onBack, onDone }) => {
+        const gate = usePaymentGate(onDone);
         const [checkIn,  setCheckIn]  = useState(null);
         const [checkOut, setCheckOut] = useState(null);
         const [guests,   setGuests]   = useState(1);
@@ -883,13 +1027,26 @@
               return;
             }
             const data = await res.json().catch(() => ({}));
-            onDone({ checkIn, checkOut, nights, guests, name, type: "room", reference: data?.reference });
+            gate.handle(data, { checkIn, checkOut, nights, guests, name, type: "room", reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
             setLoading(false);
           }
         };
+
+        // Money is due: the booking exists and is holding its slot, but it
+        // is not confirmed until Stripe says it has been paid.
+        if (gate.pending) {
+          return (
+            <PaymentStep
+              payment={gate.pending.payment}
+              orgName={org.name}
+              onPaid={gate.complete}
+              onCancel={gate.cancel}
+            />
+          );
+        }
 
         if (step === "contact") {
           return (
@@ -1010,6 +1167,7 @@
 
       // ── Table booking ─────────────────────────────────────────────────────────
       const TableBooking = ({ org, entities, preferences, onBack, onDone }) => {
+        const gate = usePaymentGate(onDone);
         const today = utcMidnight(new Date());
         const todayMonthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
 
@@ -1136,13 +1294,26 @@
               return;
             }
             const data = await res.json().catch(() => ({}));
-            onDone({ date: selectedDate, time: selectedTime, name, type: "table", reference: data?.reference });
+            gate.handle(data, { date: selectedDate, time: selectedTime, name, type: "table", reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
             setLoading(false);
           }
         };
+
+        // Money is due: the booking exists and is holding its slot, but it
+        // is not confirmed until Stripe says it has been paid.
+        if (gate.pending) {
+          return (
+            <PaymentStep
+              payment={gate.pending.payment}
+              orgName={org.name}
+              onPaid={gate.complete}
+              onCancel={gate.cancel}
+            />
+          );
+        }
 
         if (step === "contact") {
           return (
@@ -1262,6 +1433,7 @@
 
       // ── Appointment booking ───────────────────────────────────────────────────
       const AppointmentBooking = ({ org, services, onBack, onDone }) => {
+        const gate = usePaymentGate(onDone);
         const today = utcMidnight(new Date());
         const todayMonthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
         const openHours  = org.openHours ?? [];
@@ -1345,7 +1517,7 @@
               return;
             }
             const data = await res.json().catch(() => ({}));
-            onDone({ date: selectedDate, time: selectedTime, name, service: selectedService.title, type: "appointment", reference: data?.reference });
+            gate.handle(data, { date: selectedDate, time: selectedTime, name, service: selectedService.title, type: "appointment", reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -1356,6 +1528,19 @@
         const summary = selectedService && selectedTime
           ? `${selectedService.title} · ${fmtDow(selectedDate)} ${selectedDate.getUTCDate()} ${MONTH_NAMES[selectedDate.getUTCMonth()].slice(0,3)} · ${selectedTime}`
           : "";
+
+        // Money is due: the booking exists and is holding its slot, but it
+        // is not confirmed until Stripe says it has been paid.
+        if (gate.pending) {
+          return (
+            <PaymentStep
+              payment={gate.pending.payment}
+              orgName={org.name}
+              onPaid={gate.complete}
+              onCancel={gate.cancel}
+            />
+          );
+        }
 
         if (step === "contact") {
           return (
@@ -1485,6 +1670,7 @@
 
       // ── Event booking ─────────────────────────────────────────────────────────
       const EventBooking = ({ org, events, onBack, onDone }) => {
+        const gate = usePaymentGate(onDone);
         const [selectedEvent, setSelectedEvent] = useState(null);
         // Per-event selected days for multi-day events (multi-select).
         const [eventDays, setEventDays] = useState({});
@@ -1597,7 +1783,7 @@
             const data = await res.json().catch(() => ({}));
             const firstDate = isSelectedMultiDay ? selectedDays[0] : selectedEvent.start_date;
             const dateObj = firstDate ? new Date(firstDate + "T00:00:00Z") : null;
-            onDone({
+            gate.handle(data, {
               type: "event",
               name,
               event: selectedEvent.title,
@@ -1624,6 +1810,19 @@
               : "") +
             (selectedEvent.start_time ? ` · ${selectedEvent.start_time}` : "")
           : "";
+
+        // Money is due: the booking exists and is holding its slot, but it
+        // is not confirmed until Stripe says it has been paid.
+        if (gate.pending) {
+          return (
+            <PaymentStep
+              payment={gate.pending.payment}
+              orgName={org.name}
+              onPaid={gate.complete}
+              onCancel={gate.cancel}
+            />
+          );
+        }
 
         if (step === "contact") {
           return (
@@ -1795,6 +1994,7 @@
       const WEEKDAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
       const ClassBooking = ({ org, classes, onBack, onDone }) => {
+        const gate = usePaymentGate(onDone);
         const [selectedClass, setSelectedClass] = useState(null);
         const [selectedDate,  setSelectedDate]  = useState(null);
         const [classDay,      setClassDay]      = useState({}); // { [classId]: occurrenceDate }
@@ -1865,7 +2065,7 @@
               ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })
               : "";
             const schedule = [dateLabel, timeLabel].filter(Boolean).join(" · ");
-            onDone({ type: "class", name, cls: selectedClass.title, schedule, reference: data?.reference });
+            gate.handle(data, { type: "class", name, cls: selectedClass.title, schedule, reference: data?.reference });
           } catch (err) {
             setError(await friendlyError(err));
           } finally {
@@ -1882,6 +2082,19 @@
               return `${selectedClass.title}${dateLabel ? ` · ${dateLabel}` : ""}${timeLabel ? ` · ${timeLabel}` : ""}`;
             })()
           : "";
+
+        // Money is due: the booking exists and is holding its slot, but it
+        // is not confirmed until Stripe says it has been paid.
+        if (gate.pending) {
+          return (
+            <PaymentStep
+              payment={gate.pending.payment}
+              orgName={org.name}
+              onPaid={gate.complete}
+              onCancel={gate.cancel}
+            />
+          );
+        }
 
         if (step === "contact") {
           return (
@@ -1990,11 +2203,17 @@
         <div className="card" style={{ padding: "32px 24px", textAlign: "center" }}>
           <div className="confirm-icon"><IconCheck /></div>
           <div className="confirm-title">
-            {booking.type === "event-waitlist" ? "Added to waitlist" : "Booking requested"}
+            {booking.type === "event-waitlist"
+              ? "Added to waitlist"
+              /* A paid booking is confirmed, not requested — saying otherwise
+                 after taking someone's money reads as evasive. */
+              : booking.paid ? "Booking confirmed" : "Booking requested"}
           </div>
           <div className="confirm-sub">
             {booking.type === "event-waitlist"
               ? `Thanks, ${booking.name}. ${orgName} will be in touch if a place opens up.`
+              : booking.paid
+              ? `Thanks, ${booking.name}. Your payment went through and ${orgName} has your booking. A confirmation is on its way to your inbox.`
               : `Thanks, ${booking.name}. ${orgName} has received your request and will be in touch to confirm.`}
           </div>
           {/* Booking reference — auto-generated server-side, the customer
@@ -2127,11 +2346,21 @@
             .catch(() => setLoadState("error"));
         }, [slug]);
 
-        const hasRooms        = org?.entities?.some((e) => e.type === "room");
-        const hasTables       = org?.entities?.some((e) => e.type === "table");
-        const hasAppointments = services.length > 0;
-        const hasEvents       = events.length > 0;
-        const hasClasses      = classes.length > 0;
+        // `bookableTypes` comes from the same public endpoint the app uses, so
+        // the two surfaces cannot disagree about what this business offers.
+        // Falls back to deriving it locally for the moment between deploying
+        // this page and the webservice that supplies the field.
+        const bookable = org?.bookableTypes ?? null;
+        const hasRooms        = bookable ? bookable.includes("room")
+                                         : !!org?.entities?.some((e) => e.type === "room");
+        const hasTables       = bookable ? bookable.includes("table")
+                                         : !!org?.entities?.some((e) => e.type === "table");
+        const hasAppointments = bookable ? bookable.includes("appointment") : services.length > 0;
+        const hasEvents       = bookable ? bookable.includes("event")       : events.length > 0;
+        const hasClasses      = bookable ? bookable.includes("class")       : classes.length > 0;
+        // A business can switch online bookings off; the server refuses these
+        // too, so this only saves the customer a wasted journey.
+        const bookingsOpen    = org?.allowBookings !== false;
         const optionCount     = [hasRooms, hasTables, hasAppointments, hasEvents, hasClasses].filter(Boolean).length;
 
         return (
@@ -2170,7 +2399,16 @@
 
               {loadState === "ready" && !confirmed && !bookingType && (
                 <>
-                  {hasRooms || hasTables || hasAppointments || hasEvents || hasClasses ? (
+                  {!bookingsOpen ? (
+                    <div className="card" style={{ padding: "28px 24px", textAlign: "center" }}>
+                      <div className="confirm-title">Not taking bookings</div>
+                      <div className="confirm-sub">
+                        {org?.name ?? "This business"} isn't accepting online
+                        bookings at the moment. Please get in touch with them
+                        directly.
+                      </div>
+                    </div>
+                  ) : hasRooms || hasTables || hasAppointments || hasEvents || hasClasses ? (
                     <>
                       {optionCount > 1 && (
                         <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-2)", marginBottom: 16 }}>

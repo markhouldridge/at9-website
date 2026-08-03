@@ -6,7 +6,7 @@
     <title>Booking Management App for Small Businesses | At9</title>
     <meta
       name="description"
-      content="Manage room, table, appointment, class and event bookings from your phone. Solo is free forever — no card, no limits. Upgrade to Team (£34.99) for shared diaries and reminders. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Start with a 90-day free trial, then Solo (£9.99) or Team (£29.99). Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#554aca" />
@@ -38,7 +38,7 @@
     />
     <meta
       property="og:description"
-      content="Manage room, table, appointment, class and event bookings from your phone. Solo is free forever — no card, no limits. Upgrade to Team (£34.99) for shared diaries and reminders. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Start with a 90-day free trial, then Solo (£9.99) or Team (£29.99). Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <link
       rel="preload"
@@ -66,7 +66,7 @@
               {
                 "@type": "Offer",
                 "name": "Solo",
-                "price": "0",
+                "price": "9.99",
                 "priceCurrency": "GBP",
                 "priceSpecification": {
                   "@type": "UnitPriceSpecification",
@@ -78,7 +78,7 @@
               {
                 "@type": "Offer",
                 "name": "Team",
-                "price": "34.99",
+                "price": "29.99",
                 "priceCurrency": "GBP",
                 "priceSpecification": {
                   "@type": "UnitPriceSpecification",
@@ -1052,6 +1052,30 @@
         width: 100%;
         height: auto;
       }
+      /* "Powered by Stripe" chip. Stripe's brand purple on its own tint, kept
+         small so it reads as a trust mark rather than a second logo competing
+         with At9's. */
+      .stripe-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 12px;
+        padding: 5px 10px;
+        border-radius: 8px;
+        background: rgba(99, 91, 255, 0.09);
+        color: #635bff;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        line-height: 1;
+        align-self: flex-start;
+      }
+      .stripe-badge strong {
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: -0.01em;
+      }
+
       .free-ico {
         width: 46px;
         height: 46px;
@@ -1368,17 +1392,6 @@
           line-height: 1.4;
         }
       }
-
-      /* Sits between a section's heading and the cards it labels. Centred, and
-         tucked closer to the grid than to the copy above, so it reads as a tag
-         ON the block rather than as another line of the heading. */
-      .block-tag {
-        text-align: center;
-        margin: -24px 0 26px;
-      }
-      .block-tag .offer-badge {
-        margin-bottom: 0;
-      }
       .pricing-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -1458,11 +1471,6 @@
           var(--brand-violet) 100%
         );
         color: #fff;
-      }
-      /* Solo's badge. Mint carries "free"; the gradient stays Team's. */
-      .plan .tag--free {
-        background: var(--secondary);
-        color: #06301e;
       }
       .plan .price {
         display: flex;
@@ -2178,7 +2186,7 @@
           <span>Trusted by businesses like yours</span>
         </div>
         <div class="meta meta-pills">
-          <span>Free forever plan</span>
+          <span>90-day free trial</span>
           <span>No credit card required</span>
           <span>Set up in minutes</span>
         </div>
@@ -2198,25 +2206,6 @@
             Every booking you take, on one schedule. No double-bookings, no
             missed messages, no paper diary to manage.
           </p>
-        </div>
-
-        <div class="block-tag">
-          <span class="offer-badge">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                d="M8 0 L 9.2 5.2 L 14.4 6.4 L 9.2 7.6 L 8 12.8 L 6.8 7.6 L 1.6 6.4 L 6.8 5.2 Z"
-              />
-            </svg>
-            Everything below is free, forever
-            <span class="sep"></span>
-            No credit card
-          </span>
         </div>
 
         <div class="free-grid">
@@ -2247,8 +2236,8 @@
             <span class="free-ico"><i data-lucide="users"></i></span>
             <h3>Customers in one place</h3>
             <p>
-              Keep customers and their bookings together, so you always know
-              who's coming and when.
+              Contact details, bookings, messages and files together, so you
+              always know who's coming and when.
             </p>
           </article>
 
@@ -2276,18 +2265,29 @@
           </article>
 
           <article class="bt-card free-card">
-            <span class="free-ico"><i data-lucide="message-circle"></i></span>
-            <h3>Message customers</h3>
-            <p>Contact customers about their booking, without leaving At9.</p>
-          </article>
-
-          <article class="bt-card free-card">
             <span class="free-ico"><i data-lucide="smartphone"></i></span>
-            <h3>Customer self-service</h3>
+            <h3>Customers self-serve</h3>
             <p>
               Customers can view and manage their bookings, reducing calls and
               admin.
             </p>
+          </article>
+
+          <article class="bt-card free-card">
+            <span class="free-ico"><i data-lucide="credit-card"></i></span>
+            <h3>Payments</h3>
+            <p>
+              Take deposits or payment at the time of booking — configure what
+              each service, class or event charges.
+            </p>
+            <!-- Trust mark, set in type. Stripe's wordmark is a trademark and
+                 must come from their official brand assets
+                 (stripe.com/newsroom/brand-assets) — drop the SVG in here and
+                 remove the text span. A hand-drawn approximation is worse than
+                 no logo. -->
+            <span class="stripe-badge">
+              Powered by <strong>Stripe</strong>
+            </span>
           </article>
         </div>
       </div>
@@ -2534,18 +2534,19 @@
                 d="M8 0 L 9.2 5.2 L 14.4 6.4 L 9.2 7.6 L 8 12.8 L 6.8 7.6 L 1.6 6.4 L 6.8 5.2 Z"
               />
             </svg>
-            No credit card
+            Full access from day one
             <span class="sep"></span>
-            No time limit
+            No credit card required
           </span>
           <h2>
-            Start taking bookings
-            <span class="squiggle-wrap">free forever</span>.
+            Try At9
+            <span class="squiggle-wrap">free for 90 days</span>.
           </h2>
           <p class="lead">
-            Solo is genuinely free — not a trial, not a countdown, and not
-            capped at a handful of bookings. Run your whole diary on it for as
-            long as you like. Add Team when you bring someone else in.
+            Set up in minutes and start taking real bookings today — every
+            feature unlocked, nothing to pay and no card to enter. When the 90
+            days are up, pick the plan that fits. Cancel any time, and your data
+            always comes with you.
           </p>
         </div>
 
@@ -2553,19 +2554,19 @@
           <div class="plan">
             <div class="plan-head">
               <h3>Solo</h3>
-              <span class="tag tag--free">Free forever</span>
             </div>
             <p class="summary">
               Everything you need to take and manage bookings on your own —
               nothing you don't.
             </p>
             <div class="price">
-              <span class="amount">Free</span>
-              <span class="per">forever</span>
+              <span class="amount">£9.99</span>
+              <span class="per">/ month</span>
             </div>
             <p class="price-note">
-              No card, no time limit and no cap on bookings or customers.
-              Download it and start today.
+              Free for the first 90 days — cancel before it ends and you pay
+              nothing. Prices exclude local taxes; your App Store or Google Play
+              price may differ.
             </p>
             <p class="list-label">Everything you get</p>
             <ul>
@@ -2687,7 +2688,7 @@
               href="https://apps.apple.com/app/id6742573363"
               target="_blank"
               rel="noopener"
-              >Get At9 free</a
+              >Try Solo free</a
             >
           </div>
 
@@ -2701,13 +2702,13 @@
               customers coming back.
             </p>
             <div class="price">
-              <span class="amount">£34.99</span>
+              <span class="amount">£29.99</span>
               <span class="per">/ month</span>
             </div>
             <p class="price-note">
-              Cancel any time — you keep everything on Solo, free. Prices
-              exclude local taxes; your App Store or Google Play price may
-              differ.
+              Free for the first 90 days — cancel before it ends and you pay
+              nothing. Prices exclude local taxes; your App Store or Google Play
+              price may differ.
             </p>
             <p class="list-label">Everything in Solo, plus</p>
             <ul>
@@ -2813,7 +2814,7 @@
               href="https://apps.apple.com/app/id6742573363"
               target="_blank"
               rel="noopener"
-              >Get Team</a
+              >Try Team free</a
             >
           </div>
         </div>
@@ -2887,27 +2888,28 @@
           </details>
           <details class="faq-item">
             <summary>
-              Is Solo really free, or is it a trial?
+              Do you require a credit card to start the free trial?
               <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              Really free. Solo is free forever — no credit card, no time limit,
-              and no cap on how many bookings or customers you have. You can run
-              your whole business on it and never pay us a penny. Team is the
-              paid plan, for when you need more than one person in the diary.
+              No. Every organisation gets a 90-day free trial from the day you
+              register — no card, no payment details, nothing to cancel if you
+              decide At9 is not for you. You get full access to everything,
+              including the Team features, for the whole 90 days.
             </div>
           </details>
           <details class="faq-item">
             <summary>
-              What is the catch? How do you make money?
+              What happens when my free trial ends?
               <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              No catch. We do not sell your data, show you ads or take a cut of
-              your bookings. At9 is paid for by the businesses who upgrade to
-              Team (£34.99/month) for shared diaries, reminders, files, notes
-              and customer history. Solo being free is how we get those
-              businesses in the first place.
+              Nothing disappears. Your bookings, customers and settings are all
+              still there, and you can still sign in and see them. To carry on
+              taking new bookings you will need an active plan — Solo
+              (£9.99/month) for the essentials, or Team (£29.99/month) to add
+              team access, reminders, files, notes and customer history. Pick
+              whichever fits when you are ready.
             </div>
           </details>
           <details class="faq-item">
@@ -2929,12 +2931,12 @@
               <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              Yes. Upgrade to Team the day you need it, and cancel whenever you
-              like — there is no minimum term and no cancellation fee. Because
-              Team is purchased through the App Store or Google Play, you manage
-              or cancel it in your Apple or Google account settings, and it
-              stays active until the end of the period you have paid for. When
-              it ends you drop back to Solo and keep everything on it.
+              Yes. You can move between Solo and Team whenever your needs
+              change, and cancel any time — there is no minimum term and no
+              cancellation fee. Because plans are purchased through the App
+              Store or Google Play, you manage or cancel your subscription in
+              your Apple or Google account settings, and it stays active until
+              the end of the period you have already paid for.
             </div>
           </details>
           <details class="faq-item">
@@ -2958,8 +2960,8 @@
           <span class="eyebrow">Get the app</span>
           <h2>Your bookings, sorted today.</h2>
           <p class="lead" style="margin: 0 auto; max-width: 560px">
-            Download At9 for iOS or Android and start taking bookings today —
-            free forever, no card required.
+            Download At9 for iOS or Android. Start your 90-day free trial — no
+            card required.
           </p>
 
           <div class="store-row">
