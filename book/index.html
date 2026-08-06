@@ -2062,7 +2062,7 @@
             const data = await res.json().catch(() => ({}));
             const timeLabel = [selectedClass.start_time, selectedClass.end_time].filter(Boolean).join("–");
             const dateLabel = selectedDate
-              ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })
+              ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" })
               : "";
             const schedule = [dateLabel, timeLabel].filter(Boolean).join(" · ");
             gate.handle(data, { type: "class", name, cls: selectedClass.title, schedule, reference: data?.reference });
@@ -2077,7 +2077,7 @@
           ? (() => {
               const timeLabel = [selectedClass.start_time, selectedClass.end_time].filter(Boolean).join("–");
               const dateLabel = selectedDate
-                ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })
+                ? new Date(selectedDate + "T00:00:00Z").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" })
                 : "";
               return `${selectedClass.title}${dateLabel ? ` · ${dateLabel}` : ""}${timeLabel ? ` · ${timeLabel}` : ""}`;
             })()
