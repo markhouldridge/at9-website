@@ -474,18 +474,46 @@ that child 16px and the corners look pinched.
 
 ## 5. Typography
 
-| Role                                 | Face                                      |
-| ------------------------------------ | ----------------------------------------- |
-| Display / headlines                  | **Inter Tight** — 600 / 700               |
-| UI, body, labels                     | **Inter** — 400 / 500 / 600 / 700         |
-| Any number in a list, table or price | **Inter + `tabular-nums` + slashed zero** |
+**Two faces, split by what the surface *does* — not by which folder it lives in.**
 
-One superfamily, one OFL licence, one variable file. Inter is the strongest screen face
-at 13–17px; Inter Tight has negative default tracking so headlines set without
-hand-kerning. **Never load a third face.**
+| Surface                                              | Face                                  |
+| ---------------------------------------------------- | ------------------------------------- |
+| **Product** — the app, and the web booking page (`/website/book`) | **Inter** — 400 / 500 / 600 / 700 |
+| **Marketing** — every other page on the website      | **Switzer** — 400 / 500 / 600 / 700   |
+| Any number in a list, table or price                 | the surface's face + `tabular-nums` + `slashed-zero` |
 
-React Native fallback if you can't bundle: the system stack (SF Pro / Roboto). Do not
-substitute a random Google font — a mismatched fallback is worse than a system font.
+**The test: is the person reading, or working?** A marketing page is read — it has to
+have a voice and persuade someone who has never heard of At9. A product surface is
+worked: slots, dates, prices, forms, counts. Inter is drawn for exactly that — tall
+x-height, open apertures, figures that hold a column at 13px. It is also unremarkable,
+which is right behind a working diary and wrong on a page that has to sell. Switzer is
+warmer and more distinctive, and carries the marketing surfaces without tipping into
+decoration.
+
+**The web booking page is the case that proves the rule.** It sits under `/website`, so
+"the website uses Switzer" would put it there — but it is a booking tool with a calendar,
+forty time slots and a payment step, and the customer using it is working, not reading.
+It uses **Inter**, like the app. Its brand is carried by the indigo palette and the
+"Powered by At9 Booking" mark, which do that job better than a typeface does at 13px.
+
+**One face per surface.** Within either, do not introduce a second family for headings.
+Weight, size and colour are the hierarchy; a second face is not.
+
+- **App, and `/website/book`:** load Inter (the app bundles it; the booking page loads weights 400–700). React Native fallback if you cannot bundle it: the system stack
+  (SF Pro / Roboto). Do not substitute a random Google font — a mismatched fallback is
+  worse than a system font.
+- **Website (marketing pages):** load Switzer from Fontshare, **weights 400/500/600/700 only**. Nothing on
+  the site uses 800, and loading a weight you do not use is a file on the critical path
+  for nothing. Never reference a weight that is not loaded — the browser synthesises a
+  fake bold, which reads as smeared and uneven.
+- Fallback stack on web: `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`.
+
+**The one exception — Caveat.** A handwriting face used for a small number of
+handwritten-aside accents on the **marketing homepage only** (the hero badge, hero tags,
+the booking-link annotation). It is the brand's one moment of warmth. It must never
+appear in the app, on the booking page, or in running prose, and it never carries
+information that is not also available without it. If you are reaching for it anywhere
+else, the answer is no.
 
 ### The scale — app (dp)
 
@@ -1061,7 +1089,7 @@ artefact. Style Dictionary does the conversion in the build.
 | `light-dark()`                               | Halves the theme CSS — one declaration instead of two blocks.                                                                                   |
 | `@layer tokens, base, components, utilities` | Cascade control. Specificity wars stop being a thing.                                                                                           |
 | Container queries                            | Components respond to _their own_ width, not the viewport. This is what makes a card work in a sidebar and full-bleed.                          |
-| `size-adjust` on the fallback font           | Matches the fallback's metrics to Inter's, so nothing shifts when the webfont lands. Prevents CLS — a real Core Web Vitals score, not a nicety. |
+| `size-adjust` on the fallback font           | Matches the fallback's metrics to Switzer's, so nothing shifts when the webfont lands. Prevents CLS — a real Core Web Vitals score, not a nicety. |
 
 None of these exist in React Native. Don't try.
 
