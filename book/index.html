@@ -252,6 +252,38 @@
       .cal-day:disabled { color: var(--text-3); cursor: default; }
       .cal-day.today { font-weight: 700; }
 
+      /* ── Availability markers ───────────────────────────────────────────────
+         A day with something bookable carries a dot. The dot is never the only
+         signal: a day without one is also disabled, so the information is
+         carried by state as well as by colour. */
+      .cal-cell { position: relative; }
+      .cal-dot {
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #16a34a;
+        pointer-events: none;
+      }
+      .cal-day.selected .cal-dot, .cal-day.selected + .cal-dot { background: #fff; }
+      /* Sits over the grid only, so the month arrows stay reachable while a
+         month is being looked up. */
+      .cal-grid-wrap { position: relative; }
+      .cal-veil {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: color-mix(in srgb, var(--surface) 72%, transparent);
+        font-size: 13px;
+        color: var(--text-2);
+        border-radius: var(--r-sm);
+      }
+
       /* ── Date summary bar ───────────────────────────────────────────────────── */
       .date-bar {
         display: flex;
@@ -284,79 +316,8 @@
       }
 
       /* ── Date strip (table booking) ─────────────────────────────────────────── */
-      .date-strip-hdr {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-      .date-strip-hdr-label {
-        flex: 1;
-        text-align: center;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--text);
-      }
-      .strip-nav-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 8px 12px;
-        font-size: 22px;
-        color: var(--text-2);
-        transition: color 0.12s;
-        line-height: 1;
-      }
-      .strip-nav-btn:hover:not(:disabled) { color: var(--accent); }
-      .strip-nav-btn:active:not(:disabled) { opacity: 0.5; }
-      .strip-nav-btn:disabled { opacity: 0.25; cursor: default; }
-      .date-strip-wrap {
-        display: flex;
-        align-items: stretch;
-        gap: 4px;
-      }
-      .strip-side-btn {
-        background: var(--surface);
-        border: 1.5px solid var(--border);
-        border-radius: var(--r-sm);
-        cursor: pointer;
-        padding: 0 12px;
-        color: var(--text-2);
-        font-size: 20px;
-        line-height: 1;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        transition: border-color 0.12s, color 0.12s;
-      }
-      .strip-side-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-      .strip-side-btn:active:not(:disabled) { opacity: 0.5; }
-      .strip-side-btn:disabled { opacity: 0.25; cursor: default; }
-      .date-strip {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        scrollbar-width: none;
-      }
-      .date-strip::-webkit-scrollbar { display: none; }
-      .date-chip {
-        min-width: 60px;
-        padding: 8px 4px;
-        border-radius: var(--r-sm);
-        border: 1.5px solid var(--border);
-        background: var(--surface);
-        text-align: center;
-        cursor: pointer;
-        flex-shrink: 0;
-        transition: border-color 0.12s, background 0.12s;
-      }
-      .date-chip:hover { border-color: var(--accent); }
-      .date-chip.selected { border-color: var(--accent); background: var(--accent); }
-      .date-chip-day { font-size: 12px; font-weight: 600; color: var(--text-2); text-transform: uppercase; }
-      .date-chip-num { font-size: 17px; font-weight: 700; color: var(--text); margin-top: 1px; }
-      .date-chip.selected .date-chip-day,
-      .date-chip.selected .date-chip-num { color: #fff; }
+      /* The date strip's styles went with it — see the Calendar's single mode. */
+      /* The date chips went with the strip — see the Calendar's single mode. */
 
       /* ── Time slots ─────────────────────────────────────────────────────────── */
       .slot-period {
@@ -748,10 +709,39 @@
 
 
       // ── Calendar component ────────────────────────────────────────────────────
-      const Calendar = ({ startDate, endDate, onChange, disablePast }) => {
+      // Two modes on one component.
+      //
+      //   range  — rooms: a start and an end, the original behaviour.
+      //   single — tables and appointments: one day, with availability markers.
+      //
+      // The single mode exists so the web asks "which days have anything free"
+      // the same way the app does, rather than making someone open each day in
+      // turn to find out. `markers` is a { 'YYYY-MM-DD': boolean } map from the
+      // same availability computation that answers the day itself, so a day
+      // carrying a dot always opens onto times.
+      const Calendar = ({
+        startDate,
+        endDate,
+        onChange,
+        disablePast,
+        mode = "range",
+        selected,
+        markers,
+        markersLoading,
+        onMonthChange,
+      }) => {
+        const single = mode === "single";
         const today = utcMidnight(new Date());
-        const seed  = startDate ?? today;
+        const seed  = (single ? selected : startDate) ?? today;
         const [month, setMonth] = useState(() => utcStartOfMonth(seed));
+
+        const goMonth = (delta) => {
+          setMonth((m) => {
+            const next = utcAddMonths(m, delta);
+            if (onMonthChange) onMonthChange(next);
+            return next;
+          });
+        };
 
         const first  = utcStartOfMonth(month);
         const offset = (first.getUTCDay() + 6) % 7;
@@ -765,6 +755,7 @@
         while (cells.length % 7 !== 0) cells.push(null);
 
         const handleDay = (day) => {
+          if (single) return onChange(day);
           if (!startDate || (startDate && endDate)) {
             onChange(day, null);
           } else if (utcBefore(day, startDate) || utcIsSameDay(day, startDate)) {
@@ -777,37 +768,57 @@
         return (
           <div>
             <div className="cal-header">
-              <button className="cal-nav" onClick={() => setMonth((m) => utcAddMonths(m, -1))}>‹</button>
+              <button className="cal-nav" onClick={() => goMonth(-1)}>‹</button>
               <span className="cal-month">
                 {MONTH_NAMES[month.getUTCMonth()]} {month.getUTCFullYear()}
               </span>
-              <button className="cal-nav" onClick={() => setMonth((m) => utcAddMonths(m, 1))}>›</button>
+              <button className="cal-nav" onClick={() => goMonth(1)}>›</button>
             </div>
+            <div className="cal-grid-wrap">
             <div className="cal-grid">
               {WEEKDAYS.map((d) => <div key={d} className="cal-weekday">{d}</div>)}
               {cells.map((day, i) => {
                 if (!day) return <div key={i} className="cal-cell" />;
+                const iso       = fmtIso(day);
                 const isPast    = disablePast && utcMidnight(day) < today;
                 const isStart   = startDate && utcIsSameDay(day, startDate);
                 const isEnd     = endDate   && utcIsSameDay(day, endDate);
                 const inRange   = startDate && endDate && utcAfter(day, startDate) && utcBefore(day, endDate);
                 const isToday   = utcIsSameDay(day, today);
+                const isChosen  = single && selected && utcIsSameDay(day, selected);
+                // Only once the answer is in. While a month is loading every
+                // day would otherwise read as unavailable, which is a worse lie
+                // than saying nothing.
+                const hasMarker = !!markers && markers[iso] === true;
+                const unbookable = single && !!markers && !markersLoading && !hasMarker;
                 let cls = "cal-day";
                 if (isToday) cls += " today";
+                if (isChosen) cls += " selected";
                 let selStyle = {};
-                if (isStart || isEnd || (isStart && isEnd)) {
+                if (isChosen) {
+                  selStyle = { background: "var(--accent)", color: "#fff", fontWeight: 600 };
+                } else if (isStart || isEnd) {
                   selStyle = { background: "#16a34a", color: "#fff", fontWeight: 600 };
                 } else if (inRange) {
                   selStyle = { background: "#bbf7d0", color: "#16a34a", fontWeight: 500 };
                 }
                 return (
                   <div key={i} className="cal-cell">
-                    <button className={cls} style={selStyle} disabled={isPast} onClick={() => handleDay(day)}>
+                    <button
+                      className={cls}
+                      style={selStyle}
+                      disabled={isPast || unbookable}
+                      onClick={() => handleDay(day)}>
                       {day.getUTCDate()}
                     </button>
+                    {single && hasMarker && !isChosen ? <span className="cal-dot" /> : null}
                   </div>
                 );
               })}
+            </div>
+            {single && markersLoading ? (
+              <div className="cal-veil">Checking availability…</div>
+            ) : null}
             </div>
           </div>
         );
@@ -1234,6 +1245,21 @@
       const fmtIso = (d) =>
         `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
 
+      // Settles a value that changes in bursts.
+      //
+      // Party size is a stepper, so 2 → 8 is six clicks in about a second, and
+      // both availability fetches key off it. Undebounced that is six month
+      // lookups and six slot lookups, with the calendar flickering through
+      // "Checking availability" for answers nobody will read.
+      const useSettled = (value, ms = 300) => {
+        const [settled, setSettled] = useState(value);
+        useEffect(() => {
+          const handle = setTimeout(() => setSettled(value), ms);
+          return () => clearTimeout(handle);
+        }, [value, ms]);
+        return settled;
+      };
+
       const isDayClosed = (d, openHours, overrides) => {
         const jsDay  = d.getUTCDay();
         const weekday = jsDay === 0 ? 7 : jsDay;
@@ -1269,7 +1295,12 @@
 
         const [selectedDate,    setSelectedDate]    = useState(firstOpenDate);
         const [selectedTime,    setSelectedTime]    = useState(null);
-        const [guests,          setGuests]          = useState(1);
+        // Two, not one. The occupancy filter is `occupancy >= guests`, so a
+        // default of one matched every table and the calendar answered the most
+        // permissive question there is. Two is the commonest booking and is a
+        // real constraint.
+        const [guests,          setGuests]          = useState(2);
+        const settledGuests = useSettled(guests);
         const [step,            setStep]            = useState("times");
         const [loading,         setLoading]         = useState(false);
         const [error,           setError]           = useState("");
@@ -1277,20 +1308,8 @@
         const [slotDuration,    setSlotDuration]    = useState(90);
         const [loadingSlots,    setLoadingSlots]    = useState(false);
 
-        const goToPrevMonth = () => {
-          setSelectedMonth(prev => {
-            const m = new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() - 1, 1));
-            return m >= todayMonthStart ? m : todayMonthStart;
-          });
-          setSelectedTime(null);
-        };
-
-        const goToNextMonth = () => {
-          setSelectedMonth(prev =>
-            new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() + 1, 1))
-          );
-          setSelectedTime(null);
-        };
+        // Month navigation lives in the Calendar now; it reports the new
+        // month back through onMonthChange.
 
         // When month changes, select first open day of the new window
         const prevMonthRef = React.useRef(selectedMonth);
@@ -1300,15 +1319,7 @@
           if (newFirst) setSelectedDate(newFirst);
         }
 
-        const isPrevDisabled = selectedMonth.getUTCFullYear() === todayMonthStart.getUTCFullYear() &&
-                               selectedMonth.getUTCMonth() === todayMonthStart.getUTCMonth();
 
-        const dateStripRef = React.useRef(null);
-        const scrollStrip = (dir) => {
-          if (dateStripRef.current) {
-            dateStripRef.current.scrollBy({ left: dir * dateStripRef.current.clientWidth, behavior: 'smooth' });
-          }
-        };
 
         const tables  = entities.filter((e) => e.type === "table");
         const slots   = serverSlots ?? [];
@@ -1324,7 +1335,7 @@
           setLoadingSlots(true);
           setSelectedTime(null);
           const dateStr = `${selectedDate.getUTCFullYear()}-${pad(selectedDate.getUTCMonth()+1)}-${pad(selectedDate.getUTCDate())}`;
-          fetch(`${WS_URI}/tables/public/availability/${org.id}?date=${dateStr}&guests=${guests}`)
+          fetch(`${WS_URI}/tables/public/availability/${org.id}?date=${dateStr}&guests=${settledGuests}`)
             .then(r => r.ok ? r.json() : Promise.reject())
             .then(data => {
               if (!cancelled) {
@@ -1335,7 +1346,28 @@
             .catch(() => { if (!cancelled) setServerSlots([]); })
             .finally(() => { if (!cancelled) setLoadingSlots(false); });
           return () => { cancelled = true; };
-        }, [selectedDate, guests]);
+        }, [selectedDate, settledGuests]);
+
+        // Which days this month have a table free, for the calendar's markers.
+        // Same endpoint as the slot fetch above, in its range mode — so a day
+        // carrying a dot always opens onto times, and a party of six is never
+        // marked against tables that seat two.
+        const [dayMarkers,     setDayMarkers]     = useState({});
+        const [markersLoading, setMarkersLoading] = useState(true);
+        useEffect(() => {
+          let cancelled = false;
+          setMarkersLoading(true);
+          const monthEnd = new Date(Date.UTC(selectedMonth.getUTCFullYear(), selectedMonth.getUTCMonth() + 1, 0));
+          const isCurrentMonth = selectedMonth.getUTCFullYear() === today.getUTCFullYear() &&
+                                 selectedMonth.getUTCMonth() === today.getUTCMonth();
+          const from = fmtIso(isCurrentMonth ? today : selectedMonth);
+          fetch(`${WS_URI}/tables/public/availability/${org.id}?from=${from}&to=${fmtIso(monthEnd)}&guests=${settledGuests}`)
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => { if (!cancelled) setDayMarkers(data.days ?? {}); })
+            .catch(() => { if (!cancelled) setDayMarkers({}); })
+            .finally(() => { if (!cancelled) setMarkersLoading(false); });
+          return () => { cancelled = true; };
+        }, [selectedMonth, settledGuests]);
 
         const summary = `${fmtDow(selectedDate)} ${selectedDate.getUTCDate()} ${MONTH_NAMES[selectedDate.getUTCMonth()].slice(0,3)} · ${selectedTime}`;
 
@@ -1410,46 +1442,43 @@
               <IconArrowLeft /> Back
             </button>
             <div className="card">
+              {/* Party size first, because it decides what the calendar
+                  means. Every marker answers "is anything free for this many
+                  people", so asking afterwards showed availability for a party
+                  the customer had not chosen — and a day free for two is not
+                  free for eight. */}
+              <p className="section-label">Number of guests</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <button
+                  style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid var(--border)",
+                    background: "var(--surface)", fontSize: 20, cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center" }}
+                  disabled={guests <= 1}
+                  onClick={() => setGuests(g => Math.max(1, g - 1))}>−</button>
+                <span style={{ fontSize: 18, minWidth: 24, textAlign: "center" }}>{guests}</span>
+                <button
+                  style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid var(--border)",
+                    background: "var(--surface)", fontSize: 20, cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center" }}
+                  onClick={() => setGuests(g => g + 1)}>+</button>
+              </div>
+            </div>
+            <div className="card">
               <p className="section-label">Pick a date</p>
-              <div className="date-strip-hdr">
-                <button
-                  className="strip-nav-btn"
-                  disabled={isPrevDisabled}
-                  onClick={goToPrevMonth}>
-                  &#8249;
-                </button>
-                <span className="date-strip-hdr-label">
-                  {MONTH_NAMES[selectedMonth.getUTCMonth()]} {selectedMonth.getUTCFullYear()}
-                </span>
-                <button className="strip-nav-btn" onClick={goToNextMonth}>
-                  &#8250;
-                </button>
-              </div>
-              <div className="date-strip-wrap">
-                <button
-                  className="strip-side-btn"
-                  onClick={() => scrollStrip(-1)}>
-                  &#8249;
-                </button>
-                <div className="date-strip" ref={dateStripRef}>
-                  {dates.map((d, i) => {
-                    const sel    = utcIsSameDay(d, selectedDate);
-                    const closed = isDayClosed(d, openHours, overrides);
-                    return (
-                      <div key={i}
-                        className={`date-chip${sel ? " selected" : ""}${closed ? " closed" : ""}`}
-                        onClick={() => { if (!closed) { setSelectedDate(d); setSelectedTime(null); } }}
-                        style={closed ? { opacity: 0.35, cursor: "default" } : undefined}>
-                        <div className="date-chip-day">{fmtDow(d)}</div>
-                        <div className="date-chip-num">{d.getUTCDate()}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <button className="strip-side-btn" onClick={() => scrollStrip(1)}>
-                  &#8250;
-                </button>
-              </div>
+              {/* A month grid, not a swipe strip. The strip made someone open
+                  every day to learn whether anything was free; the grid answers
+                  it at a glance, and the dots come from the same availability
+                  computation that answers the day itself — so a day carrying a
+                  dot always opens onto times. Matches the app. */}
+              <Calendar
+                mode="single"
+                disablePast
+                selected={selectedDate}
+                markers={dayMarkers}
+                markersLoading={markersLoading}
+                onMonthChange={(m) => setSelectedMonth(m)}
+                onChange={(d) => { setSelectedDate(d); setSelectedTime(null); }}
+              />
             </div>
             <div className="card">
               <p className="section-label">Pick a time</p>
@@ -1482,23 +1511,6 @@
               {!loadingSlots && slots.length === 0 && (
                 <p style={{ color: "var(--text-3)", fontSize: 14 }}>No available times.</p>
               )}
-            </div>
-            <div className="card">
-              <p className="section-label">Number of guests</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <button
-                  style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid var(--border)",
-                    background: "var(--surface)", fontSize: 20, cursor: "pointer",
-                    display: "flex", alignItems: "center", justifyContent: "center" }}
-                  disabled={guests <= 1}
-                  onClick={() => setGuests(g => Math.max(1, g - 1))}>−</button>
-                <span style={{ fontSize: 18, minWidth: 24, textAlign: "center" }}>{guests}</span>
-                <button
-                  style={{ width: 36, height: 36, borderRadius: "50%", border: "1px solid var(--border)",
-                    background: "var(--surface)", fontSize: 20, cursor: "pointer",
-                    display: "flex", alignItems: "center", justifyContent: "center" }}
-                  onClick={() => setGuests(g => g + 1)}>+</button>
-              </div>
             </div>
             <button className="btn btn-primary" disabled={!selectedTime || guests < 1}
               onClick={() => setStep("contact")}>
@@ -1537,12 +1549,6 @@
           );
         })();
 
-        const isPrevDisabled = selectedMonth.getUTCFullYear() === todayMonthStart.getUTCFullYear() &&
-                               selectedMonth.getUTCMonth() === todayMonthStart.getUTCMonth();
-        const dateStripRef = React.useRef(null);
-        const scrollStrip = (dir) => {
-          if (dateStripRef.current) dateStripRef.current.scrollBy({ left: dir * dateStripRef.current.clientWidth, behavior: 'smooth' });
-        };
 
         useEffect(() => {
           if (!selectedService || !selectedDate) return;
@@ -1551,13 +1557,56 @@
           setLoadingSlots(true);
           setSelectedTime(null);
           const dateStr = fmtIso(selectedDate);
-          fetch(`${WS_URI}/services/public/${selectedService.id}/availability?date=${dateStr}`)
+          // The bundle endpoint, which is what the app asks.
+          //
+          // This used to call /services/public/:id/availability — a second
+          // implementation of "is this slot free". Two answers to one question
+          // is how the web and the app come to disagree about whether a time is
+          // bookable, and only one of them can be right. One computation now
+          // serves both, and the markers below come from the same one again.
+          fetch(`${WS_URI}/services/availability/bundle/public`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              organisationId: org.id,
+              serviceIds: [selectedService.id],
+              date: dateStr,
+            }),
+          })
             .then(r => r.ok ? r.json() : Promise.reject())
             .then(data => { if (!cancelled) setSlots(data.slots ?? []); })
             .catch(() => { if (!cancelled) setSlots([]); })
             .finally(() => { if (!cancelled) setLoadingSlots(false); });
           return () => { cancelled = true; };
         }, [selectedService, selectedDate]);
+
+        // Which days this month have a slot, for the calendar's markers. Same
+        // endpoint, range mode.
+        const [dayMarkers,     setDayMarkers]     = useState({});
+        const [markersLoading, setMarkersLoading] = useState(true);
+        useEffect(() => {
+          if (!selectedService) return;
+          let cancelled = false;
+          setMarkersLoading(true);
+          const monthEnd = new Date(Date.UTC(selectedMonth.getUTCFullYear(), selectedMonth.getUTCMonth() + 1, 0));
+          const isCurrentMonth = selectedMonth.getUTCFullYear() === today.getUTCFullYear() &&
+                                 selectedMonth.getUTCMonth() === today.getUTCMonth();
+          fetch(`${WS_URI}/services/availability/bundle/public`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              organisationId: org.id,
+              serviceIds: [selectedService.id],
+              from: fmtIso(isCurrentMonth ? today : selectedMonth),
+              to: fmtIso(monthEnd),
+            }),
+          })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => { if (!cancelled) setDayMarkers(data.days ?? {}); })
+            .catch(() => { if (!cancelled) setDayMarkers({}); })
+            .finally(() => { if (!cancelled) setMarkersLoading(false); });
+          return () => { cancelled = true; };
+        }, [selectedService, selectedMonth]);
 
         const grouped = (() => {
           const out = { Morning: [], Afternoon: [], Evening: [] };
@@ -1673,40 +1722,20 @@
 
                 <div className="card">
                   <p className="section-label">Pick a date</p>
-                  <div className="date-strip-hdr">
-                    <button className="strip-nav-btn" disabled={isPrevDisabled}
-                      onClick={() => {
-                        setSelectedMonth(prev => new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() - 1, 1)));
-                        setSelectedTime(null);
-                      }}>&#8249;</button>
-                    <span className="date-strip-hdr-label">
-                      {MONTH_NAMES[selectedMonth.getUTCMonth()]} {selectedMonth.getUTCFullYear()}
-                    </span>
-                    <button className="strip-nav-btn"
-                      onClick={() => {
-                        setSelectedMonth(prev => new Date(Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() + 1, 1)));
-                        setSelectedTime(null);
-                      }}>&#8250;</button>
-                  </div>
-                  <div className="date-strip-wrap">
-                    <button className="strip-side-btn" onClick={() => scrollStrip(-1)}>&#8249;</button>
-                    <div className="date-strip" ref={dateStripRef}>
-                      {dates.map((d, i) => {
-                        const sel    = utcIsSameDay(d, selectedDate);
-                        const closed = isDayClosed(d, openHours, overrides);
-                        return (
-                          <div key={i}
-                            className={`date-chip${sel ? " selected" : ""}`}
-                            onClick={() => { if (!closed) { setSelectedDate(d); setSelectedTime(null); } }}
-                            style={closed ? { opacity: 0.35, cursor: "default" } : undefined}>
-                            <div className="date-chip-day">{fmtDow(d)}</div>
-                            <div className="date-chip-num">{d.getUTCDate()}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <button className="strip-side-btn" onClick={() => scrollStrip(1)}>&#8250;</button>
-                  </div>
+                  {/* A month grid, not a swipe strip. The strip made someone open
+                  every day to learn whether anything was free; the grid answers
+                  it at a glance, and the dots come from the same availability
+                  computation that answers the day itself — so a day carrying a
+                  dot always opens onto times. Matches the app. */}
+                  <Calendar
+                    mode="single"
+                    disablePast
+                    selected={selectedDate}
+                    markers={dayMarkers}
+                    markersLoading={markersLoading}
+                    onMonthChange={(m) => setSelectedMonth(m)}
+                    onChange={(d) => { setSelectedDate(d); setSelectedTime(null); }}
+                  />
                 </div>
 
                 <div className="card">
@@ -1926,7 +1955,17 @@
                 </div>
               </div>
             )}
-            {events.map(evt => {
+            {events
+              .filter(evt => {
+                // Never offer an event that has finished. The service leaves
+                // them out of the listing and refuses them on submit, but this
+                // page holds its data for as long as the tab is open — an
+                // event can finish while somebody is still looking at it.
+                const lastDay = evt.end_date || evt.start_date;
+                if (!lastDay) return true;
+                return lastDay >= new Date().toISOString().slice(0, 10);
+              })
+              .map(evt => {
               const isMultiDay = !!(evt.end_date && evt.end_date > evt.start_date);
               const pickedDays = eventDays[evt.id] ?? [];
               const isFull = !isMultiDay && evt.capacity != null && evt.booking_count >= evt.capacity;

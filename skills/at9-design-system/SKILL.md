@@ -585,7 +585,17 @@ Concretely:
 - **Never stack two heading levels** with nothing between them. If H2 is immediately
   followed by H3, one of them isn't earning its place.
 - **One Display or H1 per screen.** If you need two, you have two screens.
-- **Sentence case everywhere** except the Overline. No Title Case Buttons.
+- **Title Case names things; sentence case says things.** A screen heading, a card or
+  tile title, a tab, a button or a menu item is the *name* of a destination or an
+  action — those take Title Case: "Booking History", "Add Booking", "What You Offer".
+  Everything that is read as language rather than pointed at — descriptions, help text,
+  empty states, errors, snackbars, dialog copy — stays sentence case. The Overline is
+  caps regardless.
+
+  This replaces an earlier "sentence case everywhere" rule. The reason it changed: a
+  lowercase second word makes a short label read as an unfinished sentence rather than
+  as the name of a place, and in a grid of tiles that is the difference between a label
+  and a caption. Prose is unaffected, because prose *is* a sentence.
 - **Body prose maxes at 65ch.** Longer and the eye loses the row.
 - **13px is the floor.** 15px is the floor for anything read at length.
 - **One weight jump per step:** 400 → 600 → 700. 500 as a heading weight reads as a
@@ -995,7 +1005,8 @@ product.
 
 ## 10. Writing
 
-- Sentence case. Plain verbs. No filler.
+- **Title Case for names, sentence case for prose** (§5). "Booking History" is a place;
+  "No arrivals tomorrow" is a sentence. Plain verbs. No filler.
 - A button says what happens: "Add booking", not "Submit".
 - An action keeps its name through the flow: "Add booking" → "Booking added".
 - Errors say what happened and what to do. They don't apologise and they're never vague.
