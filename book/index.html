@@ -833,7 +833,62 @@
         return digits.length >= 6 && digits.length <= 20;
       };
 
-      const ContactForm = ({ summary, onBack, onSubmit, loading, error }) => {
+      // What a customer will be asked for, said before they commit.
+      //
+      // The page used to learn that a card was needed from the *response* to
+      // creating the booking, so the first anyone heard of a deposit was a card
+      // form appearing after they had pressed the button. These three fields
+      // now travel with every bookable thing.
+      //
+      // Deliberately a description of the **policy**, not a computed total.
+      // Working out what is owed involves nights, guests, ticket counts and
+      // bundles, and `payments.js` on the server already does it — a second
+      // implementation in the browser is how the two come to disagree about
+      // money. A deposit is the one exact figure the page can state safely,
+      // because it is a fixed amount per booking. The payment step, which is
+      // driven by the server's own answer, states the rest.
+      // For rooms and tables the customer picks a date or a time, never a
+      // specific room or table — availability does that — so those flows pass
+      // the first one as representative. In practice a business configures one
+      // policy across them; if that ever stops being true, this is where it
+      // shows.
+      const paymentPolicy = (item) => {
+        if (!item) return null;
+        // Absent is not the same as "none".
+        //
+        // These fields only reach the page from a service that has been
+        // deployed with them. Defaulting a missing `payment_mode` to 'none'
+        // meant the page told a customer "No payment needed to book" on the
+        // strength of data it did not have — and for a service that *does*
+        // charge, that is a confident lie followed by a card form. Saying
+        // nothing is the only honest answer to a question that has not been
+        // answered.
+        if (item.payment_mode == null) return null;
+        const mode = item.payment_mode;
+        const timing = item.payment_timing ?? 'on_arrival';
+        if (mode === 'none') return { dueNow: false, text: "No payment needed to book." };
+        if (timing !== 'upfront') {
+          return { dueNow: false, text: "Payment is taken on arrival, not now." };
+        }
+        if (mode === 'deposit') {
+          const amount = Number(item.deposit_amount);
+          return {
+            dueNow: true,
+            text: Number.isFinite(amount) && amount > 0
+              ? `A ${fmtMoney(amount)} deposit is taken now to secure this booking. The balance is due later.`
+              : "A deposit is taken now to secure this booking.",
+          };
+        }
+        return { dueNow: true, text: "Payment is taken in full when you book." };
+      };
+
+      const fmtMoney = (n) =>
+        `£${Number(n).toLocaleString("en-GB", {
+          minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2,
+          maximumFractionDigits: 2,
+        })}`;
+
+      const ContactForm = ({ summary, policy, onBack, onSubmit, loading, error }) => {
         const [name,        setName]        = useState("");
         const [email,       setEmail]       = useState("");
         const [phone,       setPhone]       = useState("");
@@ -868,6 +923,18 @@
             <div className="card">
               <p className="section-label">Your details</p>
               <div className="summary">{summary}</div>
+              {/* Above the button, not on it. A label can say *that* money is
+                  due; only a sentence can say how much and when, and that is
+                  the thing a customer wants before committing. */}
+              {policy ? (
+                <p style={{
+                  fontSize: 13,
+                  color: "var(--text-2)",
+                  margin: "0 0 16px",
+                }}>
+                  {policy.text}
+                </p>
+              ) : null}
               <div className="form-field">
                 <label className="form-label">Full name *</label>
                 <input className="form-input" value={name} onChange={(e) => setName(e.target.value)}
@@ -901,7 +968,14 @@
               <button className="btn btn-primary"
                 disabled={!canSubmit}
                 onClick={handleSubmit}>
-                {loading ? "Sending…" : "Request Booking"}
+                {/* The button says what happens next. "Request Booking"
+                    promised an approval step that does not exist — an unpaid
+                    web booking is confirmed the moment it is made. */}
+                {loading
+                  ? "Sending…"
+                  : policy && policy.dueNow
+                  ? "Continue to Payment"
+                  : "Confirm Booking"}
               </button>
             </div>
           </div>
@@ -1140,6 +1214,7 @@
           return (
             <ContactForm
               summary={summary}
+              policy={paymentPolicy(rooms[0])}
               onBack={() => setStep("dates")}
               onSubmit={handleSubmit}
               loading={loading}
@@ -1428,6 +1503,7 @@
           return (
             <ContactForm
               summary={summary}
+              policy={paymentPolicy(tables[0])}
               onBack={() => setStep("times")}
               onSubmit={handleSubmit}
               loading={loading}
@@ -1672,6 +1748,7 @@
           return (
             <ContactForm
               summary={summary}
+              policy={paymentPolicy(selectedService)}
               onBack={() => setStep("times")}
               onSubmit={handleSubmit}
               loading={loading}
@@ -1934,6 +2011,7 @@
           return (
             <ContactForm
               summary={summary}
+              policy={paymentPolicy(selectedEvent)}
               onBack={() => setStep("list")}
               onSubmit={handleSubmit}
               loading={loading}
@@ -2226,6 +2304,7 @@
           return (
             <ContactForm
               summary={summary}
+              policy={paymentPolicy(selectedClass)}
               onBack={() => setStep("list")}
               onSubmit={handleSubmit}
               loading={loading}
@@ -2341,16 +2420,26 @@
           <div className="confirm-title">
             {booking.type === "event-waitlist"
               ? "Added to waitlist"
-              /* A paid booking is confirmed, not requested — saying otherwise
-                 after taking someone's money reads as evasive. */
-              : booking.paid ? "Booking confirmed" : "Booking requested"}
+              /* Confirmed either way, paid or not.
+                 
+                 It used to read "Booking requested" for an unpaid booking,
+                 which promised an approval step that does not exist: a web
+                 booking is live the moment it is made. That left a customer
+                 wondering whether to expect a call, and it disagreed with the
+                 email they had already been sent. */
+              : "Booking confirmed"}
           </div>
           <div className="confirm-sub">
             {booking.type === "event-waitlist"
               ? `Thanks, ${booking.name}. ${orgName} will be in touch if a place opens up.`
               : booking.paid
               ? `Thanks, ${booking.name}. Your payment went through and ${orgName} has your booking. A confirmation is on its way to your inbox.`
-              : `Thanks, ${booking.name}. ${orgName} has received your request and will be in touch to confirm.`}
+              /* Confirmed, not "received your request … will be in touch to
+                 confirm". Nobody is going to be in touch: the booking is
+                 already made and the confirmation email has already gone. The
+                 old wording invited a customer to wait for something that was
+                 never coming, and to ring the business when it did not. */
+              : `Thanks, ${booking.name}. ${orgName} has your booking. A confirmation is on its way to your inbox.`}
           </div>
           {/* Booking reference — auto-generated server-side, the customer
               uses this to identify their booking when chasing the provider

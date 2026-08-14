@@ -744,11 +744,72 @@ colour as the main half, divided by a 1px rule at 30% opacity. Never two colours
 
 ### 7.2 Form components
 
-Every form control shares one skin: `surface` fill, **1.5px border**, 12px radius, 44px
-min height.
+Every form control shares one skin: `surface` fill, **1.5px border**, 12px radius.
 
-- **Label above, always.** A placeholder doubling as a label vanishes the moment someone
-  types.
+**Every row-based control is the same height: 48dp at `Md`.** Text input, dropdown,
+split dropdown, number stepper, time field, date field — one row, one height. 44dp is the
+touch-target floor (§4.7), not the design height; sizing to the floor makes a form of
+mixed controls sit on no rhythm at all.
+
+Two rules follow from that, and both have been broken in practice:
+
+- **A field adds no vertical padding of its own.** The control already carries its
+  height. Padding on the wrapper as well makes that one field taller than its
+  neighbours — a difference that reads as "off" without being obvious why, because the
+  labels stop sharing a baseline down the form.
+- **A composite field matches the rhythm inside it too.** A list of chosen items beneath
+  a picker is read on the same 48dp rhythm as the picker, not squeezed tighter because
+  it is "just a list".
+- **The field owns the gap below it; a caller never adds one.** `FormField` applies the
+  16px of §4.4 itself. Wrapping a field in a `View` with its own `marginBottom` gets you
+  both, and the result is a form where a few rows are further apart than the rest for no
+  reason visible in any one place — the fix is always to delete the wrapper's margin, not
+  to trim the field's. A control used *without* `FormField` (a bare `NumberSelect`, say)
+  has to state the same 16px, or it alone sits tighter than the form around it.
+- **Icons inside a control are 20dp.** The stepper's + and −, a `SplitDropdown`'s
+  action, a trailing affordance — all 20. The steppers were 16, which read as a different
+  class of button beside the + on the customer field directly above them. Where 20dp
+  leaves the target under 44dp, `hitSlop` makes it up (see below).
+- **Trailing actions and adornments share the field's right edge.** Whatever sits at the
+  end of a control — a chevron, a + action, a count badge — lands on the same vertical
+  line as it does in every other field, so a column of stacked fields has one right edge
+  rather than several. A `SplitDropdown`'s + carried its own padding and sat 12dp further
+  in than the `Dropdown` chevron above it; small enough to look like a mistake in the
+  layout rather than in the control, which is what makes it worth a rule.
+  **Where that leaves a touch target under 44dp, buy it back with `hitSlop`, never with
+  padding** — padding moves the pixel, `hitSlop` does not.
+- **The value shares a left edge with its label.** A contained control must drop its own
+  horizontal padding — the wrapper already pads the box. `Dropdown` and `SplitDropdown`
+  kept theirs, so their text sat 14dp right of the label above it while every text field
+  sat flush. A notched label only reads as belonging to its field while the two line up;
+  misaligned, it starts to look like the caption of the field above.
+
+- **The label sits on the top border, not above the field.** One box holds the label and
+  the control, with the label straddling the border and masking the line behind it — a
+  notched outline. A form of six fields is six boxes rather than twelve alternating rows,
+  and the field is **no taller than a plain input**: the label costs a gap in a line, not
+  a row.
+
+  This replaces an earlier "label above, always" rule. What has not changed is the reason
+  behind it: **the label is always visible.** It is not a placeholder that vanishes the
+  moment someone types — someone mid-entry must still be able to see what the field was,
+  and must not have to clear it to recover from an error.
+
+  Three things the pattern gets wrong if they are not deliberate:
+
+  - **The box must carry no vertical padding.** The control keeps its own height; padding
+    on the box as well makes every field taller than its neighbours, which is the opposite
+    of the point.
+  - **The control must not draw its own border.** Two nested borders is two boxes.
+    `FormField` passes `bare` to its child automatically rather than asking every caller
+    to remember.
+  - **The notch is painted the colour of the ground it sits on.** There is no real gap in
+    the border — the label masks it. On the wrong ground it reads as a coloured box behind
+    the text.
+
+  **Not everything is a field.** A group of radios or checkboxes is a set of choices, not
+  one value; a border around it says otherwise. Those opt out with `contained={false}`.
+  An inline row — a label beside a switch — is never boxed either.
 - **Help text** sits between the label and the control, in caption / `textMuted`.
 - **Required** is the word _(required)_ on the label, never an asterisk.
 - **Focus:** 2px `primary` border + 3px ring.
@@ -794,6 +855,19 @@ selected state. Don't use one as the other.
 - **Toast / snackbar** — transient, floats (shadow allowed). Dark surface in **both**
   modes, one optional action, auto-dismisses at 5s. Never for an error that needs a
   decision.
+- **Modal dialog sizing** — `width: 100%`, `maxWidth: 400`, and the **screen gutter of
+  §4.2 applied to the scrim**, not to the dialog. Three consequences worth stating,
+  because the component got each of them wrong:
+  - **Never edge to edge, on any device.** A full-bleed dialog reads as a page that has
+    failed to load rather than a question on top of one, and it puts the buttons in the
+    bottom corners — the two places a thumb lands by accident. Material and Apple both
+    inset alerts from the edge for the same reason; neither ever fills the width.
+  - **400px is a maximum, not a tablet rule.** The limit exists because a line of dialog
+    copy stops being readable past it — a fact about text, not about the device. Gating
+    it on a tablet flag leaves a large phone in landscape with a full-width dialog.
+  - **Put the gutter on the scrim.** Then the dialog asks for 100% and still cannot touch
+    the edge, and the inset matches every other screen instead of being a second opinion
+    about where the edge is.
 - **Modal dialog** — a question that blocks. Scrim, 20px radius, shadow. The title states
   the consequence ("Cancel Pepper's booking?"), the body explains what happens, buttons
   run text-left / primary-or-destructive-right.
