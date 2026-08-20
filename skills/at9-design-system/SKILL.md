@@ -531,7 +531,7 @@ Twelve styles. If you reach for a thirteenth, you've made a mistake.
 | **Body small** | 13 / 20     | 400    | 0             | `textMuted`    | **The second line under a Title** — "Pen 3 · 18–26 Jul · £140.00". Secondary table cells. Supporting detail inside a card. |
 | **Label**      | 13 / 16     | 600    | +0.01em       | `textMuted`    | **Form field labels, and nothing else.** Sits above every input, select, textarea, stepper, slider and dropzone.           |
 | **Button**     | 15 / 20     | 600    | −0.01em       | contextual     | Buttons, chips, segmented controls, menu items, drawer nav items.                                                          |
-| **Caption**    | 12 / 16     | 500    | +0.02em       | `textMuted`    | **Help text under a label.** Timestamps, footnotes, chart axes, "Sent at 7am". **Never actionable.**                       |
+| **Caption**    | 12 / 16     | 500    | +0.02em       | `textFaint`    | **Help text under a label.** Timestamps, footnotes, chart axes, "Sent at 7am". **Never actionable.**                       |
 | **Overline**   | 11 / 14     | 700    | +0.09em, caps | `textFaint`    | **Eyebrows and group headers.** Table column headers, settings group headers, panel headers, the kicker above a heading.   |
 
 Plus one specialist: **Nav label** — 11 / 14, 600, for footer navigation only. It follows
@@ -760,6 +760,19 @@ Two rules follow from that, and both have been broken in practice:
 - **A composite field matches the rhythm inside it too.** A list of chosen items beneath
   a picker is read on the same 48dp rhythm as the picker, not squeezed tighter because
   it is "just a list".
+- **Help text is a step below its label, never the same colour.** Label is `textMuted`,
+  help text is `textFaint`. They were both muted, and once the label moved onto the
+  border it rendered at Caption size too — so the two lines matched in size, weight and
+  colour, and nothing said which was the question and which the footnote.
+- **Help text takes no semantic colour.** Not info, not warning. It explains; it does not
+  report. The one exception is **error**, where the field is already saying something is
+  wrong and the text turns with it. A reader who has seen amber under three ordinary
+  fields will not read it as a warning on the fourth — that is the whole cost of spending
+  a status colour on something carrying no status.
+- **A titled group is notched too.** `FormGroup` — the section box around a set of
+  related controls — carries its label on its top border on the same offsets as a field.
+  Settings otherwise reads as two systems on one screen: fields with their label cut into
+  the border, and the sections containing them with theirs floating above.
 - **The field owns the gap below it; a caller never adds one.** `FormField` applies the
   16px of §4.4 itself. Wrapping a field in a `View` with its own `marginBottom` gets you
   both, and the result is a form where a few rows are further apart than the rest for no

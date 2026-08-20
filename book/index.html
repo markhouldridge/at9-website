@@ -134,6 +134,18 @@
         line-height: 1.2;
       }
 
+      /* Which clock every time on this page is on.
+         
+         Only rendered when the viewer's zone differs from the business's — see
+         the note at the render site. Quiet, because for the customer it is
+         reassurance rather than an instruction; the times themselves are the
+         thing being read. */
+      .header-zone {
+        font-size: 13px;
+        color: var(--text-3);
+        margin-top: 4px;
+      }
+
       /* ── Content area ───────────────────────────────────────────────────────── */
       .content {
         flex: 1;
@@ -521,7 +533,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      const { useState, useEffect } = React;
+      const { useState, useEffect, useMemo } = React;
 
       // Live by default; localhost when the page is served from localhost.
       //
@@ -2606,6 +2618,40 @@
             });
         }, [slug]);
 
+        // Which clock the times on this page are on.
+        //
+        // Every slot, date and confirmation here is the **business's** wall
+        // clock: you are booking their 9am, not yours. That is the right model
+        // — you pick from their diary — but the number alone cannot say so, and
+        // a customer in London booking a Los Angeles salon has no reason to
+        // read "09:00" as anything but their own morning.
+        //
+        // Shown **only when the two zones differ.** For the great majority the
+        // business is in the reader's own zone and the line would be noise; the
+        // moment it is not, it is the difference between arriving and missing
+        // the appointment entirely.
+        //
+        // The city, not the IANA id: "Los Angeles", not "America/Los_Angeles".
+        // The region half is noise and the underscore reads as a setting.
+        const zoneNote = useMemo(() => {
+          const orgZone = org?.timezone;
+          if (!orgZone) return null;
+          let viewerZone = null;
+          try {
+            viewerZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          } catch (e) {
+            // No Intl, or it refused. Without knowing the viewer's zone there
+            // is no way to tell whether the note is needed, and showing it
+            // always is the safer failure: an unnecessary line beats a missing
+            // one when the cost of the missing one is a wasted journey.
+            viewerZone = null;
+          }
+          if (viewerZone && viewerZone === orgZone) return null;
+          const city = String(orgZone).split("/").pop();
+          if (!city) return null;
+          return `All times are ${city.replace(/_/g, " ")} time`;
+        }, [org?.timezone]);
+
         // `bookableTypes` comes from the same public endpoint the app uses, so
         // the two surfaces cannot disagree about what this business offers.
         // Falls back to deriving it locally for the moment between deploying
@@ -2628,6 +2674,7 @@
             <div className="header">
               <div className="header-eyebrow">Booking</div>
               {org && <div className="header-org">{org.name}</div>}
+              {org && zoneNote && <div className="header-zone">{zoneNote}</div>}
               {!org && loadState === "loading" && (
                 <div className="header-org" style={{ color: "var(--text-3)" }}>Loading…</div>
               )}

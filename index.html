@@ -6,7 +6,7 @@
     <title>Booking Management App for Small Businesses | At9</title>
     <meta
       name="description"
-      content="Manage room, table, appointment, class and event bookings from your phone. Solo is free forever; Team is £29.99 for businesses that share a calendar. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Free forever; Pro is £9.99 and Team £34.99 for businesses that share a calendar. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#554aca" />
@@ -38,7 +38,7 @@
     />
     <meta
       property="og:description"
-      content="Manage room, table, appointment, class and event bookings from your phone. Solo is free forever; Team is £29.99 for businesses that share a calendar. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
+      content="Manage room, table, appointment, class and event bookings from your phone. Free forever; Pro is £9.99 and Team £34.99 for businesses that share a calendar. Built for restaurants, pubs, hotels, yoga studios, catteries, kennels and service businesses."
     />
     <link
       rel="preload"
@@ -65,7 +65,7 @@
             "offers": [
               {
                 "@type": "Offer",
-                "name": "Solo",
+                "name": "Free",
                 "price": "0",
                 "priceCurrency": "GBP",
                 "priceSpecification": {
@@ -77,8 +77,20 @@
               },
               {
                 "@type": "Offer",
+                "name": "Pro",
+                "price": "9.99",
+                "priceCurrency": "GBP",
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "billingDuration": 1,
+                  "billingIncrement": 1,
+                  "unitCode": "MON"
+                }
+              },
+              {
+                "@type": "Offer",
                 "name": "Team",
-                "price": "29.99",
+                "price": "34.99",
                 "priceCurrency": "GBP",
                 "priceSpecification": {
                   "@type": "UnitPriceSpecification",
@@ -1392,6 +1404,74 @@
           line-height: 1.4;
         }
       }
+      /* The free tier, above the plans it is not one of.
+         
+         It is not a card in the grid because it is not a purchase — putting it
+         beside two priced cards invites the reader to compare it *as* a plan
+         and wonder what it costs. Above them, it reads as the floor: this is
+         what At9 does for nothing, and the cards are what you add to it.
+         
+         Benefit first, mechanism second, on every line. "Never double-book" is
+         the thing an owner worries about; "instant availability checking" is
+         how we solve it, and only means anything once they know which. */
+      .free-tier {
+        max-width: 880px;
+        margin: 0 auto 28px;
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: #f7f6fd;
+      }
+      .free-tier-label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin: 0 0 18px;
+      }
+      .free-tier-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px 28px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .free-tier-list li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .free-tier-list strong {
+        display: block;
+        font-size: 15px;
+        color: var(--ink);
+      }
+      .free-tier-list span {
+        display: block;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--ink-2);
+      }
+      /* One column before the cards stack, so the two never disagree about how
+         wide "narrow" is. */
+      @media (max-width: 700px) {
+        .free-tier-list {
+          grid-template-columns: 1fr;
+        }
+        .free-tier {
+          padding: 20px;
+        }
+      }
+      /* The hinge between what is free and what is paid. */
+      .pricing-upsell {
+        text-align: center;
+        font-size: 15px;
+        color: var(--ink-2);
+        margin: 0 0 20px;
+      }
+
       .pricing-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -1399,8 +1479,12 @@
         max-width: 880px;
         margin: 0 auto;
       }
-      /* Stack early: below this the columns get too narrow to hold a feature
-         on one line, and the cards start to feel cramped side by side. */
+      /* Two steps down rather than one. Three columns need more room than two
+         did, so they break to a 2-up before stacking — going straight from
+         three to one leaves a wide tablet showing a single narrow column with
+         empty margin either side. */
+      /* Stack: below this the columns get too narrow to hold a feature on one
+         line, and the cards start to feel cramped side by side. */
       @media (max-width: 900px) {
         .pricing-grid {
           grid-template-columns: 1fr;
@@ -1418,7 +1502,7 @@
         color: var(--ink-3);
       }
 
-      /* On a white section the two cards are ranked by surface: Solo sits back
+      /* On a white section the cards are ranked by surface: Free sits back
          in a faint primary tint, Team lifts forward in pure white on a shadow. */
       .plan {
         background: #f7f6fd;
@@ -2539,34 +2623,157 @@
             No credit card required
           </span>
           <h2>
-            Try At9
+            Take bookings
             <span class="squiggle-wrap">free, forever</span>.
           </h2>
           <p class="lead">
-            Set up in minutes and start taking real bookings today — every
-            feature unlocked, nothing to pay and no card to enter. When the 90
-            days are up, pick the plan that fits. Cancel any time, and your data
-            always comes with you.
+            Not a trial. Taking bookings costs nothing on At9 — no card, no
+            expiry, no limit on how many you take. Pay only when you want the
+            extras below.
           </p>
         </div>
+
+        <div class="free-tier">
+          <p class="free-tier-label">Free, forever — no card</p>
+          <ul class="free-tier-list">
+            <li>
+              <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+              <div>
+                <strong>Never double-book</strong>
+                <span>Availability is checked as you type, across every room, table, class, event and appointment.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+              <div>
+                <strong>Your whole week on one screen</strong>
+                <span>Every kind of booking on one schedule, by day, week or month.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+              <div>
+                <strong>Customers book themselves</strong>
+                <span>Your own link for Instagram, your website or a QR code on the counter.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+              <div>
+                <strong>They know it worked</strong>
+                <span>A confirmation email the moment they book, and they can check their booking any time.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+              <div>
+                <strong>Reach them without leaving the app</strong>
+                <span>Message a customer about their booking, and keep notes against it.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check" aria-hidden="true"
+                  ><svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#15131c"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" /></svg
+                ></span>
+              <div>
+                <strong>Get paid up front</strong>
+                <span>Take a deposit or the full amount by connecting Stripe. Optional — their transaction fees apply to each payment.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <p class="pricing-upsell">And when you want more</p>
 
         <div class="pricing-grid">
           <div class="plan">
             <div class="plan-head">
-              <h3>Solo</h3>
+              <h3>Pro</h3>
+              <span class="tag">Popular</span>
             </div>
             <p class="summary">
-              Everything you need to take and manage bookings on your own —
-              nothing you don't.
+              For a business that wants fewer no-shows and less asking the same
+              question twice.
             </p>
             <div class="price">
-              <span class="amount">Free</span>
+              <span class="amount">£9.99</span>
+              <span class="per">/ month</span>
             </div>
             <p class="price-note">
-              No card, no time limit. Taking card payments is optional — if you
-              connect Stripe, their transaction fees apply to each payment.
+              Prices exclude local taxes; your App Store or Google Play price
+              may differ.
             </p>
-            <p class="list-label">Everything you get</p>
+            <p class="list-label">Everything in Free, plus</p>
             <ul>
               <li>
                 <span class="check" aria-hidden="true"
@@ -2582,7 +2789,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Your bookings in one view
+                Booking questions, asked when they book
               </li>
               <li>
                 <span class="check" aria-hidden="true"
@@ -2598,7 +2805,7 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Manage customers and their bookings
+                Email reminders that cut no-shows
               </li>
               <li>
                 <span class="check" aria-hidden="true"
@@ -2614,100 +2821,29 @@
                   >
                     <path d="M20 6 9 17l-5-5" /></svg
                 ></span>
-                Instant availability checking
-              </li>
-              <li>
-                <span class="check" aria-hidden="true"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                Email notifications
-              </li>
-              <li>
-                <span class="check" aria-hidden="true"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                Your own web and social booking link
-              </li>
-              <li>
-                <span class="check" aria-hidden="true"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                Message customers
-              </li>
-              <li>
-                <span class="check" aria-hidden="true"
-                  ><svg
-                    width="10"
-                    height="10"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#15131c"
-                    stroke-width="3.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" /></svg
-                ></span>
-                Customers can access their bookings
+                Files against a customer or booking
               </li>
             </ul>
-            <a
-              class="btn btn-ghost"
-              href="https://apps.apple.com/app/id6742573363"
-              target="_blank"
-              rel="noopener"
-              >Get started free</a
-            >
           </div>
 
           <div class="plan featured">
             <div class="plan-head">
               <h3>Team</h3>
-              <span class="tag">Most popular</span>
+              <span class="tag">Best value</span>
             </div>
             <p class="summary">
               For growing businesses sharing one diary — with the tools to keep
               customers coming back.
             </p>
             <div class="price">
-              <span class="amount">£29.99</span>
+              <span class="amount">£34.99</span>
               <span class="per">/ month</span>
             </div>
             <p class="price-note">
               Prices exclude local taxes; your App Store or Google Play price
               may differ.
             </p>
-            <p class="list-label">Everything in Solo, plus</p>
+            <p class="list-label">Everything in Pro, plus</p>
             <ul>
               <li>
                 <span class="check" aria-hidden="true"
@@ -2817,7 +2953,7 @@
         </div>
 
         <p class="pricing-foot">
-          Not sure which one? Start on Solo — it is free forever, and you can move up
+          Not sure which one? Start on Free — it costs nothing, and you can move up
           to Team the day you need it.
         </p>
       </div>
@@ -2859,7 +2995,7 @@
               <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              No. Solo is free — no card, no payment details, no time limit and
+              No. The Free plan is free — no card, no payment details, no time limit and
               nothing to cancel. Take bookings for as long as you like without
               paying us anything.
             </div>
@@ -2882,7 +3018,7 @@
               <span class="toggle">+</span>
             </summary>
             <div class="answer">
-              Yes. You can move between Solo and Team whenever your needs
+              Yes. You can move between Free, Pro and Team whenever your needs
               change, and cancel any time — there is no minimum term and no
               cancellation fee. Because plans are purchased through the App
               Store or Google Play, you manage or cancel your subscription in
@@ -2911,7 +3047,7 @@
           <span class="eyebrow">Get the app</span>
           <h2>Your bookings, sorted today.</h2>
           <p class="lead" style="margin: 0 auto; max-width: 560px">
-            Download At9 for iOS or Android. Solo is free forever — no
+            Download At9 for iOS or Android. Free is free forever — no
             card required.
           </p>
 
