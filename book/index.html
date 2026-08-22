@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
       rel="stylesheet"
     />
     <script
@@ -35,6 +35,19 @@
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :root {
+        /* ── Typography ───────────────────────────────────────────────────────
+           The app's system, applied here: Plus Jakarta Sans for text that
+           **names, titles or quantifies**; Inter for text that **explains,
+           describes, or was typed by the customer**. Where it is genuinely
+           ambiguous it is Inter. See /Typography.md, which is authoritative for
+           both the app and this page.
+
+           Only two Jakarta weights are loaded (600, 700) because only two are
+           used — every extra weight is a font file a customer waits for on a
+           booking page they reached from a phone. */
+        --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
         --primary:      #554aca;
         --primary-h:    #453bb0;
         --accent:       #554aca;
@@ -61,7 +74,7 @@
       }
 
       body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family: var(--font-body);
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
@@ -522,6 +535,45 @@
       .back-btn:hover { color: var(--accent); }
 
       @media (max-width: 340px) { .type-grid { grid-template-columns: 1fr; } }
+    
+      /* ── The display face ──────────────────────────────────────────────────
+         Typography.md's one rule: text that **names, titles or quantifies** is
+         Plus Jakarta Sans. Everything else stays on Inter via `body`.
+
+         Grouped in one place, at the end of the sheet, rather than sprinkled
+         through the rules above. Two reasons: `font-family: inherit` on the
+         inputs and buttons earlier would otherwise win by source order, and a
+         reader asking "what is Jakarta here?" gets one list instead of a
+         search.
+
+         Deliberately NOT on this list:
+           .form-input   text the customer typed — explicitly Inter (§1)
+           .avail-sub, .confirm-sub, .type-card-sub, .empty, .guests-label,
+           .header-zone, .powered, .summary
+                         all prose: they describe, so they explain
+      */
+      .header-org,        /* the business's name */
+      .header-eyebrow,    /* eyebrow — labelCaps is a display token */
+      .confirm-title,
+      .section-label,
+      .type-card-label,   /* names the booking type */
+      .form-label,        /* names the field, unlike its input */
+      .cal-month,
+      .cal-weekday,
+      .cal-day,           /* a number: quantifies */
+      .date-bar-label,
+      .date-bar-value,
+      .slot,              /* a time: quantifies */
+      .slot-period,
+      .guests-count,
+      .guests-btn,
+      .avail-main,        /* the headline figure */
+      .btn,
+      .back-btn,
+      .cal-nav,
+      .powered-badge {
+        font-family: var(--font-display);
+      }
     </style>
   </head>
   <body>
@@ -635,6 +687,210 @@
       });
 
       // ── Icons ─────────────────────────────────────────────────────────────────
+      // ── Booking questions ──────────────────────────────────────────────────
+      //
+      // What the provider asks about what is being booked. Reads the same
+      // public endpoint the app reads, so a customer sees the same questions
+      // in either place — the resolution rule lives on the server and cannot
+      // drift between the two clients.
+      //
+      // Renders nothing when the organisation asks nothing, which is most of
+      // them, so no flow gains an empty heading.
+      const useBookingQuestions = (orgId, entityType, entityId) => {
+        const [questions, setQuestions] = useState([]);
+        const [answers, setAnswers] = useState({});
+
+        useEffect(() => {
+          if (!orgId || !entityType) { setQuestions([]); return; }
+          let cancelled = false;
+          const qs = new URLSearchParams({ organisationId: orgId, entityType });
+          if (entityId) qs.set("entityId", entityId);
+          fetch(`${WS_URI}/forms/for?${qs}`)
+            .then(r => (r.ok ? r.json() : []))
+            .then(d => { if (!cancelled) setQuestions(Array.isArray(d) ? d : []); })
+            .catch(() => { if (!cancelled) setQuestions([]); });
+          return () => { cancelled = true; };
+        }, [orgId, entityType, entityId]);
+
+        // What is still unanswered, by prompt — so the flow can name what is
+        // missing rather than saying "answer the required questions" and
+        // leaving the reader to hunt for which.
+        const missing = questions
+          .filter(q => {
+            if (!q.required) return false;
+            const raw = answers[q.question_id];
+            // A list answer is satisfied by one selection.
+            if (q.answer_type === "multi_choice") {
+              return !(Array.isArray(raw) && raw.length);
+            }
+            const v = (raw || "").trim();
+            // An agreement is only satisfied by agreeing. "false" is an
+            // answer; it is not consent.
+            if (q.answer_type === "checkbox") return v !== "true";
+            return !v;
+          })
+          .map(q => q.prompt);
+
+        return { questions, answers, setAnswers, missing };
+      };
+
+      const BookingQuestions = ({ questions, answers, setAnswers }) => {
+        if (!questions.length) return null;
+        const set = (id, v) => setAnswers(a => ({ ...a, [id]: v }));
+        const asList = v => (Array.isArray(v) ? v : []);
+
+        // Two labels, defaulting to Yes/No. The *value* is always true/false —
+        // a label is what the reader sees, never what is stored, so relabelling
+        // a question cannot change what its answers mean.
+        const boolOpts = q => {
+          const [yes, no] = (q.options || []).length >= 2 ? q.options : ["Yes", "No"];
+          return [{ value: "true", label: yes }, { value: "false", label: no }];
+        };
+
+        const radio = (q, opts) => (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {opts.map(o => {
+              const on = answers[q.question_id] === o.value;
+              return (
+                <button
+                  key={o.value}
+                  type="button"
+                  onClick={() => set(q.question_id, o.value)}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: "var(--r-sm)",
+                    border: `1px solid ${on ? "var(--accent)" : "var(--border)"}`,
+                    background: on ? "var(--accent)" : "var(--surface)",
+                    color: on ? "#fff" : "var(--text)",
+                    fontSize: 13,
+                    cursor: "pointer",
+                    fontFamily: "var(--font-display)",
+                  }}>
+                  {o.label}
+                </button>
+              );
+            })}
+          </div>
+        );
+
+        return (
+          <div style={{ marginTop: 18 }}>
+            <div className="section-label">A few questions</div>
+            {questions.map(q => {
+              const v = answers[q.question_id] || "";
+              const chosen = asList(answers[q.question_id]);
+              // Why the question is being asked — the thing an intrusive
+              // question most needs, and had nowhere to say.
+              const help = q.help ? (
+                <div style={{ fontSize: 12, color: "var(--text-2)", marginTop: 4 }}>
+                  {q.help}
+                </div>
+              ) : null;
+
+              return (
+                <div key={q.question_id} style={{ marginBottom: 14 }}>
+                  {q.answer_type === "checkbox" ? (
+                    // The prompt is the checkbox's own label, not a heading
+                    // above it: an agreement is a sentence you tick, and
+                    // separating the two lets somebody tick without reading it.
+                    <label style={{ display: "flex", gap: 8, alignItems: "flex-start", cursor: "pointer" }}>
+                      <input
+                        type="checkbox"
+                        checked={v === "true"}
+                        onChange={e => set(q.question_id, e.target.checked ? "true" : "false")}
+                      />
+                      <span style={{ fontSize: 13 }}>{q.prompt}{q.required ? " *" : ""}</span>
+                    </label>
+                  ) : (
+                    <>
+                      <div className="form-label">{q.prompt}{q.required ? " *" : ""}</div>
+
+                      {q.answer_type === "text" && (
+                        <input
+                          className="form-input"
+                          value={v}
+                          maxLength={q.max_length || undefined}
+                          onChange={e => set(q.question_id, e.target.value)}
+                        />
+                      )}
+
+                      {q.answer_type === "long_text" && (
+                        <textarea
+                          className="form-input"
+                          value={v}
+                          rows={3}
+                          maxLength={q.max_length || undefined}
+                          style={{ resize: "vertical", minHeight: 72, fontFamily: "inherit" }}
+                          onChange={e => set(q.question_id, e.target.value)}
+                        />
+                      )}
+
+                      {q.answer_type === "number" && (
+                        // The bounds are hints to the browser; the service
+                        // checks them again, because an input is a convenience
+                        // and never a constraint.
+                        <input
+                          className="form-input"
+                          type="number"
+                          inputMode="numeric"
+                          value={v}
+                          min={q.min_value ?? undefined}
+                          max={q.max_value ?? undefined}
+                          onChange={e => set(q.question_id, e.target.value)}
+                        />
+                      )}
+
+                      {q.answer_type === "date" && (
+                        // `yyyy-MM-dd`, which is exactly what a native date
+                        // input produces and what the service stores — a
+                        // zone-less day, never an instant.
+                        <input
+                          className="form-input"
+                          type="date"
+                          value={v}
+                          onChange={e => set(q.question_id, e.target.value)}
+                        />
+                      )}
+
+                      {q.answer_type === "choice" &&
+                        // The option's **text** is the value, never its index —
+                        // an index into a since-reordered list points at the
+                        // wrong answer and nothing looks wrong.
+                        radio(q, (q.options || []).map(o => ({ value: o, label: o })))}
+
+                      {q.answer_type === "boolean" && radio(q, boolOpts(q))}
+
+                      {q.answer_type === "multi_choice" && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                          {(q.options || []).map(o => (
+                            <label key={o} style={{ display: "flex", gap: 8, alignItems: "center", cursor: "pointer", fontSize: 13 }}>
+                              <input
+                                type="checkbox"
+                                checked={chosen.includes(o)}
+                                onChange={() =>
+                                  set(
+                                    q.question_id,
+                                    chosen.includes(o)
+                                      ? chosen.filter(x => x !== o)
+                                      : [...chosen, o],
+                                  )
+                                }
+                              />
+                              <span>{o}</span>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                  {help}
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
+
       const IconMoon = () => (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -900,7 +1156,11 @@
           maximumFractionDigits: 2,
         })}`;
 
-      const ContactForm = ({ summary, policy, onBack, onSubmit, loading, error }) => {
+      // `extra` and `extraError` are how a flow adds its own fields without
+      // this component learning about them. Booking questions use it: which
+      // questions apply depends on what is being booked, which is the flow's
+      // business, not the contact form's.
+      const ContactForm = ({ summary, policy, onBack, onSubmit, loading, error, extra, extraError }) => {
         const [name,        setName]        = useState("");
         const [email,       setEmail]       = useState("");
         const [phone,       setPhone]       = useState("");
@@ -916,6 +1176,9 @@
           if (!name.trim()) return setLocalError("Please enter your name.");
           if (!emailValid)  return setLocalError("Please enter a valid email address.");
           if (!phoneValid)  return setLocalError("Please enter a valid phone number.");
+          // The flow's own validation, named so the reader knows which field
+          // to fix — "answer the required questions" leaves them hunting.
+          if (extraError) return setLocalError(extraError);
           setLocalError("");
           onSubmit({
             name: name.trim(),
@@ -974,6 +1237,9 @@
                   style={{ resize: "vertical", minHeight: 72, fontFamily: "inherit" }}
                 />
               </div>
+
+              {extra}
+
               {messageError && (
                 <p style={{ color: "var(--error)", fontSize: 13, marginBottom: 12 }}>{messageError}</p>
               )}
@@ -1152,6 +1418,19 @@
         const hasRange    = !!(checkIn && checkOut && nights > 0);
         const canContinue = hasRange && Array.isArray(availability) && availability.length > 0;
 
+        // The room the service will actually assign. A customer never picks one
+        // — availability decides — but it is settled by the time the dates step
+        // finishes, so the questions asked here are the ones *that* room
+        // requires, not merely the ones every room requires.
+        //
+        // Same expression the submit uses, so the two cannot disagree about
+        // which room is being booked.
+        const assignedRoomId =
+          (availability ?? []).find(e => !e.booked)?.id ?? rooms[0]?.id;
+
+        const { questions, answers, setAnswers, missing } =
+          useBookingQuestions(org.id, "room", assignedRoomId);
+
         const summary = canContinue
           ? `${fmtDate(checkIn)} — ${fmtDate(checkOut)} · ${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}`
           : "";
@@ -1178,15 +1457,14 @@
           setLoading(true);
           setError("");
           try {
-            // Use a room confirmed available, not just the first one defined.
-            const firstAvailable = (availability ?? []).find(e => !e.booked);
             const res = await fetch(`${WS_URI}/bookings/public`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 organisationId: org.id,
                 type: "room",
-                entityId: firstAvailable?.id ?? rooms[0]?.id,
+                // A room confirmed available, not just the first one defined.
+                entityId: assignedRoomId,
                 startDate: fmtIso(checkIn),
                 endDate:   fmtIso(checkOut),
                 guests,
@@ -1194,6 +1472,10 @@
                 customerEmail: email,
                 customerPhone: phone,
                 customerNote:  note,
+                // Booking questions. The service resolves the same set and
+                // enforces the same rules on save — this is what was answered,
+                // not the authority on what was asked.
+                answers,
               }),
             });
             if (!res.ok) {
@@ -1231,6 +1513,14 @@
               onSubmit={handleSubmit}
               loading={loading}
               error={error}
+              extra={
+                <BookingQuestions
+                  questions={questions}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              }
+              extraError={missing.length ? `Please answer: ${missing[0]}` : ""}
             />
           );
         }
@@ -1395,6 +1685,17 @@
         const [slotDuration,    setSlotDuration]    = useState(90);
         const [loadingSlots,    setLoadingSlots]    = useState(false);
 
+        // No `entityId`: a table booking names no table. The service picks one
+        // when it saves, and it is not decided — or even decidable — while the
+        // customer is filling this in.
+        //
+        // So only questions asked of *every* table can be asked here. A
+        // questionnaire scoped to one specific table is unreachable from the web
+        // link for exactly that reason; it will still be asked in the app, where
+        // the provider chooses the table themselves.
+        const { questions, answers, setAnswers, missing } =
+          useBookingQuestions(org.id, "table");
+
         // Month navigation lives in the Calendar now; it reports the new
         // month back through onMonthChange.
 
@@ -1483,6 +1784,10 @@
                 customerEmail:  email,
                 customerPhone:  phone,
                 customerNote:   note,
+                // Booking questions. The service resolves the same set and
+                // enforces the same rules on save — this is what was answered,
+                // not the authority on what was asked.
+                answers,
               }),
             });
             if (!res.ok) {
@@ -1520,6 +1825,14 @@
               onSubmit={handleSubmit}
               loading={loading}
               error={error}
+              extra={
+                <BookingQuestions
+                  questions={questions}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              }
+              extraError={missing.length ? `Please answer: ${missing[0]}` : ""}
             />
           );
         }
@@ -1617,6 +1930,11 @@
         const overrides  = org.openHoursOverrides ?? [];
 
         const [selectedService,  setSelectedService]  = useState(services.length === 1 ? services[0] : null);
+
+        // Booking questions for the chosen service. Re-resolved when the
+        // service changes, because which questions apply depends on it.
+        const { questions, answers, setAnswers, missing } =
+          useBookingQuestions(org.id, "appointment", selectedService?.id);
         const [selectedMonth,    setSelectedMonth]    = useState(todayMonthStart);
         const [selectedDate,     setSelectedDate]     = useState(today);
         const [selectedTime,     setSelectedTime]     = useState(null);
@@ -1724,6 +2042,10 @@
                 customerEmail:  email,
                 customerPhone:  phone,
                 customerNote:   note,
+                // Booking questions. The service resolves the same set and
+                // enforces the same rules on save — this is what was answered,
+                // not the authority on what was asked.
+                answers,
               }),
             });
             if (!res.ok) {
@@ -1765,6 +2087,16 @@
               onSubmit={handleSubmit}
               loading={loading}
               error={error}
+              extra={
+                <BookingQuestions
+                  questions={questions}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              }
+              extraError={
+                missing.length ? `Please answer: ${missing[0]}` : ""
+              }
             />
           );
         }
@@ -1785,7 +2117,7 @@
                       padding: "12px 0", borderBottom: "1px solid var(--border)", cursor: "pointer",
                     }}>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 600 }}>{s.title}</div>
+                      <div style={{ fontSize: 14, fontWeight: 600, fontFamily: "var(--font-display)" }}>{s.title}</div>
                       {s.description && <div style={{ fontSize: 12, color: "var(--text-2)", marginTop: 2 }}>{s.description}</div>}
                     </div>
                     <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
@@ -1802,7 +2134,7 @@
                 {services.length > 1 && (
                   <div style={{ marginBottom: 12, padding: "10px 14px", background: "var(--accent-bg)",
                     borderRadius: "var(--r-sm)", border: "1px solid var(--accent-mid)",
-                    fontSize: 13, fontWeight: 600 }}>
+                    fontSize: 13, fontWeight: 600, fontFamily: "var(--font-display)" }}>
                     {selectedService.title}
                     {selectedService.duration != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>{selectedService.duration} min</span>}
                     {selectedService.cost != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>£{Number(selectedService.cost).toFixed(2)}</span>}
@@ -1916,6 +2248,19 @@
         );
         const selectedDays = selectedEvent ? (eventDays[selectedEvent.id] ?? []) : [];
 
+        // Questions for the chosen event. Re-resolved when the event changes,
+        // because which questions apply depends on it.
+        const { questions, answers, setAnswers, missing } =
+          useBookingQuestions(org.id, "event", selectedEvent?.id);
+
+        // ⚠️ Not asked when joining a waitlist. A waitlist join is not a
+        // booking: no booking row exists to hang answers on, and the waitlist
+        // endpoint neither accepts nor stores them. Asking would collect
+        // answers straight into the bin — and refuse to submit over a required
+        // question that does not apply yet. They are asked if a place opens up
+        // and the join is converted into a real booking.
+        const askQuestions = !waitlistMode;
+
         const handleSubmit = async ({ name, email, phone, note }) => {
           setLoading(true);
           setError("");
@@ -1969,6 +2314,10 @@
                 ticketTypeIds:  hasTicketTypes
                   ? (isSelectedMultiDay ? selectedDays : [null]).map(() => pickedTicketType)
                   : undefined,
+                // Booking questions. The service resolves the same set and
+                // enforces the same rules on save — this is what was answered,
+                // not the authority on what was asked.
+                answers,
               }),
             });
             if (!res.ok) {
@@ -2028,6 +2377,20 @@
               onSubmit={handleSubmit}
               loading={loading}
               error={error}
+              extra={
+                askQuestions ? (
+                  <BookingQuestions
+                    questions={questions}
+                    answers={answers}
+                    setAnswers={setAnswers}
+                  />
+                ) : null
+              }
+              extraError={
+                askQuestions && missing.length
+                  ? `Please answer: ${missing[0]}`
+                  : ""
+              }
             />
           );
         }
@@ -2081,7 +2444,7 @@
                 (!isMultiDay || pickedDays.length > 0) && hasTypePicked;
               return (
                 <div key={evt.id} className="card" style={{ marginBottom: 12 }}>
-                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{evt.title}</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8, fontFamily: "var(--font-display)" }}>{evt.title}</div>
                   {evt.description && (
                     <div style={{ fontSize: 14, color: "var(--text-2)", marginBottom: 12 }}>{evt.description}</div>
                   )}
@@ -2159,7 +2522,7 @@
                                 lineHeight: 1.2,
                               }}>
                               <div style={{ fontSize: 13, color: "var(--text-2)" }}>{chip.dow}</div>
-                              <div style={{ fontWeight: 600 }}>{chip.day}</div>
+                              <div style={{ fontWeight: 600, fontFamily: "var(--font-display)" }}>{chip.day}</div>
                               {dayFull && (
                                 <div style={{ fontSize: 12, color: "var(--error)" }}>Full</div>
                               )}
@@ -2218,6 +2581,14 @@
         const [loading,       setLoading]       = useState(false);
         const [error,         setError]         = useState("");
 
+        // Questions for the chosen class. Re-resolved when the class changes,
+        // because which questions apply depends on it.
+        //
+        // Scoped to the class, not the occurrence: a questionnaire belongs to
+        // the class, so every date of it asks the same things.
+        const { questions, answers, setAnswers, missing } =
+          useBookingQuestions(org.id, "class", selectedClass?.id);
+
         const fmtChip = (iso) => {
           const dt = new Date(iso + "T00:00:00Z");
           const dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dt.getUTCDay()];
@@ -2269,6 +2640,10 @@
                 customerEmail:  email,
                 customerPhone:  phone,
                 customerNote:   note,
+                // Booking questions. The service resolves the same set and
+                // enforces the same rules on save — this is what was answered,
+                // not the authority on what was asked.
+                answers,
               }),
             });
             if (!res.ok) {
@@ -2321,6 +2696,14 @@
               onSubmit={handleSubmit}
               loading={loading}
               error={error}
+              extra={
+                <BookingQuestions
+                  questions={questions}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              }
+              extraError={missing.length ? `Please answer: ${missing[0]}` : ""}
             />
           );
         }
@@ -2355,7 +2738,7 @@
                 .join(", ");
               return (
                 <div key={cls.id} className="card" style={{ marginBottom: 12 }}>
-                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{cls.title}</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8, fontFamily: "var(--font-display)" }}>{cls.title}</div>
                   {cls.description && (
                     <div style={{ fontSize: 14, color: "var(--text-2)", marginBottom: 12 }}>{cls.description}</div>
                   )}
@@ -2389,9 +2772,18 @@
                                 minWidth: 48,
                                 padding: "6px 10px",
                                 borderRadius: 6,
-                                border: `1px solid ${isSelected ? "var(--secondary)" : "var(--border)"}`,
-                                background: isSelected ? "var(--secondary)" : "var(--surface)",
-                                color: isSelected ? "var(--on-secondary)" : "var(--text)",
+                                /* ⚠️ `--accent`, not `--secondary`.
+                                   `--secondary` and `--on-secondary` are not
+                                   declared anywhere on this page, so all three
+                                   declarations were invalid and a selected day
+                                   chip rendered identically to an unselected
+                                   one — the customer could not see which day
+                                   they had picked. `--accent` with white text
+                                   is what every other selected state here
+                                   uses. */
+                                border: `1px solid ${isSelected ? "var(--accent)" : "var(--border)"}`,
+                                background: isSelected ? "var(--accent)" : "var(--surface)",
+                                color: isSelected ? "#fff" : "var(--text)",
                                 opacity: dayFull ? 0.4 : 1,
                                 cursor: dayFull ? "default" : "pointer",
                                 fontSize: 12,
@@ -2490,7 +2882,7 @@
           )}
           <div style={{ marginBottom: 24, background: "var(--accent-bg)", borderRadius: "var(--r-md)",
             padding: "16px 18px", textAlign: "left", border: "1px solid var(--accent-mid)" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", marginBottom: 6 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", marginBottom: 6, fontFamily: "var(--font-display)" }}>
               View and manage your bookings
             </div>
             <div style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.6, marginBottom: 14 }}>
