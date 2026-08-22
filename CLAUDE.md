@@ -19,9 +19,14 @@ business can run its bookings on At9 indefinitely without paying. Never write
 copy that implies a trial, a countdown, or that bookings stop when something
 lapses.
 
-There are two paid tiers:
+⚠️ **The free tier is called Solo.** "Free" is its *price*, not its name — write
+"Solo" where the other tiers are named, and "free" where a price belongs.
+Titling it "Free" leaves the tier unnamed and reads oddly beside Pro and Team,
+which are names.
 
-- **Free** — everything needed to take and manage bookings: every room, table,
+Three tiers, two of them paid:
+
+- **Solo — free** — everything needed to take and manage bookings: every room, table,
   class, event and appointment on one schedule; customers and their bookings;
   instant availability checking; email confirmations and updates; your own web
   and social booking link (`at9.app/book/SHORT_NAME`); messaging customers;
@@ -38,16 +43,20 @@ features under Team.
 **Stripe's transaction fees apply to each payment.** Say so wherever payments
 are mentioned — a fee nobody disclosed is the kind of surprise that loses trust.
 
-### Retired: Solo, and the 90-day trial
+### Retired: the 90-day trial, and Solo's old price
 
-**Solo (£9.99/month) and the 90-day free trial no longer exist.** Both were
-withdrawn: a plan that expires works against the goal, which is reach — get
-businesses running their bookings here, earn from the ones that connect Stripe,
-and sell Team to the ones that grow.
+**The 90-day free trial no longer exists.** It was withdrawn because a plan that
+expires works against the goal, which is reach — get businesses running their
+bookings here, earn from the ones that connect Stripe, and sell Team to the ones
+that grow. No page should mention a trial.
 
-Existing Solo subscribers still exist and their SKU is still listed so a restore
-recognises it, but **nothing new should ever be sold as Solo** and no page should
-mention a trial.
+**Solo was £9.99 and is now free.** The tier was not retired, only its price —
+so Solo is still named on the pricing page, as the free tier. Anyone still
+paying £9.99 for it is on a legacy price; their SKU stays listed so a restore
+recognises it.
+
+> This corrects an earlier version of this file, which said Solo had been
+> withdrawn and called the free tier "Free". Both were wrong.
 
 ⚠️ **£29.99 is not the current Team price.** It is what existing Team
 subscribers still pay until the stores are changed; the advertised price is
@@ -78,10 +87,10 @@ What are the features of At9?
 
 Is there a trial period?
 
-There is no trial, because there is nothing to trial *into* — taking bookings is
-free, permanently, with no card. Pay only if you want booking questions,
-reminders and files (Pro, £9.99/month) or to share the calendar with your team
-(Team, £34.99/month).
+There is no trial, because there is nothing to trial *into* — Solo takes
+bookings free, permanently, with no card. Pay only if you want booking
+questions, reminders and files (Pro, £9.99/month) or to share the calendar with
+your team (Team, £34.99/month).
 
 Comments from me, the founder, Mark Houldridge
 
@@ -122,7 +131,7 @@ for each of the heading and descriptive naming.
 - Forgotten Password
 - Close account
 - Change password
-- Subscribing to Pro and Team
+- Subscribing to Pro and Team (Solo is free)
 
 ## Organisation
 
