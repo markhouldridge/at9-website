@@ -16,14 +16,36 @@
     <link rel="shortcut icon" href="../assets/icons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png" />
     <link rel="manifest" href="../assets/icons/site.webmanifest" />
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Plus+Jakarta+Sans:wght@600..700&display=swap"
       rel="stylesheet"
     />
     <style>
+        /* ── Typography ────────────────────────────────────────────────────────────
+     SPECIFICATION.md > Brand & Design System > Typography, authoritative for
+     the app and the whole website: Plus Jakarta Sans for text that NAMES,
+     TITLES or QUANTIFIES; Inter for text that EXPLAINS, DESCRIBES or was
+     TYPED. Ambiguous cases go to Inter.
+
+     `size-adjust` scales the Arial fallback to Inter's x-height so the page
+     does not reflow when the webfont lands. */
+  @font-face {
+    font-family: "Inter fallback";
+    src: local("Arial");
+    size-adjust: 105%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: "Jakarta fallback";
+    src: local("Arial");
+    size-adjust: 103%;
+    line-gap-override: 0%;
+  }
       :root {
+    --font-display: "Plus Jakarta Sans", "Jakarta fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-body: "Inter", "Inter fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         --bg: #fbfaf6;
         --bg-soft: #f5f1e9;
         --bg-mute: #f1ede3;
@@ -53,12 +75,7 @@
         padding: 0;
       }
       body {
-        font-family:
-          "Switzer",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
+        font-family: var(--font-body);
         background: var(--bg);
         color: var(--ink);
         font-size: 17px;
@@ -339,7 +356,36 @@
       .footer-links a:hover {
         color: var(--ink);
       }
-    </style>
+    
+  /* ── The display face ────────────────────────────────────────────────────
+     The one rule, applied: headings name their section, nav items and buttons
+     name a destination or an action, the wordmark names the product. Body
+     copy, legal prose and help text stay Inter via `body`. */
+  h1, h2, h3, h4, h5, h6,
+  .nav-links a,
+  .btn, .btn-primary, .btn-secondary, .btn-ghost {
+    font-family: var(--font-display);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    /* Evens a wrapped heading's line lengths instead of orphaning a word. */
+    text-wrap: balance;
+  }
+  /* Jakarta is wider-set than the face this replaced, so the display sizes
+     need the density back. Only at 20px and up — below that negative
+     tracking costs more legibility than it buys.
+
+     These deliberately override the page's own h1/h2 tracking further up the
+     sheet, which was set for Switzer. Same specificity, so this block wins by
+     coming last; the earlier values are left in place rather than hunted
+     through ten files, and this comment is why they disagree. */
+  /* word-spacing is the exact positive of each tracking value: the
+     correction is meant to close letter gaps, not word gaps. */
+  h1 { letter-spacing: -0.03em; word-spacing: 0.03em; }
+  h2 { letter-spacing: -0.025em; word-spacing: 0.025em; }
+  h3 { letter-spacing: -0.01em; word-spacing: 0.01em; }
+  p { text-wrap: pretty; }
+</style>
   </head>
   <body>
     <!-- ---------- NAV ---------- -->

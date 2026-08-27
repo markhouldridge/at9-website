@@ -474,46 +474,72 @@ that child 16px and the corners look pinched.
 
 ## 5. Typography
 
-**Two faces, split by what the surface *does* — not by which folder it lives in.**
+**Two faces, one rule, everywhere.** The website was the last surface on a third
+family; it is not any more.
 
-| Surface                                              | Face                                  |
-| ---------------------------------------------------- | ------------------------------------- |
-| **Product** — the app, and the web booking page (`/website/book`) | **Inter** — 400 / 500 / 600 / 700 |
-| **Marketing** — every other page on the website      | **Switzer** — 400 / 500 / 600 / 700   |
-| Any number in a list, table or price                 | the surface's face + `tabular-nums` + `slashed-zero` |
+| Role | Face |
+| --- | --- |
+| **Display** — text that NAMES, TITLES or QUANTIFIES | **Plus Jakarta Sans** — 600 / 700, plus 800 for the homepage hero alone |
+| **Body** — text that EXPLAINS, DESCRIBES or was TYPED | **Inter** — 400 / 500 / 600 / 700 |
+| Any number in a list, table or price | Inter + `tabular-nums` + `slashed-zero` |
 
-**The test: is the person reading, or working?** A marketing page is read — it has to
-have a voice and persuade someone who has never heard of At9. A product surface is
-worked: slots, dates, prices, forms, counts. Inter is drawn for exactly that — tall
-x-height, open apertures, figures that hold a column at 13px. It is also unremarkable,
-which is right behind a working diary and wrong on a page that has to sell. Switzer is
-warmer and more distinctive, and carries the marketing surfaces without tipping into
-decoration.
+Genuinely ambiguous → **Inter**. Over-applying the display face is what makes a
+page feel shouty.
 
-**The web booking page is the case that proves the rule.** It sits under `/website`, so
-"the website uses Switzer" would put it there — but it is a booking tool with a calendar,
-forty time slots and a payment step, and the customer using it is working, not reading.
-It uses **Inter**, like the app. Its brand is carried by the indigo palette and the
-"Powered by At9 Booking" mark, which do that job better than a typeface does at 13px.
+⚠️ **This replaced a split by surface** — Switzer for marketing, Inter for the
+app and `/website/book` — which said the marketing pages were *read* and the
+product surfaces *worked*, and gave each its own face. It was a coherent idea
+and it is gone. `SPECIFICATION.md` › Brand & Design System › Typography, which
+outranks this file, defines one pairing for the app and the whole website, and
+the app and the booking page were already on it. Keeping Switzer meant a visitor
+crossing from a marketing page into `/book` changed typeface mid-journey for a
+distinction only we could see.
 
-**One face per surface.** Within either, do not introduce a second family for headings.
-Weight, size and colour are the hierarchy; a second face is not.
+**Numbers.** An isolated figure — a hero stat, a plan price — takes Jakarta;
+its proportional figures are right when a number stands alone. Anything
+**vertically aligned** takes Inter with `tabular-nums`, or the column jitters
+between rows. A booking reference is scanned character by character, not read,
+so it is Inter too.
 
-- **App, and `/website/book`:** load Inter (the app bundles it; the booking page loads weights 400–700). React Native fallback if you cannot bundle it: the system stack
-  (SF Pro / Roboto). Do not substitute a random Google font — a mismatched fallback is
-  worse than a system font.
-- **Website (marketing pages):** load Switzer from Fontshare, **weights 400/500/600/700 only**. Nothing on
-  the site uses 800, and loading a weight you do not use is a file on the critical path
-  for nothing. Never reference a weight that is not loaded — the browser synthesises a
-  fake bold, which reads as smeared and uneven.
-- Fallback stack on web: `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`.
+- **Load** Inter and Plus Jakarta Sans from Google Fonts with the `400..700`
+  range syntax, which serves one variable file per family rather than a static
+  cut per weight. Jakarta starts at 600 — nothing sets the display face lighter.
+- **Never reference a weight that is not loaded.** The browser synthesises a
+  fake bold, which reads smeared and uneven.
+- **Fallback:** `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
+  behind an Arial `@font-face` carrying `size-adjust` (105% for Inter, 103% for
+  Jakarta). Arial is visibly smaller at the same px, so without the adjustment
+  every line reflows when the webfont lands.
 
-**The one exception — Caveat.** A handwriting face used for a small number of
-handwritten-aside accents on the **marketing homepage only** (the hero badge, hero tags,
-the booking-link annotation). It is the brand's one moment of warmth. It must never
-appear in the app, on the booking page, or in running prose, and it never carries
-information that is not also available without it. If you are reaching for it anywhere
-else, the answer is no.
+**The one exception — Dancing Script.** A handwriting face for a small number of
+handwritten asides on the **marketing homepage only**: the hero's first line
+("Meet your new"), the hero badge, the industry tags, the booking-link
+annotation. It is the brand's one moment of warmth, and it is what the Instagram
+pinned grid uses, so the site and the profile read as one brand. It must never
+appear in the app, on the booking page, or in running prose, and it never
+carries information that is not also available without it. If you are reaching
+for it anywhere else, the answer is no.
+
+⚠️ **It replaced Caveat, and there is only ever one script face.** Two on a page
+is one too many.
+
+⚠️ **Never letter-space it.** A joined script is drawn with the letters already
+touching; tracking pulls the joins apart. It is the one face on the site where
+inherited heading tracking is a visible defect rather than a preference.
+
+### Setting the display face
+
+- **Weight 700 for headings**, not 600. Jakarta 600 is lighter than the Switzer
+  600 it replaced, so carrying the old number across quietly thins every heading.
+- **Negative tracking at 20px and above only.** Jakarta has wider sidebearings
+  and a larger x-height, so at an unchanged size it reads looser and heavier.
+  Below 20px the correction costs more legibility than it buys.
+- ⚠️ **Pair every negative tracking with the same positive `word-spacing`.**
+  `letter-spacing` shortens *every* advance including the space glyph's, so a
+  tightened heading reads "wemake it beautifullysimple". The correction is meant
+  to close the gaps between letters, not between words.
+- **`text-wrap: balance` on headings, `pretty` on prose.** One evens the line
+  lengths of a wrapped heading; the other only prevents a single-word last line.
 
 ### The scale — app (dp)
 
@@ -1187,7 +1213,7 @@ artefact. Style Dictionary does the conversion in the build.
 | `light-dark()`                               | Halves the theme CSS — one declaration instead of two blocks.                                                                                   |
 | `@layer tokens, base, components, utilities` | Cascade control. Specificity wars stop being a thing.                                                                                           |
 | Container queries                            | Components respond to _their own_ width, not the viewport. This is what makes a card work in a sidebar and full-bleed.                          |
-| `size-adjust` on the fallback font           | Matches the fallback's metrics to Switzer's, so nothing shifts when the webfont lands. Prevents CLS — a real Core Web Vitals score, not a nicety. |
+| `size-adjust` on the fallback font           | Matches Arial's x-height to Inter's and Jakarta's, so nothing shifts when the webfont lands. **Done** — see §5. Prevents CLS, a real Core Web Vitals score rather than a nicety. |
 
 None of these exist in React Native. Don't try.
 

@@ -114,16 +114,17 @@
         document.documentElement.classList.add("ink-animate");
       }
     </script>
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- One request, three variable fonts. The `400..700` range syntax makes
+         Google serve a single variable file per family rather than one static
+         cut per weight, so asking for the full range costs less than the four
+         static Switzer weights this replaced.
+
+         Jakarta starts at 600: it is the display face and nothing sets it
+         lighter. 800 is loaded for the hero alone — see `.hero-line`. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Plus+Jakarta+Sans:wght@600..800&family=Dancing+Script:wght@600..700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -136,7 +137,58 @@
    Everything else is cool neutral (white / ink / faint primary tint).
    ----------------------------------------------------------- */
 
+      /* ── Fallback metrics ─────────────────────────────────────────────────
+         Arial stands in while the webfonts load. Left alone it is visibly
+         smaller than Inter at the same px — Inter's x-height is 54.6% of the
+         em against Arial's 51.9% — so every line reflows when the real font
+         lands. `size-adjust` scales the fallback to match, which is what turns
+         a layout shift into a swap nobody notices.
+
+         Only the horizontal metric is overridden. Guessing at ascent/descent
+         to a precision I cannot verify would risk making the shift worse than
+         leaving Arial's own vertical metrics alone. */
+      @font-face {
+        font-family: "Inter fallback";
+        src: local("Arial");
+        size-adjust: 105%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: "Jakarta fallback";
+        src: local("Arial");
+        size-adjust: 103%;
+        line-gap-override: 0%;
+      }
+
       :root {
+        /* ── Typography ──────────────────────────────────────────────────────
+           SPECIFICATION.md > Brand & Design System > Typography, which is
+           authoritative for the app and the whole website:
+
+             Plus Jakarta Sans — text that NAMES, TITLES or QUANTIFIES
+             Inter             — text that EXPLAINS, DESCRIBES or was TYPED
+
+           Genuinely ambiguous cases go to Inter. Over-applying the display
+           face is what makes an interface feel shouty.
+
+           This replaced Switzer, which the design-system skill still names for
+           marketing pages. The skill is the stale one — the Typography section
+           says in as many words that it outranks the skills, and the app and
+           the booking page were already on this pairing. The site was the last
+           surface using a third family. */
+        --font-display:
+          "Plus Jakarta Sans", "Jakarta fallback", -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-body:
+          "Inter", "Inter fallback", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        /* The handwritten accent — the brand's one moment of warmth, and the
+           only face allowed a third slot. It carries the hero's first line and
+           a handful of marginal asides, never information that is not also
+           available without it. Replaced Caveat: two script faces on one page
+           is one too many, and this is the one on the Instagram grid. */
+        --font-script: "Dancing Script", "Segoe Script", cursive;
+
         /* Brand palette — primary #554aca + mint #a3f6c0, on cool neutrals.
            Bold elements use primary and mint; everything else is white/ink/tint.
            Extended accents (#7860d8 / #40b3f6 / #18a390) for feature highlights. */
@@ -187,17 +239,14 @@
         padding: 0;
       }
       body {
-        font-family:
-          "Switzer",
-          "Inter",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
+        font-family: var(--font-body);
         color: var(--ink);
         background: var(--bg);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        /* Inter ships its alternates as opsz/feature axes; letting the browser
+           pick per size is free and slightly improves small text. */
+        font-optical-sizing: auto;
         font-size: 17px;
         line-height: 1.55;
       }
@@ -242,39 +291,78 @@
         z-index: 1;
       }
 
-      /* ---------- Typography ---------- */
+      /* ---------- Typography ----------
+         Sizes are unchanged from the Switzer setting — they were tuned against
+         this layout and re-picking them is a redesign, not a font swap. Two
+         things did change, and both are corrections the spec asks for:
+
+         **Weight 600 → 700.** Jakarta 600 is lighter than Switzer 600, so
+         holding the old number would have quietly thinned every heading on the
+         site. 700 is also what the spec's display tokens (heroTitle,
+         screenTitle, cardTitle) actually specify.
+
+         **More negative tracking.** Jakarta has wider sidebearings and a
+         larger x-height than the face it replaced, so at an unchanged px size
+         a heading reads looser and heavier. The spec's fix is negative
+         tracking, applied only at 20px and up — below that it costs
+         legibility, which is why h3 and h4 are left alone. */
       h1,
       h2,
       h3,
       h4 {
-        font-weight: 600;
-        letter-spacing: -0.02em;
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.025em;
         line-height: 1.08;
         margin: 0 0 0.4em;
         color: var(--ink);
+        /* Evens the line lengths of a wrapped heading instead of leaving one
+           orphaned word on the last line. Only safe on short text — the browser
+           stops balancing past a few lines, so it never touches prose. */
+        text-wrap: balance;
       }
+      /* Tracking pulls the word space in with it — `letter-spacing` shortens
+         every advance including the space glyph's, so a heading tightened for
+         Jakarta's sidebearings ends up reading "wemake it beautifullysimple".
+         Each `word-spacing` below is the exact positive of its tracking, which
+         returns the word space to what it was and leaves only the letters
+         tight. That is the whole point of the correction: closing the gaps
+         between letters, not between words. */
       h1 {
         font-size: clamp(40px, 6.2vw, 72px);
-        letter-spacing: -0.035em;
-        font-weight: 600;
+        letter-spacing: -0.03em;
+        word-spacing: 0.03em;
       }
       h2 {
         font-size: clamp(30px, 3.6vw, 46px);
-        letter-spacing: -0.03em;
-        font-weight: 600;
+        letter-spacing: -0.025em;
+        word-spacing: 0.025em;
       }
       h3 {
         font-size: 21px;
-        font-weight: 600;
+        letter-spacing: -0.01em;
+        word-spacing: 0.01em;
       }
       p {
         margin: 0 0 1em;
         color: var(--ink-2);
+        /* Prose is balanced differently to a heading: `pretty` leaves the line
+           lengths alone and only prevents a single-word last line. */
+        text-wrap: pretty;
       }
       .lead {
         font-size: 20px;
         line-height: 1.5;
+        letter-spacing: -0.005em;
         color: var(--ink-2);
+      }
+      /* The reading measure. Past about 65 characters the eye loses its place
+         returning to the start of the next line — the one type rule that is
+         about the reader's neck rather than the page. */
+      .lead,
+      .feature-card .card-copy p,
+      .faq-item .answer {
+        max-width: 65ch;
       }
       .eyebrow {
         display: inline-block;
@@ -333,22 +421,60 @@
         background-repeat: no-repeat;
         background-size: 100% var(--ink-h);
         background-position: 0 86%;
+        /* The padding widens the marker band past the words, which is what a
+           real highlighter does. The matching negative margin gives that width
+           back to the layout, so the band grows without the span occupying any
+           more room on the line.
+
+           Without it the padding was pushing the punctuation that follows away
+           from the word it belongs to — "beautifully simple ." and "free,
+           forever ." both read with a floating full stop. Pre-existing, but a
+           full stop that has drifted off its sentence is a typesetting fault,
+           and this is the rule that caused it. */
         padding: 0 0.08em;
+        margin: 0 -0.08em;
         border-radius: 0.14em;
         transition: background-size 0.75s cubic-bezier(0.65, 0, 0.35, 1);
       }
-      /* Dark hero: no marker — the highlighted word is simply mint text, which
-         reads cleanly on the primary ground (the signature accent-on-primary). */
+      /* Dark hero: a mint brush stroke under white words, which is the lockup
+         on the Instagram pinned grid. It replaced mint text on the primary
+         ground — that was legible, but it is not what the social artwork does,
+         and a visitor arriving from the profile should recognise the page.
+
+         Drawn as an SVG rather than a flat band: the stroke is tapered and
+         slightly uneven, so it reads as a pen mark instead of a highlighter,
+         and it stretches to the width of the words because
+         `preserveAspectRatio="none"` lets it. Sizing the band in `em` keeps it
+         proportional through the whole clamp() range — a px height correct at
+         86px would be a smear at 46px. It still animates, because the width is
+         what `--ink-h` leaves to the shared rules below. */
       .hero .squiggle-wrap {
-        background-image: none;
-        color: var(--secondary);
-        padding: 0;
+        --ink-h: 0.22em;
+        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20900%2026%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M2%2014C110%204%20300%201%20470%203c170%202%20300%205%20428%201-108%2015-278%2021-448%2019C280%2021%20120%2022%202%2014Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
+        background-position: 0 100%;
+        color: #fff;
+        padding: 0 0 0.16em;
+        margin: 0;
+        border-radius: 0;
       }
       /* JS adds `.ink-animate` to start the markers empty; the observer then adds
          `.is-inked` as each scrolls in. Without JS / reduced motion they stay
          shown (full width) — progressive enhancement. */
       .ink-animate .squiggle-wrap {
         background-size: 0% var(--ink-h);
+      }
+      /* …except the hero's, which is drawn in full from the start.
+         The draw-in is a reward for scrolling, and the hero has not been
+         scrolled to — it is what the page opens on. Leaving it in the animated
+         set meant the headline's mint stroke existed only if an
+         IntersectionObserver callback ran, so anything that delayed or dropped
+         that callback silently cost the most important mark on the site. It
+         showed up immediately: the hero rendered brushless in a headless
+         browser while the two markers further down were fine.
+
+         Above the fold, visible by default; below it, draw it in. */
+      .ink-animate .hero .squiggle-wrap {
+        background-size: 100% var(--ink-h);
       }
       .squiggle-wrap.is-inked {
         background-size: 100% var(--ink-h);
@@ -544,7 +670,7 @@
         pointer-events: none;
         opacity: 0.06;
         mix-blend-mode: overlay;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20900%2026%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M2%2014C110%204%20300%201%20470%203c170%202%20300%205%20428%201-108%2015-278%2021-448%2019C280%2021%20120%2022%202%2014Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
       }
       .hero > .container {
         position: relative;
@@ -671,9 +797,13 @@
         align-items: center;
         gap: 9px;
         margin-top: 18px;
-        font-family: "Caveat", cursive;
-        font-size: 22px;
-        font-weight: 500;
+        /* Dancing Script sits smaller on the line than Caveat did at the same
+           px — its x-height is a good deal shallower — so each of the three
+           handwritten accents is nudged up to hold the size it read at
+           before. Same reason each time; noted once, here. */
+        font-family: var(--font-script);
+        font-size: 25px;
+        font-weight: 600;
         color: var(--ink-2);
         transform: rotate(-1deg);
       }
@@ -717,9 +847,46 @@
       .hero-centered h1 {
         margin-left: auto;
         margin-right: auto;
-        /* a little larger + wider than the default hero heading */
-        font-size: clamp(46px, 7.2vw, 86px);
+        /* a little larger + wider than the default hero heading.
+           The floor dropped from 46px to 34px, and only the floor — the vw term
+           and the ceiling are untouched, so nothing at or above ~640px moves.
+           At 800 weight "Booking bestie." is materially wider than the 600 it
+           replaced, and 46px no longer fits a 375px screen. The page clips
+           overflow rather than scrolling it, so the failure would have been a
+           silently chopped headline on the smallest phones. */
+        font-size: clamp(34px, 7.2vw, 86px);
         line-height: 1.04;
+      }
+      /* "Meet your new" — the handwritten line.
+         Sized in `em` so it tracks the headline through the clamp instead of
+         needing a second one. 0.9 is a cap-height match, not a size match:
+         Dancing Script's capitals are about 0.68 of its em against Jakarta's
+         0.73, so equal px sizes would make the script line look short. This
+         lands it a shade under the grid's proportion, which keeps the bold line
+         dominant on a page where it has a CTA to introduce.
+
+         Tracking is explicitly 0. A joined script is drawn with the letters
+         already touching, and letter-spacing pulls those joins apart — the one
+         face on the page where the inherited heading tracking would be a
+         visible defect rather than a preference. */
+      .hero-script {
+        display: block;
+        font-family: var(--font-script);
+        font-weight: 600;
+        font-size: 0.9em;
+        line-height: 1.05;
+        letter-spacing: 0;
+        color: #fff;
+        margin-bottom: 0.04em;
+      }
+      /* "Booking bestie." — the name of the thing, and the only 800 on the
+         site. The weight is the hierarchy here: both lines are near enough the
+         same cap height, so what separates them is colour of ink, not size. */
+      .hero-line {
+        display: block;
+        font-weight: 800;
+        letter-spacing: -0.028em;
+        word-spacing: 0.028em;
       }
       .hero-centered p.lead {
         margin-left: auto;
@@ -761,9 +928,9 @@
       }
       .hero-tags span {
         position: absolute;
-        font-family: "Caveat", cursive;
-        font-weight: 600;
-        font-size: 30px;
+        font-family: var(--font-script);
+        font-weight: 700;
+        font-size: 34px;
         line-height: 1;
         color: rgba(255, 255, 255, 0.16);
         white-space: nowrap;
@@ -777,19 +944,19 @@
       .hero-tags .t2 {
         top: 40%;
         left: 3%;
-        font-size: 26px;
+        font-size: 30px;
         transform: rotate(6deg);
       }
       .hero-tags .t3 {
         top: 63%;
         left: 9%;
-        font-size: 28px;
+        font-size: 32px;
         transform: rotate(-5deg);
       }
       .hero-tags .t4 {
         top: 83%;
         left: 5%;
-        font-size: 25px;
+        font-size: 28px;
         transform: rotate(8deg);
       }
       .hero-tags .t5 {
@@ -800,19 +967,19 @@
       .hero-tags .t6 {
         top: 41%;
         right: 4%;
-        font-size: 26px;
+        font-size: 30px;
         transform: rotate(-6deg);
       }
       .hero-tags .t7 {
         top: 64%;
         right: 10%;
-        font-size: 27px;
+        font-size: 31px;
         transform: rotate(5deg);
       }
       .hero-tags .t8 {
         top: 84%;
         right: 6%;
-        font-size: 25px;
+        font-size: 28px;
         transform: rotate(-9deg);
       }
       /* decorative only — hide once the gutters get tight */
@@ -2087,9 +2254,9 @@
         }
       }
       .book-url-annotation {
-        font-family: "Caveat", cursive;
-        font-size: 26px;
-        font-weight: 500;
+        font-family: var(--font-script);
+        font-size: 29px;
+        font-weight: 600;
         color: var(--ink-3);
         white-space: nowrap;
         position: absolute;
@@ -2110,6 +2277,53 @@
       /* small helpers */
       .center {
         text-align: center;
+      }
+
+      /* ── The display face ──────────────────────────────────────────────────
+         The one rule: text that NAMES, TITLES or QUANTIFIES is Plus Jakarta
+         Sans. Everything else stays Inter, inherited from `body`.
+
+         Grouped here at the end rather than sprinkled through the rules above,
+         matching /book. Two reasons, and the first is load-bearing: several
+         rules earlier in this sheet set `font-family: inherit`, and scattering
+         the display face would leave the winner decided by source order. The
+         second is that "what is Jakarta on this page?" should be one list
+         rather than a search. Headings are not repeated here — h1–h4 take the
+         face in the Typography block.
+
+         Deliberately NOT on this list:
+           .lead, .bt-card p, .feature-card p, .plan li, .faq-item .answer,
+           .plan .price-note, .contact-card .meta, .hero .meta
+                              prose — it describes, so it explains
+           .book-url-base,
+           .book-url-slug     a URL is scanned character by character, not
+                              read. The spec puts references and IDs on Inter
+                              for exactly that, and the slug is one.
+           .hero-rating       genuinely ambiguous, and the rule says ambiguous
+                              goes to Inter
+           .provider-line .company
+                              a company name, but sitting mid-sentence inside
+                              running prose. A face change inside a sentence
+                              reads as a rendering fault; its 600 weight
+                              already does the naming. */
+      .eyebrow,
+      .eyebrow-cycle .cycle-word, /* the industry being named */
+      .nav-links a, /* nav items name destinations */
+      .btn, /* buttons name actions */
+      .meta-pills span,
+      .free-tier-label,
+      .free-tier-list strong, /* names the feature; its span describes it */
+      .plan .tag,
+      .plan .price .amount, /* quantifies — an isolated price, so Jakarta's
+                               proportional figures are right here; a column of
+                               numbers would need Inter tabular instead */
+      .plan .price .per,
+      .faq-item summary, /* the question titles the answer */
+      .contact-card .label,
+      .link-col a, /* footer links name destinations */
+      .share-badge,
+      .stripe-badge strong {
+        font-family: var(--font-display);
       }
     </style>
   </head>
@@ -2170,9 +2384,15 @@
       </div>
       <div class="container hero-centered">
         <div class="hero-copy">
+          <!-- The lockup from the Instagram pinned grid, so the two read as one
+               brand: a handwritten first line, then the name of the thing in
+               heavy Jakarta with the mint brush under it. Two spans rather than
+               a <br> — each line is styled, not just broken. -->
           <h1>
-            Meet your new<br />
-            <span class="squiggle-wrap">booking bestie.</span>
+            <span class="hero-script">Meet your new</span>
+            <span class="hero-line"
+              ><span class="squiggle-wrap">Booking bestie.</span></span
+            >
           </h1>
           <p class="lead">
             Everything you need to manage bookings effortlessly. Automate
