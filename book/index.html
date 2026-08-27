@@ -31,6 +31,15 @@
          self-hosted — that is what keeps card details out of this page and off
          At9's servers, and what keeps the business inside PCI scope SAQ-A. -->
     <script src="https://js.stripe.com/v3/"></script>
+    <!-- Brand themes, generated from the app's theme seeds
+         (app/scripts/build-brand-themes.js). One block per theme, applied by
+         setting `data-brand` on <html> once the organisation has loaded.
+
+         Loaded BEFORE the page's own <style> deliberately: the :root block
+         below declares At9's defaults, and a provider on the default theme —
+         or a page where this file failed to load — simply keeps them. The
+         booking funnel never waits on this to be styled. -->
+    <link rel="stylesheet" href="/assets/brand-themes.css" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -39,7 +48,7 @@
            The app's system, applied here: Plus Jakarta Sans for text that
            **names, titles or quantifies**; Inter for text that **explains,
            describes, or was typed by the customer**. Where it is genuinely
-           ambiguous it is Inter. See /Typography.md, which is authoritative for
+           ambiguous it is Inter. See SPECIFICATION.md > Brand & Design System > Typography, which is authoritative for
            both the app and this page.
 
            Only two Jakarta weights are loaded (600, 700) because only two are
@@ -537,7 +546,7 @@
       @media (max-width: 340px) { .type-grid { grid-template-columns: 1fr; } }
     
       /* ── The display face ──────────────────────────────────────────────────
-         Typography.md's one rule: text that **names, titles or quantifies** is
+         The Typography spec's one rule: text that **names, titles or quantifies** is
          Plus Jakarta Sans. Everything else stays on Inter via `body`.
 
          Grouped in one place, at the end of the sheet, rather than sprinkled
@@ -603,6 +612,17 @@
       const WS_URI = IS_LOCAL
         ? `http://${window.location.hostname}:3000`
         : "https://ws.at9.app";
+      // Sets the brand theme the generated stylesheet keys off.
+      //
+      // `at9` is deliberately not a block in that file — it is the default the
+      // page already declares — so it is cleared rather than set, which also
+      // covers a provider who has chosen nothing.
+      const applyBrandTheme = (brandTheme) => {
+        const id = typeof brandTheme === "string" ? brandTheme.trim() : "";
+        if (!id || id === "at9") delete document.documentElement.dataset.brand;
+        else document.documentElement.dataset.brand = id;
+      };
+
       const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
       // ── UTC helpers ───────────────────────────────────────────────────────────
@@ -2985,6 +3005,15 @@
             })
             .then((data) => {
               setOrg(data);
+              // The provider's brand, straight onto <html>. `preferences`
+              // already carries every organisation_settings row, so the theme
+              // arrives with the data the page was fetching anyway — no extra
+              // request and no new route.
+              //
+              // Unknown or absent falls through to the :root defaults, which
+              // are At9's own: an id this build of the stylesheet has never
+              // heard of simply matches no block.
+              applyBrandTheme(data?.preferences?.brandTheme);
               return Promise.all([
                 fetch(`${WS_URI}/services/public/${data.id}`).then(r => r.ok ? r.json() : []).catch(() => []),
                 fetch(`${WS_URI}/events/public/organisation/${data.id}`).then(r => r.ok ? r.json() : []).catch(() => []),
