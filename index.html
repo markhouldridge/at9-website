@@ -449,11 +449,15 @@
          86px would be a smear at 46px. It still animates, because the width is
          what `--ink-h` leaves to the shared rules below. */
       .hero .squiggle-wrap {
-        --ink-h: 0.22em;
+        /* 0.22em → 0.15em: thinner, so it reads as a pen line under the words
+           rather than a bar behind them. The band is also dropped further
+           below the baseline by the padding, clearing the descender on the
+           "g" instead of grazing it. */
+        --ink-h: 0.15em;
         background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20900%2026%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M2%2014C110%204%20300%201%20470%203c170%202%20300%205%20428%201-108%2015-278%2021-448%2019C280%2021%20120%2022%202%2014Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
         background-position: 0 100%;
         color: #fff;
-        padding: 0 0 0.16em;
+        padding: 0 0 0.2em;
         margin: 0;
         border-radius: 0;
       }
@@ -848,14 +852,49 @@
         margin-left: auto;
         margin-right: auto;
         /* a little larger + wider than the default hero heading.
-           The floor dropped from 46px to 34px, and only the floor — the vw term
-           and the ceiling are untouched, so nothing at or above ~640px moves.
-           At 800 weight "Booking bestie." is materially wider than the 600 it
-           replaced, and 46px no longer fits a 375px screen. The page clips
-           overflow rather than scrolling it, so the failure would have been a
-           silently chopped headline on the smallest phones. */
-        font-size: clamp(34px, 7.2vw, 86px);
+           Ceiling 86 → 96px.
+
+           The floor is 52px, not the 34px an earlier pass set. That 34 came
+           from a headless screenshot that appeared to show the headline
+           overflowing a phone — but headless screenshot mode ignores the
+           viewport meta, so the page was laying out far wider than the window
+           and the "overflow" was an artefact of the measurement, not the page.
+
+           Measured properly, by growing the string until it exceeds the
+           container: "Booking bestie." at 800 fits up to **53px** at 375px
+           wide, 55px at 390px, 59px at 414px. The bold line binds before the
+           script line does, which is why it is the one measured. */
+        font-size: clamp(52px, 7.2vw, 96px);
         line-height: 1.04;
+      }
+      /* Phones get their own curve rather than a flat floor.
+         The base clamp's 7.2vw is tuned for desktop and barely moves below
+         520px, so the headline arrived at its floor and stayed there while the
+         lead beneath it did not — at 375px the two were 34px against 20px, near
+         enough the same size, and the hero stopped reading as the hero.
+
+         12.5vw between 42 and 52px keeps it under the measured limit at every
+         common width (42px at 320, 47px at 375, 49px at 390, 52px at 414) while
+         restoring the ratio to the lead. */
+      @media (max-width: 520px) {
+        .hero-centered h1 {
+          /* Sized from a measurement of the real element, not an estimate.
+             "Booking bestie." at 800 renders 7.37px wide per px of font-size,
+             so the largest size that fits is (viewport − 48) / 7.37: about
+             31px at 280 wide, 37px at 320, 44px at 375, 46px at 390, 50px at
+             414. 11vw sits under every one of those with room to spare, and
+             the 30px floor only engages below ~273px.
+
+             An earlier attempt at this used a synthetic probe rather than the
+             page's own element and put the limit ~18% too high, which is how
+             the headline ended up wrapping. */
+          font-size: clamp(30px, 11vw, 52px);
+        }
+        /* Body (17) rather than Lead (20) — both are scale tokens, and at this
+           width the lead is supporting the headline rather than competing. */
+        .hero-centered p.lead {
+          font-size: 17px;
+        }
       }
       /* "Meet your new" — the handwritten line.
          Sized in `em` so it tracks the headline through the clamp instead of
@@ -884,6 +923,18 @@
          same cap height, so what separates them is colour of ink, not size. */
       .hero-line {
         display: block;
+        /* Overrides the `balance` inherited from h1. Balancing evens the line
+           lengths of a heading that wraps — useful on the section headings, and
+           actively wrong here, where the two lines are set by hand. It was
+           breaking "Booking bestie." across two lines on a phone despite the
+           string measuring ~303px against 342px of available width, and the
+           mint stroke then drew once under each fragment.
+
+           `wrap` rather than `nowrap`: at every width the clamp can produce,
+           the line is measured to fit, but natural wrapping degrades into two
+           lines if that is ever wrong, where nowrap would silently clip — the
+           page sets `overflow-x: clip`, so nothing would scroll to reveal it. */
+        text-wrap: wrap;
         font-weight: 800;
         letter-spacing: -0.028em;
         word-spacing: 0.028em;

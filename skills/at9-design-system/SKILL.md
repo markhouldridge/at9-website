@@ -538,6 +538,13 @@ inherited heading tracking is a visible defect rather than a preference.
   `letter-spacing` shortens *every* advance including the space glyph's, so a
   tightened heading reads "wemake it beautifullysimple". The correction is meant
   to close the gaps between letters, not between words.
+- ⚠️ **Size a fixed lockup from a measurement of the real element**, never a
+  synthetic probe. Rebuilding the string in a scratch page to find "the largest
+  size that fits" put the limit ~18% too high — the probe was not resolving the
+  same weight the page renders — and the homepage headline shipped wrapping on
+  a phone. Read `getBoundingClientRect()` on a clone that inherits the live
+  element's computed font instead. "Booking bestie." at 800 measures **7.37px
+  of width per px of font-size**, so the ceiling is `(viewport − 48) / 7.37`.
 - **`text-wrap: balance` on headings, `pretty` on prose.** One evens the line
   lengths of a wrapped heading; the other only prevents a single-word last line.
 
