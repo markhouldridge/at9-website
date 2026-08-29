@@ -122,9 +122,9 @@
          static Switzer weights this replaced.
 
          Jakarta starts at 600: it is the display face and nothing sets it
-         lighter. 800 is loaded for the hero alone — see `.hero-line`. -->
+         lighter, and stops at 700, which the headings and the hero share. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Plus+Jakarta+Sans:wght@600..800&family=Dancing+Script:wght@600..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Plus+Jakarta+Sans:wght@600..700&family=Dancing+Script:wght@600..700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -449,15 +449,21 @@
          86px would be a smear at 46px. It still animates, because the width is
          what `--ink-h` leaves to the shared rules below. */
       .hero .squiggle-wrap {
-        /* 0.22em → 0.15em: thinner, so it reads as a pen line under the words
-           rather than a bar behind them. The band is also dropped further
-           below the baseline by the padding, clearing the descender on the
-           "g" instead of grazing it. */
-        --ink-h: 0.15em;
-        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20900%2026%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M2%2014C110%204%20300%201%20470%203c170%202%20300%205%20428%201-108%2015-278%2021-448%2019C280%2021%20120%2022%202%2014Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
+        /* Redrawn to the pinned grid rather than tuned by eye. Three things
+           make that stroke what it is, and the flat band I had was none of
+           them: it is **thick** at the waist, **hard-tapered** to a point at
+           each end, and it **slopes up** from left to right. The taper is what
+           lets it be thick without reading as a highlighter bar — the middle
+           carries the weight and the ends disappear.
+
+           The band is 0.3em so the shape has room for both its thickness and
+           its rise; the ink is about two thirds of that at the waist. It sits
+           close under the words, as it does on the grid. */
+        --ink-h: 0.26em;
+        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201000%2022%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M8%2016C80%207%20200%204%20330%203C550%202%20780%202%20992%202C800%208%20560%2013%20330%2017C200%2019%2080%2019%208%2016Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
         background-position: 0 100%;
         color: #fff;
-        padding: 0 0 0.2em;
+        padding: 0 0 0.22em;
         margin: 0;
         border-radius: 0;
       }
@@ -674,7 +680,7 @@
         pointer-events: none;
         opacity: 0.06;
         mix-blend-mode: overlay;
-        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20900%2026%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M2%2014C110%204%20300%201%20470%203c170%202%20300%205%20428%201-108%2015-278%2021-448%2019C280%2021%20120%2022%202%2014Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201000%2022%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M8%2016C80%207%20200%204%20330%203C550%202%20780%202%20992%202C800%208%20560%2013%20330%2017C200%2019%2080%2019%208%2016Z%27%20fill%3D%27%23a3f6c0%27%2F%3E%3C%2Fsvg%3E");
       }
       .hero > .container {
         position: relative;
@@ -877,18 +883,27 @@
          common width (42px at 320, 47px at 375, 49px at 390, 52px at 414) while
          restoring the ratio to the lead. */
       @media (max-width: 520px) {
+        /* Reclaims 8px a side from the container's 24px, for the hero only.
+           Every px here is a px the headline can use, and the block is centred
+           text — nothing else notices. */
+        .hero-centered .hero-copy {
+          margin-inline: -8px;
+        }
         .hero-centered h1 {
-          /* Sized from a measurement of the real element, not an estimate.
-             "Booking bestie." at 800 renders 7.37px wide per px of font-size,
-             so the largest size that fits is (viewport − 48) / 7.37: about
-             31px at 280 wide, 37px at 320, 44px at 375, 46px at 390, 50px at
-             414. 11vw sits under every one of those with room to spare, and
-             the 30px floor only engages below ~273px.
+          /* "Booking bestie." at 700 measures 7.305px of width per px of
+             font-size, so it fits while `fs × 7.305 ≤ available`.
 
-             An earlier attempt at this used a synthetic probe rather than the
-             page's own element and put the limit ~18% too high, which is how
-             the headline ended up wrapping. */
-          font-size: clamp(30px, 11vw, 52px);
+             ⚠️ **Sized to ~17% headroom, not to the limit.** An earlier pass
+             sat at 8% — measured as fitting in headless Chrome, and reported
+             as wrapping on a real phone. The gap is not a mystery to solve
+             with a better measurement: Safari shapes text slightly differently
+             from Chrome, and a headline that fits by 8% in one engine is not
+             one that fits. (The fallback face was checked and is not the
+             cause — Arial with our `size-adjust` is 8.9% *narrower* than
+             Jakarta, so it wraps later, not sooner.)
+
+             10.4vw holds ~16–17% clear at 320, 375, 390 and 414. */
+          font-size: clamp(28px, 10.4vw, 52px);
         }
         /* Body (17) rather than Lead (20) — both are scale tokens, and at this
            width the lead is supporting the headline rather than competing. */
@@ -908,19 +923,65 @@
          already touching, and letter-spacing pulls those joins apart — the one
          face on the page where the inherited heading tracking would be a
          visible defect rather than a preference. */
+      /* The arch. On the pinned grid this line is not set flat — it lifts
+         through the middle and settles slightly, which is what stops the
+         lockup reading as two stacked lines of type.
+
+         CSS cannot curve a baseline, so the line is SVG `<textPath>` riding a
+         shallow quadratic. It is still live text in the real font, not an
+         image: it recolours, scales and re-renders with everything else.
+
+         Width is set in `em`, so it stays tied to the h1's clamp exactly as
+         the old `font-size: 0.9em` did — the viewBox does the rest. Sizing it
+         as a percentage of the container instead would have cut the script
+         loose from the headline and made it the full 860px of the hero copy on
+         desktop, wider than the bold line it introduces. */
       .hero-script {
         display: block;
+        margin: 0 auto 0.02em;
+        width: 4.8em;
+        max-width: 100%;
+      }
+      .hero-script svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+      }
+      .hero-script text {
         font-family: var(--font-script);
         font-weight: 600;
-        font-size: 0.9em;
-        line-height: 1.05;
+        font-size: 104px; /* user units — the viewBox scales it */
+        fill: #fff;
+        /* Tracking is explicitly 0. A joined script is drawn with the letters
+           already touching, and letter-spacing pulls those joins apart — the
+           one face on the page where inherited heading tracking would be a
+           visible defect rather than a preference. */
         letter-spacing: 0;
-        color: #fff;
-        margin-bottom: 0.04em;
+        word-spacing: 0;
       }
-      /* "Booking bestie." — the name of the thing, and the only 800 on the
-         site. The weight is the hierarchy here: both lines are near enough the
-         same cap height, so what separates them is colour of ink, not size. */
+      /* The SVG is hidden from assistive tech and the sentence is supplied as
+         real text beside it, rather than relying on `<text>` being exposed —
+         support for that is uneven, and this is half the headline. */
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+      /* "Booking bestie." — the name of the thing.
+         700, not the 800 it started at. At 96px ExtraBold stopped reading as
+         emphasis and started reading as shouting: the counters in the two
+         "o"s closed up and the line turned into a solid block. 700 keeps the
+         weight contrast against the script line — which is what carries the
+         hierarchy here, since the two are near enough the same cap height —
+         without the block. It also drops the only 800 on the site, so the
+         font request no longer carries that range. */
       .hero-line {
         display: block;
         /* Overrides the `balance` inherited from h1. Balancing evens the line
@@ -935,7 +996,7 @@
            lines if that is ever wrong, where nowrap would silently clip — the
            page sets `overflow-x: clip`, so nothing would scroll to reveal it. */
         text-wrap: wrap;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: -0.028em;
         word-spacing: 0.028em;
       }
@@ -2440,15 +2501,39 @@
                heavy Jakarta with the mint brush under it. Two spans rather than
                a <br> — each line is styled, not just broken. -->
           <h1>
-            <span class="hero-script">Meet your new</span>
+            <span class="hero-script">
+              <svg
+                viewBox="0 0 640 132"
+                preserveAspectRatio="xMidYMid meet"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  id="hero-arc"
+                  d="M18,116 Q322,62 622,102"
+                  fill="none"
+                  stroke="none"
+                />
+                <text>
+                  <textPath
+                    href="#hero-arc"
+                    startOffset="50%"
+                    text-anchor="middle"
+                  >
+                    Meet your new
+                  </textPath>
+                </text>
+              </svg>
+              <span class="visually-hidden">Meet your new</span>
+            </span>
             <span class="hero-line"
               ><span class="squiggle-wrap">Booking bestie.</span></span
             >
           </h1>
           <p class="lead">
-            Everything you need to manage bookings effortlessly. Automate
-            confirmations, prevent double-bookings, and let your customers book
-            and manage everything themselves.
+            Everything you need to keep bookings running smoothly — automated
+            confirmations, no double-bookings, and effortless self-service for
+            your customers.
           </p>
           <div class="ctas store-row hero-ctas-centered">
             <!-- App Store -->

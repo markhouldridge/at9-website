@@ -1,0 +1,26 @@
+<style>body{margin:0;font:12px monospace;white-space:pre}iframe{border:0}</style>
+<iframe id="f" src="/" width="500" height="560"></iframe><div id="o">…</div>
+<script>
+document.getElementById('f').onload=function(){
+ var fr=this;
+ setTimeout(function(){
+  var d=fr.contentDocument, w=fr.contentWindow;
+  var sq=d.querySelector('.hero .squiggle-wrap'),
+      copy=d.querySelector('.hero-centered .hero-copy'),
+      h1=d.querySelector('.hero-centered h1');
+  function nat(el){
+    var c=d.createElement('span'), st=w.getComputedStyle(el);
+    ['fontFamily','fontSize','fontWeight','letterSpacing','wordSpacing'].forEach(function(k){c.style[k]=st[k]});
+    c.style.whiteSpace='nowrap';c.style.position='absolute';c.style.visibility='hidden';
+    c.textContent=el.textContent.trim(); d.body.appendChild(c);
+    var n=c.getBoundingClientRect().width; d.body.removeChild(c); return n;
+  }
+  var fs=parseFloat(w.getComputedStyle(h1).fontSize), avail=copy.getBoundingClientRect().width, n=nat(sq);
+  document.getElementById('o').textContent=
+    'vw '+w.innerWidth+'  fs '+fs.toFixed(1)+'  avail '+avail.toFixed(0)
+    +'  natural '+n.toFixed(0)+'  rects '+sq.getClientRects().length
+    +'  headroom '+(((avail-n)/avail)*100).toFixed(1)+'%'
+    +'  px-per-px '+(n/fs).toFixed(3);
+ },700);
+};
+</script>

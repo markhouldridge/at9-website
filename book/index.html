@@ -1176,6 +1176,66 @@
           maximumFractionDigits: 2,
         })}`;
 
+      // An offer, applied to a listed price.
+      //
+      // The server sends `offer_percent` beside every public price it returns;
+      // this turns that into what a customer needs to see. Returns null when
+      // there is no offer, so a caller can render the plain price unchanged.
+      //
+      // ⚠️ **The arithmetic matches the server's, deliberately.** Pence,
+      // rounded once, net by subtraction — the same rule as `applyOffer` in
+      // webservice/src/helpers/offers.js. A page that advertises £7.99 while
+      // the booking charges £8.00 is a complaint, and the two are only a penny
+      // apart when one of them truncates.
+      const applyOffer = (cost, offerPercent) => {
+        const gross = Number(cost);
+        const percent = Number(offerPercent);
+        if (!Number.isFinite(gross) || gross <= 0) return null;
+        if (!Number.isFinite(percent) || percent <= 0 || percent > 100) return null;
+        const grossMinor = Math.round(gross * 100);
+        const discountMinor = Math.min(
+          grossMinor,
+          Math.round((grossMinor * percent) / 100),
+        );
+        return {
+          percent,
+          gross,
+          net: (grossMinor - discountMinor) / 100,
+          discount: discountMinor / 100,
+        };
+      };
+
+      // The price a customer reads: the original struck through, the new price,
+      // and the saving named as a percentage.
+      //
+      // One component for every booking type, so a discounted class and a
+      // discounted room cannot end up looking like different offers.
+      const Price = ({ cost, offerPercent, style }) => {
+        const offer = applyOffer(cost, offerPercent);
+        if (!offer) return <span style={style}>{fmtMoney(cost)}</span>;
+        return (
+          <span style={style}>
+            <span
+              style={{
+                textDecoration: "line-through",
+                opacity: 0.55,
+                marginRight: 6,
+              }}>
+              {fmtMoney(offer.gross)}
+            </span>
+            <span style={{ fontWeight: 600 }}>{fmtMoney(offer.net)}</span>
+            <span
+              style={{
+                marginLeft: 6,
+                fontSize: 12,
+                color: "var(--brand, #554aca)",
+              }}>
+              {`${offer.percent % 1 === 0 ? offer.percent : offer.percent.toFixed(2)}% off`}
+            </span>
+          </span>
+        );
+      };
+
       // `extra` and `extraError` are how a flow adds its own fields without
       // this component learning about them. Booking questions use it: which
       // questions apply depends on what is being booked, which is the flow's
@@ -1587,21 +1647,38 @@
               {hasRange && (() => {
                 const isAvailable = availability && availability.length > 0;
                 // Pricing: cheapest nightly rate among non-booked rooms.
-                const rates = (availability ?? [])
+                //
+                // ⚠️ **Cheapest by what is actually paid, not by list price.**
+                // Each room carries its own offer, so a £120 room at 40% off
+                // undercuts a £90 room at full price. Ranking on `cost` would
+                // advertise "from £90" and then charge £72 for a different
+                // room — the number a customer came for has to be the number
+                // they can get.
+                const priced = (availability ?? [])
                   .filter(e => !e.booked && e.cost != null && e.cost !== "")
-                  .map(e => Number(e.cost))
-                  .filter(c => Number.isFinite(c));
-                const nightly = rates.length ? Math.min(...rates) : null;
+                  .map(e => {
+                    const gross = Number(e.cost);
+                    const offer = applyOffer(gross, e.offer_percent);
+                    return { gross, net: offer ? offer.net : gross };
+                  })
+                  .filter(r => Number.isFinite(r.net));
+                const best = priced.length
+                  ? priced.reduce((a, b) => (b.net < a.net ? b : a))
+                  : null;
+                const nightly = best ? best.net : null;
+                // Only set when this room's own price was actually reduced.
+                const nightlyWas = best && best.net < best.gross ? best.gross : null;
                 const total = nightly != null && nights > 0 ? nightly * nights : null;
                 const fmtGBP = (n) =>
                   `£${n.toLocaleString("en-GB", {
                     minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
                     maximumFractionDigits: 2,
                   })}`;
+                const wasLabel = nightlyWas != null ? ` (was ${fmtGBP(nightlyWas)})` : "";
                 const priceLabel = nightly != null
                   ? (total != null
-                      ? `from ${fmtGBP(nightly)}/night · ${fmtGBP(total)} total`
-                      : `from ${fmtGBP(nightly)}/night`)
+                      ? `from ${fmtGBP(nightly)}/night${wasLabel} · ${fmtGBP(total)} total`
+                      : `from ${fmtGBP(nightly)}/night${wasLabel}`)
                   : null;
                 return (
                   <div className={`avail-box ${availChecking ? "avail-checking" : isAvailable ? "avail-ok" : "avail-none"}`}>
@@ -2142,7 +2219,7 @@
                     </div>
                     <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
                       {s.duration != null && <div style={{ fontSize: 12, color: "var(--text-2)" }}>{s.duration} min</div>}
-                      {s.cost != null && <div style={{ fontSize: 12, color: "var(--text-2)" }}>£{Number(s.cost).toFixed(2)}</div>}
+                      {s.cost != null && <div style={{ fontSize: 12, color: "var(--text-2)" }}><Price cost={s.cost} offerPercent={s.offer_percent} /></div>}
                     </div>
                   </div>
                 ))}
@@ -2157,7 +2234,7 @@
                     fontSize: 13, fontWeight: 600, fontFamily: "var(--font-display)" }}>
                     {selectedService.title}
                     {selectedService.duration != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>{selectedService.duration} min</span>}
-                    {selectedService.cost != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}>£{Number(selectedService.cost).toFixed(2)}</span>}
+                    {selectedService.cost != null && <span style={{ fontWeight: 400, color: "var(--text-2)", marginLeft: 8 }}><Price cost={selectedService.cost} offerPercent={selectedService.offer_percent} /></span>}
                   </div>
                 )}
 
@@ -2554,7 +2631,7 @@
                   )}
                   {evt.cost != null && (evt.ticket_types?.length ?? 0) === 0 && (
                     <div style={{ fontSize: 14, color: "var(--text-2)", marginBottom: 8 }}>
-                      £{Number(evt.cost).toFixed(2)}
+                      <Price cost={evt.cost} offerPercent={evt.offer_percent} />
                     </div>
                   )}
                   {!isMultiDay && evt.capacity != null && (
@@ -2767,7 +2844,7 @@
                   </div>
                   {cls.cost != null && (
                     <div style={{ fontSize: 14, color: "var(--text-2)", marginBottom: 8 }}>
-                      £{Number(cls.cost).toFixed(2)}
+                      <Price cost={cls.cost} offerPercent={cls.offer_percent} />
                     </div>
                   )}
                   {occurrences.length === 0 ? (
